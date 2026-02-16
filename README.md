@@ -1,3 +1,3 @@
-# Inventory Management (Itransition Course project)
+# Inventory Management
 
 Universal table constructor (dynamic system) with access rights
