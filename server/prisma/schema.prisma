@@ -1,0 +1,81 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String? 
+  role      String   @default("USER")
+  isBlocked Boolean  @default(false)
+  inventories Inventory[]
+  items       Item[]
+}
+
+model Inventory {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @db.Text
+  category    String 
+  imageUrl    String?
+  idFormat    String   @default("ITEM-####") 
+  
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  
+  str1_label  String?
+  str2_label  String?
+  str3_label  String?
+  
+  int1_label  String?
+  int2_label  String?
+  int3_label  String?
+  
+  txt1_label  String? 
+  txt2_label  String?
+  txt3_label  String?
+
+  bool1_label String? 
+  bool2_label String?
+  bool3_label String?
+
+  date1_label String? 
+  
+  items       Item[]
+}
+
+model Item {
+  id           String    @id @default(uuid())
+  inventory    Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  inventoryId  Int
+  
+  customId     String    
+  
+  author       User      @relation(fields: [authorId], references: [id])
+  authorId     Int
+
+  version      Int       @default(0) 
+  updatedAt    DateTime  @updatedAt
+
+  string_1     String?
+  string_2     String?
+  string_3     String?
+
+  integer_1    Int?
+  integer_2    Int?
+  integer_3    Int?
+
+  text_1       String?   @db.Text
+  text_2       String?   @db.Text
+  text_3       String?   @db.Text
+
+  boolean_1    Boolean?
+  boolean_2    Boolean?
+  boolean_3    Boolean?
+
+  @@unique([inventoryId, customId])
+}
