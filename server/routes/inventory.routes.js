@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const { isAuthenticated } = require('../middleware/role');
 const controller = require('../controllers/inventory.controller');
 
 router.get('/', controller.getAll);
@@ -9,7 +10,7 @@ router.get('/search', controller.search);
 router.get('/latest', controller.getLatest);
 router.get('/top', controller.getTop);
 
-router.use(passport.authenticate('jwt', { session: false }));
+router.use(passport.authenticate('jwt', { session: false }), isAuthenticated);
 
 router.post('/', controller.create);
 router.patch('/:id', controller.update);

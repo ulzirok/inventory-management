@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const passport = require('passport');
 const authRoutes = require('./routes/auth.routes')
 const userRoutes = require('./routes/user.routes')
 const inventoryRoutes = require('./routes/inventory.routes')
@@ -16,6 +17,11 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+require('./middleware/passport-jwt')(passport);
+require('./middleware/passport-google')(passport);
+require('./middleware/passport-facebook')(passport);
+app.use(passport.initialize());
 
 app.use('/api/auth', authRoutes)
 app.use('/api/users', userRoutes)

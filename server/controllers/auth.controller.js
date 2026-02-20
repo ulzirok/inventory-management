@@ -20,8 +20,7 @@ module.exports.register = async (req, res) => {
     })
     
     res.status(201).json({
-      message: 'User created succesfully',
-      user
+      message: 'User created succesfully'
     })
     
   } catch (error) {
@@ -56,6 +55,20 @@ module.exports.login = async (req, res) => {
       }
     })
     
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+module.exports.socialCallback = async (req, res) => {
+  const user = req.user;
+  try {
+    const token = jwt.sign({
+      userId: user.id,
+      email: user.email
+    }, process.env.JWT_SECRET, { expiresIn: '1d' })
+    
+    res.redirect(`http://localhost:4200/oauth-success?token=Bearer ${token}`); //Редирект на Angular (передаем токен в url) - на фронте нужен path: 'oauth-success'
   } catch (error) {
     errorHandler(res, error);
   }
