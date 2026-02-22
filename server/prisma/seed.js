@@ -1,22 +1,22 @@
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
     const categories = [
-        'Books & Publications',
-        'Equipment & Machinery',
-        'Electronics & Devices',
-        'Furniture',
-        'Tools & Instruments',
-        'Documents & Archives',
-        'Vehicles',
-        'Software & Licenses',
-        'Medical Supplies',
-        'Office Supplies',
-        'Industrial Materials',
-        'Personal Items',
-        'Collectibles',
-        'Other'
+        "Books & Publications",
+        "Equipment & Machinery",
+        "Electronics & Devices",
+        "Furniture",
+        "Tools & Instruments",
+        "Documents & Archives",
+        "Vehicles",
+        "Software & Licenses",
+        "Medical Supplies",
+        "Office Supplies",
+        "Industrial Materials",
+        "Personal Items",
+        "Collectibles",
+        "Other",
     ];
 
     for (const name of categories) {
@@ -26,7 +26,6 @@ async function main() {
             create: { name },
         });
     }
-    console.log('Categories seeded successfully.');
 }
 
 main()
