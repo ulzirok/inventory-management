@@ -13,7 +13,7 @@ module.exports.register = async (req, res) => {
     
     const user = await prisma.user.create({
       data: {
-        email: email,
+        email,
         password: hashPassword,
         // role: 'USER'; isBlocked: false
       }

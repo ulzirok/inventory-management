@@ -6,7 +6,6 @@ const controller = require('../controllers/inventory.controller');
 
 router.get('/', controller.getAll);
 router.get('/:id', controller.getById);
-router.get('/search', controller.search);
 router.get('/latest', controller.getLatest);
 router.get('/top', controller.getTop);
 

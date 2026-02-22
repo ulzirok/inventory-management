@@ -30,10 +30,10 @@ module.exports.create = async (req, res) => {
   try {
     const inventory = await prisma.inventory.create({
       data: {
-        title: title,
-        description: description,
-        imageUrl: imageUrl,
-        idFormat: idFormat,
+        title,
+        description,
+        imageUrl,
+        idFormat,
         ...customLabels,
         author: { connect: { id: req.user.id } },
         category: { connect: { id: Number(categoryId) } },

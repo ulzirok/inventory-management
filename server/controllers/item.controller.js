@@ -27,7 +27,7 @@ module.exports.create = async (req, res) => {
     const item = await prisma.item.create({
       data: {
         ...data,
-        customId: customId,
+        customId,
         inventoryId: Number(inventoryId),
         authorId: req.user.id
       }

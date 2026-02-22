@@ -9,6 +9,8 @@ const inventoryRoutes = require('./routes/inventory.routes')
 const categoryRoutes = require('./routes/category.routes')
 const itemsRoutes = require('./routes/item.routes')
 const searchRoutes = require('./routes/search.routes')
+const commentRoutes = require('./routes/comment.routes')
+const likesRoutes = require('./routes/likes.routes')
 
 app.use(cors({
   origin: ["https://frontend.com", "http://localhost:4200"],
@@ -30,5 +32,7 @@ app.use('/api/inventory', inventoryRoutes)
 app.use('/api/categories', categoryRoutes);
 app.use('/api/items', itemsRoutes)
 app.use('/api/search', searchRoutes)
+app.use('/api/comment', commentRoutes)
+app.use('/api/likes', likesRoutes)
 
 module.exports = app;
