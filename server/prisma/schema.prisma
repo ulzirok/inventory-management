@@ -2,8 +2,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 enum Role {
@@ -18,25 +20,41 @@ model User {
   googleId   String?  @unique 
   facebookId String?  @unique
   role       Role     @default(USER) 
-  isBlocked Boolean  @default(false)
+  isBlocked  Boolean  @default(false)
+  
   inventories Inventory[]
   items       Item[]
+  comments    Comment[]
+  likes       Like[]
 }
 
+model Category {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique 
+  inventories Inventory[]
+}
+model Tag {
+  id          Int         @id @default(autoincrement())
+  name        String      @unique
+  inventories Inventory[] @relation("InventoryTags")
+}
 model Inventory {
   id          Int      @id @default(autoincrement())
   title       String
   description String   @db.Text
-  category    String 
   imageUrl    String?
-  idFormat    String   @default("ITEM-####") 
+  idFormat    String   @default("ITEM-{{year}}-{{seq}}-{{rand6}}")
+  
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  Int
   
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
   
-  version      Int       @default(0) 
-  updatedAt    DateTime  @updatedAt
-  
+  isPublic    Boolean  @default(false)
+  version     Int      @default(0) 
+  updatedAt   DateTime @updatedAt
+
   str1_label  String?
   str2_label  String?
   str3_label  String?
@@ -53,9 +71,12 @@ model Inventory {
   bool2_label String?
   bool3_label String?
 
-  date1_label String? 
-  
+  url1_label  String?
+  url2_label  String?
+  url3_label  String?
+
   items       Item[]
+  tags        Tag[]     @relation("InventoryTags")
 }
 
 model Item {
@@ -63,12 +84,13 @@ model Item {
   inventory    Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   inventoryId  Int
   
-  customId     String    
+  customId     String
   
   author       User      @relation(fields: [authorId], references: [id])
   authorId     Int
 
   version      Int       @default(0) 
+  createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   string_1     String?
@@ -87,5 +109,34 @@ model Item {
   boolean_2    Boolean?
   boolean_3    Boolean?
 
+  url_1        String?
+  url_2        String?
+  url_3        String?
+
+  comments     Comment[]
+  likes        Like[]
+
   @@unique([inventoryId, customId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  text      String   @db.Text
+  createdAt DateTime @default(now())
+  
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  
+  item      Item     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+}
+
+model Like {
+  id        Int    @id @default(autoincrement())
+  user      User   @relation(fields: [userId], references: [id])
+  userId    Int
+  item      Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  itemId    String
+
+  @@unique([userId, itemId])
 }
