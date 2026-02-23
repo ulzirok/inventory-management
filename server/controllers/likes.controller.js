@@ -13,9 +13,7 @@ module.exports.like = async (req, res) => {
         res.status(201).json({ message: "Liked successfully" });
     } catch (error) {
         if (error.code === "P2002") {
-            return res
-                .status(409)
-                .json({ message: "You already liked this item." });
+            return res.status(409).json({ message: "You already liked this item." });
         }
         errorHandler(res, error);
     }

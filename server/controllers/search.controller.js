@@ -10,23 +10,8 @@ module.exports.search = async (req, res) => {
                 OR: [
                     { title: { contains: query, mode: "insensitive" } },
                     { description: { contains: query, mode: "insensitive" } },
-                    {
-                        items: {
-                            some: {
-                                string_1: {
-                                    contains: query,
-                                    mode: "insensitive",
-                                },
-                            },
-                        },
-                    },
-                    {
-                        tags: {
-                            some: {
-                                name: { contains: query, mode: "insensitive" },
-                            },
-                        },
-                    },
+                    { items: { some: { string_1: { contains: query, mode: "insensitive" }}}},
+                    { tags: { some: { name: { contains: query, mode: "insensitive" }}}},
                 ],
             },
             include: {

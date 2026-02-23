@@ -95,9 +95,7 @@ module.exports.update = async (req, res) => {
         res.status(200).json(updatedInventory);
     } catch (error) {
         if (error.code === "P2025") {
-            return res
-                .status(409)
-                .json({ message: "Inventory was modified or not found." });
+            return res.status(409).json({ message: "Inventory was modified or not found." });
         }
         errorHandler(res, error);
     }
@@ -107,9 +105,7 @@ module.exports.delete = async (req, res) => {
     const { id } = req.params;
     try {
         await prisma.inventory.delete({
-            where: {
-                id: Number(id),
-            },
+            where: { id: Number(id) },
         });
         return res.status(200).json({ message: "Inventory removed" });
     } catch (error) {

@@ -19,15 +19,11 @@ module.exports.register = async (req, res) => {
             },
         });
 
-        res.status(201).json({
-            message: "User created succesfully",
-        });
+        res.status(201).json({message: "User created succesfully"});
     } catch (error) {
         if (error.code === "P2002") {
             res.status(409).json({
-                message:
-                    "This email is already registered. Try a different email.",
-            });
+                message: "This email is already registered. Try a different email."});
         }
         errorHandler(res, error);
     }
@@ -40,9 +36,7 @@ module.exports.login = async (req, res) => {
             where: { email: email },
         });
         if (!candidate)
-            return res
-                .status(401)
-                .json({ message: "Incorrect email or password" });
+            return res.status(401).json({ message: "Incorrect email or password" });
         if (candidate.isBlocked)
             return res.status(403).json({ message: "Your account is blocked" });
         const isComparePassword = bycript.compareSync(
@@ -50,9 +44,7 @@ module.exports.login = async (req, res) => {
             candidate.password,
         );
         if (!isComparePassword)
-            return res
-                .status(401)
-                .json({ message: "Incorrect email or password" });
+            return res.status(401).json({ message: "Incorrect email or password" });
 
         const token = jwt.sign(
             {

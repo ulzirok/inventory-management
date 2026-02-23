@@ -40,9 +40,7 @@ module.exports.create = async (req, res) => {
         res.status(201).json(item);
     } catch (error) {
         if (error.code === "P2002") {
-            return res
-                .status(409)
-                .json({ message: "Custom ID conflict. Try again." });
+            return res.status(409).json({ message: "Custom ID conflict. Try again." });
         }
         errorHandler(res, error);
     }
@@ -65,9 +63,7 @@ module.exports.update = async (req, res) => {
         res.status(200).json(updatedItem);
     } catch (error) {
         if (error.code === "P2025") {
-            return res.status(409).json({
-                message: "Item was modified by another user. Refresh the page.",
-            });
+            return res.status(409).json({ message: "Item was modified by another user. Refresh the page." });
         }
         errorHandler(res, error);
     }
