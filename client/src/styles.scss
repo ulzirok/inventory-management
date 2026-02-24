@@ -1,1 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  transition: background-color 0.2s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+.light-theme,
+.dark-theme {
+  --mat-sys-primary: var(--mdc-theme-primary);
+  --mat-sys-on-primary: var(--mdc-theme-on-primary);
+  --mat-sys-surface: var(--mdc-theme-surface);
+  --mat-sys-on-surface: var(--mdc-theme-on-surface);
+  --mat-sys-background: var(--mdc-theme-background);
+
+  background-color: var(--mdc-theme-background);
+  color: var(--mdc-theme-on-surface);
+
+  .mat-mdc-table,
+  .mat-mdc-card,
+  .mat-mdc-select-panel {
+    background-color: var(--mdc-theme-surface) !important;
+    color: var(--mdc-theme-on-surface) !important;
+  }
+}
+
+.light-theme {
+  --mdc-theme-primary: #64748b;
+  --mdc-theme-on-primary: #ffffff;
+  --mdc-theme-background: #f1f5f9;
+  --mdc-theme-surface: #ffffff;
+  --mdc-theme-on-surface: #1e293b;
+
+  .mat-toolbar {
+    background-color: var(--mdc-theme-primary) !important; 
+    color: var(--mdc-theme-on-primary) !important;
+  }
+}
+
+.dark-theme {
+  --mdc-theme-primary: #94a3b8;
+  --mdc-theme-on-primary: #0f172a;
+  --mdc-theme-background: #09090b;
+  --mdc-theme-surface: #18181b;
+  --mdc-theme-on-surface: #fafafa;
+
+  .mat-toolbar {
+    background-color: var(--mdc-theme-surface) !important;
+    color: var(--mdc-theme-on-surface) !important;
+  }
+}
+
+.cdk-overlay-container .mat-mdc-select-panel {
+  background-color: var(--mdc-theme-surface);
+}

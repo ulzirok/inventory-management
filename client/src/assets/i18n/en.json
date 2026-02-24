@@ -1,0 +1,17 @@
+{
+  "header": {
+    "home": "Home",
+    "inventories": "Inventories",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "email": "Email",
+    "password": "Password"
+  },
+  "inventory": {
+    "title": "Inventory"
+  }
+}

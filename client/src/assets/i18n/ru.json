@@ -1,0 +1,17 @@
+{
+  "header": {
+    "home": "Главная",
+    "inventories": "Инвентарь",
+    "admin": "Админ",
+    "login": "Войти",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "loginTitle": "Вход в систему",
+    "email": "Email",
+    "password": "Пароль"
+  },
+  "inventory": {
+    "title": "Инвентарь"
+  }
+}
