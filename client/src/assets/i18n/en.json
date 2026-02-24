@@ -13,5 +13,9 @@
   },
   "inventory": {
     "title": "Inventory"
+  },
+  "search": {
+    "placeholder": "Search",
+    "resultSearch": "Position not found"
   }
 }

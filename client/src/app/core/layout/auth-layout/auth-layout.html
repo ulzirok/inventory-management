@@ -1,1 +1,12 @@
+<div class="theme-container">
+  <button mat-icon-button (click)="toggleTheme()">
+    @if (isDark) {
+    <mat-icon>light_mode</mat-icon>
+    }
+    @else {
+    <mat-icon>dark_mode</mat-icon>
+    }
+  </button>
+
+</div>
 <router-outlet></router-outlet>

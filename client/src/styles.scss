@@ -1,60 +1,86 @@
 @use '@angular/material' as mat;
 
-html,
-body {
+html {
   height: 100%;
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      density: 0,
+    ));
+}
+
+body {
   margin: 0;
+  height: 100%;
   transition: background-color 0.2s;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16px;
-  scroll-behavior: smooth;
+
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.light-theme {
+  --mat-sys-primary: #64748b;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-surface: #f1f5f9;
+  --mat-sys-surface-container: #ffffff;
+  --mat-sys-on-surface: #1e293b;
+
+  .mat-icon,
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important; 
+    --mdc-icon-button-icon-color: var(--mat-sys-on-surface);
+  }
+
+  .mat-toolbar {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+
+    .mat-icon,
+    .mat-mdc-icon-button {
+      color: var(--mat-sys-on-primary) !important;
+      --mdc-icon-button-icon-color: var(--mat-sys-on-primary);
+    }
+  }
+}
+
+.dark-theme {
+  --mat-sys-primary: #94a3b8;
+  --mat-sys-on-primary: #0f172a;
+  --mat-sys-surface: #09090b;
+  --mat-sys-surface-container: #18181b;
+  --mat-sys-on-surface: #fafafa;
+
+  .mat-icon,
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+    --mdc-icon-button-icon-color: var(--mat-sys-on-surface);
+  }
+
+  .mat-toolbar {
+    background-color: var(--mat-sys-surface-container) !important;
+    color: var(--mat-sys-on-surface) !important;
+  }
 }
 
 .light-theme,
 .dark-theme {
-  --mat-sys-primary: var(--mdc-theme-primary);
-  --mat-sys-on-primary: var(--mdc-theme-on-primary);
-  --mat-sys-surface: var(--mdc-theme-surface);
-  --mat-sys-on-surface: var(--mdc-theme-on-surface);
-  --mat-sys-background: var(--mdc-theme-background);
-
-  background-color: var(--mdc-theme-background);
-  color: var(--mdc-theme-on-surface);
+  background-color: var(--mat-sys-surface) !important;
+  color: var(--mat-sys-on-surface) !important;
 
   .mat-mdc-table,
-  .mat-mdc-card,
+  .mat-mdc-card {
+    background-color: var(--mat-sys-surface-container) !important;
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+.cdk-overlay-container {
   .mat-mdc-select-panel {
-    background-color: var(--mdc-theme-surface) !important;
-    color: var(--mdc-theme-on-surface) !important;
+    background-color: var(--mat-sys-surface-container) !important;
   }
-}
 
-.light-theme {
-  --mdc-theme-primary: #64748b;
-  --mdc-theme-on-primary: #ffffff;
-  --mdc-theme-background: #f1f5f9;
-  --mdc-theme-surface: #ffffff;
-  --mdc-theme-on-surface: #1e293b;
-
-  .mat-toolbar {
-    background-color: var(--mdc-theme-primary) !important; 
-    color: var(--mdc-theme-on-primary) !important;
+  .mat-mdc-option {
+    color: var(--mat-sys-on-surface) !important;
   }
-}
-
-.dark-theme {
-  --mdc-theme-primary: #94a3b8;
-  --mdc-theme-on-primary: #0f172a;
-  --mdc-theme-background: #09090b;
-  --mdc-theme-surface: #18181b;
-  --mdc-theme-on-surface: #fafafa;
-
-  .mat-toolbar {
-    background-color: var(--mdc-theme-surface) !important;
-    color: var(--mdc-theme-on-surface) !important;
-  }
-}
-
-.cdk-overlay-container .mat-mdc-select-panel {
-  background-color: var(--mdc-theme-surface);
 }
