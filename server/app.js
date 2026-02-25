@@ -9,6 +9,8 @@ const inventoryRoutes = require("./routes/inventory.routes");
 const categoryRoutes = require("./routes/category.routes");
 const itemsRoutes = require("./routes/item.routes");
 const searchRoutes = require("./routes/search.routes");
+const searchByTagRoutes = require("./routes/search-by-tag.routes");
+const tagsRoutes = require("./routes/tags.routes");
 const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
 
@@ -34,6 +36,8 @@ app.use("/api/inventory", inventoryRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/items", itemsRoutes);
 app.use("/api/search", searchRoutes);
+app.use("/api/search-by-tag", searchByTagRoutes);
+app.use("/api/tags", tagsRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/likes", likesRoutes);
 

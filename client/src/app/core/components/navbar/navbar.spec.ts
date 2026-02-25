@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SearchResultsItem } from './search-results-item';
+import { Navbar } from '../../../shared/components/navbar/navbar/navbar';
 
-describe('SearchResultsItem', () => {
-  let component: SearchResultsItem;
-  let fixture: ComponentFixture<SearchResultsItem>;
+describe('Navbar', () => {
+  let component: Navbar;
+  let fixture: ComponentFixture<Navbar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SearchResultsItem]
+      imports: [Navbar]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SearchResultsItem);
+    fixture = TestBed.createComponent(Navbar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,1 +1,8 @@
-<p>tags works!</p>
+<div class="tags-cloud">
+  <h3>Tags</h3>
+  @for (tag of tags; track $index) {
+  <button mat-stroked-button (click)="onSearchByTag(tag.name)">
+    #{{ tag.name }}
+  </button>
+  }
+</div>

@@ -8,8 +8,18 @@
   },
   "auth": {
     "loginTitle": "Вход в систему",
+    "registerTitle": "Создать новый аккаунт",
+    "name": "ФИО",
     "email": "Email",
-    "password": "Пароль"
+    "password": "Пароль",
+    "authGoogle": "Войти с аккаунтом Google",
+    "authFB": "Войти с аккаунтом Facebook",
+    "loginBtn": "Войти",
+    "registerBtn": "Зарегистрироваться",
+    "loginLink": "У вас нет аккаунта?",
+    "registerLink": "У вас уже есть аккаунт?",
+    "or": "или",
+    "registerNotificationSuccess": "Аккаунт успешно создан."
   },
   "inventory": {
     "title": "Инвентарь"
@@ -17,5 +27,8 @@
   "search": {
     "placeholder": "Искать",
     "resultSearch": "Позиция не найдена"
+  },
+  "oAuthSuccess": {
+    "redirect": "Вход выполнен успешно! Перенаправление"
   }
 }

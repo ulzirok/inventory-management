@@ -1,1 +1,12 @@
-<p>search-results-page works!</p>
+<div class="search-container">
+  <h2>Search results</h2>
+
+  <div class="inventory-grid">
+    @for (item of searchService.results(); track item.id) {
+      <p>{{item.title}}</p>
+    } @empty {
+    <p>Список инвентарей</p>
+    }
+  </div>
+</div>
+

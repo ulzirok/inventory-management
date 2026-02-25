@@ -19,11 +19,12 @@ module.exports.register = async (req, res) => {
             },
         });
 
-        res.status(201).json({message: "User created succesfully"});
+        res.status(201).json({ message: "User created succesfully" });
     } catch (error) {
         if (error.code === "P2002") {
             res.status(409).json({
-                message: "This email is already registered. Try a different email."});
+                message: "This email is already registered. Try a different email."
+            });
         }
         errorHandler(res, error);
     }
@@ -79,9 +80,8 @@ module.exports.socialCallback = async (req, res) => {
             { expiresIn: "1d" },
         );
 
-        res.redirect(
-            `http://localhost:4200/oauth-success?token=Bearer ${token}`,
-        ); //Редирект на Angular (передаем токен в url) - на фронте нужен path: 'oauth-success'
+        // res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
+        res.redirect(`http://localhost:4200/oauth-success?token=${token}`);
     } catch (error) {
         errorHandler(res, error);
     }

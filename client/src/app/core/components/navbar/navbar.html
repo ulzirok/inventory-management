@@ -4,21 +4,14 @@
   
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic" floatLabel="always">
     <mat-icon matPrefix>search</mat-icon>
-    <input matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="{{'search.placeholder' | translate}}..." />
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event.option.value)">
-      @for (item of searchResults(); track item.id) {
-      <mat-option [value]="item">
-        {{ item.title }}
-      </mat-option>
-      }
-    </mat-autocomplete>
+    <input matInput [formControl]="searchControl" placeholder="{{'search.placeholder' | translate}}..." />
   </mat-form-field>
 
   <a mat-button routerLink="/dashboard">{{ 'header.home' | translate }}</a>
   <a mat-button routerLink="/inventory">{{ 'header.inventories' | translate }}</a>
   <a mat-button routerLink="/admin">{{ 'header.admin' | translate }}</a>
   <a mat-button routerLink="/auth/login">{{ 'header.login' | translate }}</a>
-  <button mat-button>{{ 'header.logout' | translate }}</button>
+  <button mat-button (click)="logout()">{{ 'header.logout' | translate }}</button>
 
   <mat-select class="lang-switcher" [value]="currentLang" (selectionChange)="changeLang($event.value)" disableRipple>
     <mat-option value="en">English</mat-option>

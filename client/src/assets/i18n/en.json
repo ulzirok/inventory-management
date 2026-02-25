@@ -8,8 +8,19 @@
   },
   "auth": {
     "loginTitle": "Sign In",
+    "registerTitle": "Sign Up",
+    "name": "Name",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "authGoogle": "Continue with Google",
+    "authFB": "Continue with Facebook",
+    "loginBtn": "Sign In",
+    "registerBtn": "Create an account",
+    "loginLink": "Don't have an account?",
+    "registerLink": "Already have an account?",
+    "or": "or",
+    "registerNotificationSuccess": "Account created successfully."
+    
   },
   "inventory": {
     "title": "Inventory"
@@ -17,5 +28,8 @@
   "search": {
     "placeholder": "Search",
     "resultSearch": "Position not found"
+  },
+  "oAuthSuccess": {
+    "redirect": "Login successful! Redirecting"
   }
 }

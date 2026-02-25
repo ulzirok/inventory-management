@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Navbar } from './navbar';
+import { OAuthSuccessPage } from './o-auth-success-page';
 
-describe('Navbar', () => {
-  let component: Navbar;
-  let fixture: ComponentFixture<Navbar>;
+describe('OAuthSuccessPage', () => {
+  let component: OAuthSuccessPage;
+  let fixture: ComponentFixture<OAuthSuccessPage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Navbar]
+      imports: [OAuthSuccessPage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Navbar);
+    fixture = TestBed.createComponent(OAuthSuccessPage);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

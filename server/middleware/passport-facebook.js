@@ -1,5 +1,6 @@
 const { Strategy: FacebookStrategy } = require("passport-facebook");
 const prisma = require("../prisma");
+const Roles = require("../constants/roles");
 
 const options = {
     clientID: process.env.FB_CLIENT_ID,
@@ -22,7 +23,7 @@ module.exports = (passport) => {
                             email: profile.emails
                                 ? profile.emails[0].value
                                 : `fb_${profile.id}@example.com`,
-                            role: "USER",
+                            role: Roles.USER,
                         },
                     });
                     return done(null, user);

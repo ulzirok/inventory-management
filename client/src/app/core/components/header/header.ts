@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-import { Navbar } from '../../../shared/components/navbar/navbar/navbar';
-
+import { Navbar } from '../navbar/navbar';
 @Component({
   selector: 'app-header',
-  imports: [TranslateModule, Navbar],
+  imports: [ Navbar],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

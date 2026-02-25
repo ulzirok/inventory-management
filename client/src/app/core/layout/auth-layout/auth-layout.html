@@ -1,4 +1,9 @@
-<div class="theme-container">
+<div class="switcher-container">
+  <mat-select class="lang-switcher" [value]="currentLang" (selectionChange)="changeLang($event.value)" disableRipple>
+    <mat-option value="en">English</mat-option>
+    <mat-option value="ru">Русский</mat-option>
+  </mat-select>
+  
   <button mat-icon-button (click)="toggleTheme()">
     @if (isDark) {
     <mat-icon>light_mode</mat-icon>

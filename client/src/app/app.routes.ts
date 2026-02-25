@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { AuthLayout } from './core/layout/auth-layout/auth-layout';
 import { MainLayout } from './core/layout/main-layout/main-layout';
 import { NotFound } from './features/not-found/not-found';
+import { OAuthSuccessPage } from './features/oAuthSuccess/o-auth-success-page/o-auth-success-page';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -19,10 +21,11 @@ export const routes: Routes = [
       }
     ]
   },
+  { path: 'oauth-success', component: OAuthSuccessPage },
   {
     path: '',
     component: MainLayout,
-    // canActivate: [authGuard],
+    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',

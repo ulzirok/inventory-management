@@ -1,5 +1,6 @@
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 const prisma = require("../prisma");
+const Roles = require("../constants/roles");
 
 const options = {
     clientID: process.env.GOOGLE_CLIENT_ID,
@@ -19,7 +20,7 @@ module.exports = (passport) => {
                         create: {
                             googleId: profile.id,
                             email: profile.emails[0].value,
-                            role: "USER",
+                            role: Roles.USER,
                         },
                     });
                     return done(null, user);
