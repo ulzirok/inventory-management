@@ -10,10 +10,8 @@ import { ThemeService } from './core/services/theme.service';
 })
 export class App {
   private languageService = inject(LanguageService)
-  private themeService = inject(ThemeService)
   
   ngOnInit() {
     this.languageService.init();
-    this.themeService.init();
   }
 }

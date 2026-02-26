@@ -19,12 +19,13 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
   styleUrl: './dashboard-page.scss',
 })
 export class DashboardPage {
-  tags = signal<Tag[]>([]);
-  latestInventory = signal<Inventory[]>([]);
-  topInventory = signal<Inventory[]>([]);
   private dashboardService = inject(DashboardService)
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
+  
+  public tags = signal<Tag[]>([]);
+  public latestInventory = signal<Inventory[]>([]);
+  public topInventory = signal<Inventory[]>([]);
   
   ngOnInit(): void {
     this.dashboardService.getTags().pipe(

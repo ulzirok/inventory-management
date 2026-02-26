@@ -8,9 +8,8 @@ import { TopInventory } from '../../features/inventory/models/topInventory.inter
   providedIn: 'root',
 })
 export class SearchService {
-  results = signal <TopInventory[]>([]);
-  
   private http = inject(HttpClient);
+  public results = signal<TopInventory[]>([]);
 
   search(query: string): Observable<TopInventory[]> {
     return this.http.get<TopInventory[]>(`${environment.apiUrl}/api/search`, { params: { query } })

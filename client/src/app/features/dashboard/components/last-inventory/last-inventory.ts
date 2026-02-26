@@ -13,7 +13,6 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
 })
 export class LastInventory {
   latestInventory = input<Inventory[]>([]);
-  
   displayedColumns = ['inventory', 'item', 'author', 'date'];
   
   dataSource = computed(() => {

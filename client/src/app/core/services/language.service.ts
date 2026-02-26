@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -6,18 +6,15 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class LanguageService {
   private translate = inject(TranslateService)
-
+  public currentLang = signal(localStorage.getItem('lang') || 'en');
+  
   init() {
-    const savedLang = localStorage.getItem('lang') || 'en';
-    this.translate.use(savedLang);
+    this.translate.use(this.currentLang());
   }
 
-  switch(lang: string) {
+  setLang(lang: string) {
+    this.currentLang.set(lang);
     this.translate.use(lang);
     localStorage.setItem('lang', lang);
-  }
-
-  getCurrent() {
-    return this.translate.currentLang;
   }
 }

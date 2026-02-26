@@ -1,33 +1,29 @@
-import { Injectable } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+  private overlayContainer = inject(OverlayContainer)
+  public isDark = signal(localStorage.getItem('theme') === 'dark-theme');
+  
+  constructor() {
+    effect(() => {
+      const theme = this.isDark() ? 'dark-theme' : 'light-theme';
+      const prevTheme = !this.isDark() ? 'dark-theme' : 'light-theme';
 
-  private currentTheme = 'light-theme';
-  constructor(private overlayContainer: OverlayContainer) { }
+      document.body.classList.remove(prevTheme);
+      document.body.classList.add(theme);
+      const containerClasses = this.overlayContainer.getContainerElement().classList;
+      containerClasses.remove(prevTheme);
+      containerClasses.add(theme);
 
-  init() {
-    const saved = localStorage.getItem('theme') || 'light-theme';
-    this.setTheme(saved);
+      localStorage.setItem('theme', theme);
+    });
   }
 
-  setTheme(theme: string) {
-    const containerClassList = this.overlayContainer.getContainerElement().classList;
-    containerClassList.remove(this.currentTheme);
-    containerClassList.add(theme);
-    
-    document.body.classList.remove(this.currentTheme);
-    document.body.classList.add(theme);
-    this.currentTheme = theme;
-    localStorage.setItem('theme', theme);
+  toggle() {
+    this.isDark.update(value => !value);
   }
-
-  getCurrent() {
-    return this.currentTheme;
-  }
-
-
 }

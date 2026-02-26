@@ -27,13 +27,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './register.scss',
 })
 export class Register implements OnInit {
-  form!: FormGroup;
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService)
   private notificationService = inject(NotificationService)
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
+  
+  public form!: FormGroup;
   
   ngOnInit(): void {
     this.form = this.fb.group({

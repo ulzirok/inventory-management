@@ -14,22 +14,17 @@ import { LanguageService } from '../../services/language.service';
   styleUrl: './auth-layout.scss',
 })
 export class AuthLayout {
-  currentLang = 'en';
-  public isDark = false;
   private themeService = inject(ThemeService);
   private languageService = inject(LanguageService);
-
-  constructor() {
-    this.currentLang = this.languageService.getCurrent() || 'en';
-  }
+  
+  public isDark = this.themeService.isDark;
+  public currentLang = this.languageService.currentLang;
 
   toggleTheme() {
-    this.isDark = !this.isDark;
-    this.themeService.setTheme(this.isDark ? 'dark-theme' : 'light-theme');
+    this.themeService.toggle();
   }
 
   changeLang(lang: string) {
-    this.languageService.switch(lang);
-    this.currentLang = lang;
+    this.languageService.setLang(lang);
   }
 }

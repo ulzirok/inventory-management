@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,6 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { LanguageService } from '../../../core/services/language.service';
 import { ThemeService } from '../../../core/services/theme.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { Role } from '../../../features/auth/models/role.enum';
 
 
 @Component({
@@ -35,19 +36,21 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './navbar.scss',
 })
 export class Navbar implements OnInit {
-  currentLang = 'en';
-  public isDark = false;
-  searchControl = new FormControl('');
-
   private languageService = inject(LanguageService);
   private themeService = inject(ThemeService);
   private router = inject(Router);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
-
-  constructor() {
-    this.currentLang = this.languageService.getCurrent() || 'en';
-  }
+  
+  public isDark = this.themeService.isDark;
+  public currentLang = this.languageService.currentLang;
+  public searchControl = new FormControl('');
+  public isAdmin = computed(() =>
+    this.authService.hasRole(Role.ADMIN)
+  );
+  public isAuthenticated = computed(() =>
+    this.authService.isAuthenticated()
+  );
 
   ngOnInit() {
     this.searchControl.valueChanges.pipe(
@@ -62,13 +65,11 @@ export class Navbar implements OnInit {
   }
 
   changeLang(lang: string) {
-    this.languageService.switch(lang);
-    this.currentLang = lang;
+    this.languageService.setLang(lang);
   }
 
   toggleTheme() {
-    this.isDark = !this.isDark;
-    this.themeService.setTheme(this.isDark ? 'dark-theme' : 'light-theme');
+    this.themeService.toggle();
   }
 
   logout() {
