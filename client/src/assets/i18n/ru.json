@@ -30,5 +30,15 @@
   },
   "oAuthSuccess": {
     "redirect": "Вход выполнен успешно! Перенаправление"
+  },
+  "dashboard": {
+    "lastInventories": "Последние инвентари",
+    "topInventories": "Топ инвентари",
+    "tags": "Теги",
+    "inventory": "Инвентарь",
+    "items": "Предметы",
+    "author": "Автор",
+    "date": "Дата",
+    "owner": "Создатель"
   }
 }

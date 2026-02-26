@@ -26,7 +26,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
         router.navigate(['/auth/login'], { queryParams: { sessionFailed: true } });
       }
       else {
-        const message = error.error?.message || 'Unexpected server error';
+        const message = error.error?.message || 'Unexpected server error. Try again later.';
         notification.error(message);
       }
       return throwError(() => error);

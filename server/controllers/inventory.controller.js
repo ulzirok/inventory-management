@@ -119,9 +119,8 @@ module.exports.delete = async (req, res) => {
 module.exports.getLatest = async (req, res) => {
     try {
         const latest = await prisma.inventory.findMany({
-            take: 5,
             orderBy: { updatedAt: "desc" },
-            include: { author: { select: { name: true } }, category: true },
+            include: { author: { select: { name: true, email: true } }, category: true },
         });
         res.status(200).json(latest);
     } catch (error) {
@@ -138,7 +137,7 @@ module.exports.getTop = async (req, res) => {
             },
             include: {
                 _count: { select: { items: true } },
-                author: { select: { name: true } },
+                author: { select: { name: true, email: true } },
             },
         });
         res.status(200).json(top);

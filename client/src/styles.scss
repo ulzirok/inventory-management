@@ -20,15 +20,15 @@ body {
 }
 
 .light-theme {
-  --mat-sys-primary: #64748b;
+  --mat-sys-primary: #818cf8;
   --mat-sys-on-primary: #ffffff;
-  --mat-sys-surface: #f1f5f9;
+  --mat-sys-surface: #f9fafb;
   --mat-sys-surface-container: #ffffff;
-  --mat-sys-on-surface: #1e293b;
+  --mat-sys-on-surface: #111827;
 
   .mat-icon,
   .mat-mdc-icon-button {
-    color: var(--mat-sys-on-surface) !important; 
+    color: var(--mat-sys-on-surface) !important;
     --mdc-icon-button-icon-color: var(--mat-sys-on-surface);
   }
 

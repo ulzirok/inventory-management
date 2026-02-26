@@ -1,3 +1,15 @@
-<app-last-inventory></app-last-inventory>
-<app-top-inventory></app-top-inventory>
-<app-tags [tags]="tags()" (searchByTag)="onSearchByTag($event)"></app-tags>
+<div class="dashboard-container">
+  <div class="tables">
+    <app-last-inventory [latestInventory]="latestInventory()"></app-last-inventory>
+    <app-top-inventory [topInventory]="topInventory()"></app-top-inventory>
+  </div>
+
+  <div class="tags-section">
+    <app-tags [tags]="tags()" (searchByTag)="onSearchByTag($event)">
+    </app-tags>
+  </div>
+</div>
+
+<button mat-fab color="primary" class="fab">
+  <mat-icon>add</mat-icon>
+</button>

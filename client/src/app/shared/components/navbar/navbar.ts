@@ -12,9 +12,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageService } from '../../services/language.service';
-import { ThemeService } from '../../services/theme.service';
-import { AuthService } from '../../services/auth.service';
+import { LanguageService } from '../../../core/services/language.service';
+import { ThemeService } from '../../../core/services/theme.service';
+import { AuthService } from '../../../core/services/auth.service';
+
 
 @Component({
   selector: 'app-navbar',
@@ -47,7 +48,7 @@ export class Navbar implements OnInit {
   constructor() {
     this.currentLang = this.languageService.getCurrent() || 'en';
   }
-  
+
   ngOnInit() {
     this.searchControl.valueChanges.pipe(
       debounceTime(400),

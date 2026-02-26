@@ -31,5 +31,15 @@
   },
   "oAuthSuccess": {
     "redirect": "Login successful! Redirecting"
+  },
+  "dashboard": {
+    "lastInventories": "Latest inventories",
+    "topInventories": "Top inventories",
+    "tags": "Tags",
+    "inventory": "Inventory",
+    "items": "Items",
+    "author": "Author",
+    "date": "Date",
+    "owner": "Owner"
   }
 }
