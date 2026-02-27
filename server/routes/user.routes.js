@@ -10,6 +10,6 @@ router.get("/", controller.getAll);
 router.get("/:id", controller.getUserById);
 router.patch("/:id", controller.changeStatus);
 router.patch("/:id", controller.changeRole);
-router.delete("/:id", controller.delete);
+router.post("/delete", controller.delete);
 
 module.exports = router;

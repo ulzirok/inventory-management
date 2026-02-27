@@ -1,7 +1,7 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { SearchService } from '../../../core/services/search.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
@@ -31,15 +31,17 @@ import { Inventory } from '../../inventory/models/inventory.interface';
 })
 export class SearchResultsPage {
   public searchService = inject(SearchService);
-  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
 
-  public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   public inventories = computed(() => this.searchService.results());
   dataSource = computed(() => this.inventories());
   displayedColumns = ['select', 'customId', 'inventory', 'description', 'category']; //+картинка
   selection = new SelectionModel<Inventory>(true, []);
+  private selectedCountSignal = signal(0);
+  isSingleSelected = computed(() => this.selectedCountSignal() === 1);
+  isAnySelected = computed(() => this.selectedCountSignal() > 0);
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -57,6 +59,10 @@ export class SearchResultsPage {
     });
   }
 
+  updateSelectionCount() {
+    this.selectedCountSignal.set(this.selection.selected.length);
+  }
+
   isAllSelected() {
     return this.selection.selected.length === this.dataSource().length;
   }
@@ -67,9 +73,23 @@ export class SearchResultsPage {
     } else {
       this.selection.select(...this.dataSource());
     }
+    this.updateSelectionCount();
   }
 
-  viewItems() {
-
+  toggleRow(row: Inventory) {
+    this.selection.toggle(row);
+    this.updateSelectionCount();
   }
+
+  viewItem() {
+    if (!this.isSingleSelected()) return;
+    const id = this.selection.selected[0].id;
+    this.router.navigate([`/inventory/${id}/item`])
+    this.selection.clear();
+  }
+  
+  viewAllItems() {
+    this.router.navigate(['/inventory/items'])
+  }
+  
 }

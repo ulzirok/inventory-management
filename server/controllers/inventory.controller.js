@@ -116,12 +116,16 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports.delete = async (req, res) => {
-  const { id } = req.params;
+  const { ids } = req.body;
   try {
-    await prisma.inventory.delete({
-      where: { id: Number(id) },
+    if (!ids || ids.length === 0) return res.status(400).json({ message: "No inventories selected" });
+    
+    await prisma.inventory.deleteMany({
+      where: {
+        id:  {in: ids.map((id)=> Number(id))}
+      },
     });
-    return res.status(200).json({ message: "Inventory removed" });
+    return res.status(200).json({ message: "Inventories successfully deleted" });
   } catch (error) {
     if (error.code === "P2025") {
       return res.status(404).json({ message: "Inventory not found" });

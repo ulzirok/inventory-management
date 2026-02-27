@@ -4,6 +4,8 @@ import { InventoryService } from '../../services/inventory.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { InventoryList } from '../../components/inventory-list/inventory-list';
 import { TranslateModule } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
   selector: 'app-inventory-page',
@@ -14,9 +16,15 @@ import { TranslateModule } from '@ngx-translate/core';
 export class InventoryPage implements OnInit {
   private inventoryService = inject(InventoryService)
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
   public inventories = signal<Inventory[]>([]);
   
   ngOnInit(): void {
+    this.loadInventories()
+  }
+  
+  loadInventories() {
     this.inventoryService.getAll().pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(
@@ -24,5 +32,31 @@ export class InventoryPage implements OnInit {
     );
   }
   
+  onCreateInventory(): void {
+    this.router.navigate(['/inventory/create'])
+  }
+  
+  onEditInventory(id: number) {
+    this.router.navigate([`/inventory/${id}/details`])
+  }
+  onDeleteInventory(ids: number[]) {
+    this.inventoryService.delete(ids).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => { 
+        this.notificationService.success(response.message);
+        this.loadInventories()
+      },
+      error: () => { }
+    })
+  }
+  
+  onviewItems(id: number) {
+    this.router.navigate([`/inventory/${id}/item`])
+  }
+  
+  onViewAllItems(): void {
+    this.router.navigate(['/inventory/items'])
+  }
   
 }

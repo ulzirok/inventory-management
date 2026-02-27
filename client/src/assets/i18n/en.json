@@ -53,6 +53,7 @@
     "create": "Create",
     "edit": "Edit",
     "delete": "Delete",
-    "items": "Items"
+    "item": "Item",
+    "items": "View all Items"
   }
 }

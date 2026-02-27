@@ -69,8 +69,7 @@ module.exports.changeRole = async (req, res) => {
 module.exports.delete = async (req, res) => {
   const { ids } = req.body;
   try {
-    if (!ids || ids.length === 0)
-      return res.status(400).json({ message: "No users selected" });
+    if (!ids || ids.length === 0) return res.status(400).json({ message: "No users selected" });
 
     await prisma.user.deleteMany({
       where: {

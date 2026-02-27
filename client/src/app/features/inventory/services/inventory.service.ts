@@ -14,4 +14,11 @@ export class InventoryService {
     return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory`);
   }
 
+  getById(id: string): Observable<Inventory[]> {
+    return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory/${id}`)
+  }
+  
+  delete(ids: number[]) {
+    return this.http.post<{ message: string }>(`${environment.apiUrl}/api/inventory/delete`, { ids })
+  }
 }

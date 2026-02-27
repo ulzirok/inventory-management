@@ -1,4 +1,11 @@
 <div class="inventory-container">
   <h2 class="title">{{'search.inventoriesList'| translate}}</h2>
-<app-inventory-list [inventories]="inventories()"></app-inventory-list>
+<app-inventory-list 
+[inventories]="inventories()" 
+(createInventory)="onCreateInventory()" 
+(editInventory)="onEditInventory($event)" 
+(deleteInventory)="onDeleteInventory($event)" 
+(viewItems)="onviewItems($event)" 
+(viewAllItems)="onViewAllItems()">
+</app-inventory-list>
 </div>
