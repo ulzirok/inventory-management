@@ -26,7 +26,13 @@
   },
   "search": {
     "placeholder": "Искать",
-    "resultSearch": "Позиция не найдена"
+    "resultSearch": "Позиция не найдена",
+    "customId": "Пользовательский ID",
+    "inventoriesList": "Список инвентарей",
+    "inventory": "Инвентарь",
+    "description": "Описание",
+    "category": "Категория",
+    "author": "Автор"
   },
   "oAuthSuccess": {
     "redirect": "Вход выполнен успешно! Перенаправление"
@@ -39,6 +45,13 @@
     "items": "Предметы",
     "author": "Автор",
     "date": "Дата",
-    "owner": "Создатель"
+    "owner": "Создатель",
+    "description": "Описание"
+  },
+  "buttons": {
+    "create": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "items": "Предметы"
   }
 }

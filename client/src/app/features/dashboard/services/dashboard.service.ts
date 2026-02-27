@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Tag } from '../../search/models/search.interface';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environment/environment.prod';

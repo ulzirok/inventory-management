@@ -1,24 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { computed, inject, Injectable, OnInit, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { User } from '../../features/auth/models/user.interface';
-import { BehaviorSubject, Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environment/environment.prod';
 import { Role } from '../../features/auth/models/role.enum';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private token: string = '';
-  private currentUser = signal<User | null>(null);
   private http = inject(HttpClient)
+  private tokenService = inject(TokenService)
   
-  constructor() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      this.getProfile().subscribe();
-    }
-  }
+  private currentUser = signal<User | null>(null);
   
   register(user: User): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/api/auth/register`, user)
@@ -26,33 +21,23 @@ export class AuthService {
   
   login(user: User): Observable<User> {
     return this.http.post<{ token: string; }>(`${environment.apiUrl}/api/auth/login`, user).pipe(
-      tap(
-        (response) => {
-          this.token = response.token;
-          localStorage.setItem('token', response.token)
-        }
-      ),
+      tap(response => this.tokenService.setToken(response.token)),
       switchMap(() => this.getProfile())
     )
   }
   
   getProfile(): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/api/auth/me`).pipe(
-      tap(user => {
-        this.currentUser.set(user)
-      })
+      tap(user => this.currentUser.set(user))
     );
   }
   
   getToken(): string {
-    if (!this.token) {
-      this.token = localStorage.getItem('token') || '';
-    }
-    return this.token;
+    return this.tokenService.getToken() || '';
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return this.tokenService.isAuthenticated();
   }
   
   getRole(): Role | null {
@@ -64,8 +49,7 @@ export class AuthService {
   }
   
   logout(): void {
-    localStorage.removeItem('token');
-    this.token = '';
-    this.currentUser.set(null)
+    this.tokenService.removeToken();
+    this.currentUser.set(null);
   }
 }

@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationService } from '../../../core/services/notification.service';
+import { TokenService } from '../../../core/services/token.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { filter, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-o-auth-success-page',
@@ -15,25 +18,25 @@ export class OAuthSuccessPage implements OnInit {
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService);
+  private tokenService = inject(TokenService);
+  private authService = inject(AuthService);
   
   ngOnInit(): void {
     this.route.queryParams.pipe(
+      map(params => params['token']),
+      filter(Boolean),
+      tap(token => this.tokenService.setToken(token)),
+      switchMap(() => this.authService.getProfile()),
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
-      next: (params) => {
-        const token = params['token'];
-        if (token) {
-          localStorage.setItem('token', token);
-          this.notificationService.success('Logged in successfully.')
-          this.router.navigate(['/dashboard']);
-        }
-        else {
-          this.router.navigate(['/auth/login']);
-        }
+      next: () => {
+        this.notificationService.success('Logged in successfully.');
+        this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
+      error: () => {
+        this.router.navigate(['/auth/login']);
       }
-    })
+    });
   }
-
+  
 }

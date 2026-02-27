@@ -12,13 +12,6 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
 })
 export class TopInventory {
   topInventory = input<Inventory[]>([])
+  dataSource = computed(() => this.topInventory());
   displayedColumns = ['inventory', 'items', 'owner'];
-  
-  dataSource = computed(() => {
-    return this.topInventory().map(item => ({
-      inventory: item.title,
-      owner: item.author?.email || '',
-      items: item._count?.items ?? 0
-    }))
-  })
 }

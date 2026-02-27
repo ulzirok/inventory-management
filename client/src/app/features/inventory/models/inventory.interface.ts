@@ -26,6 +26,7 @@ export interface Inventory {
   url3_label: any;
   author: Author;
   category: Category;
+  tags: Tag[];
   _count: Count;
 }
 
@@ -39,6 +40,10 @@ export interface Category {
   name: string;
 }
 
+export interface Tag {
+  id: number;
+  name: string;
+}
 export interface Count {
   items: number;
 }

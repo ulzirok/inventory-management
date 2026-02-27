@@ -1,12 +1,77 @@
 <div class="search-container">
-  <h2>Search results</h2>
-
-  <div class="inventory-grid">
-    @for (item of searchService.results(); track item.id) {
-      <p>{{item.title}}</p>
-    } @empty {
-    <p>Список инвентарей</p>
-    }
-  </div>
+  <h2 class="title">{{'search.inventoriesList'| translate}}</h2>
+  
+  @if (inventories()) {
+    <mat-toolbar class="table-toolbar">
+      <button mat-flat-button color="primary" (click)="viewItems()">
+        <mat-icon>visibility</mat-icon>
+        {{'buttons.items'| translate}}
+      </button>
+    
+      @if (isAdmin()) {
+      <button mat-flat-button color="primary">
+        <mat-icon>add</mat-icon>
+        {{'buttons.create'| translate}}
+      </button>
+      }
+    
+      @if(isAdmin()) {
+      <button mat-flat-button>
+        <mat-icon>edit</mat-icon>
+        {{'buttons.edit'| translate}}
+      </button>
+      }
+    
+      @if (isAdmin()) {
+      <button mat-flat-button color="warn">
+        <mat-icon>delete</mat-icon>
+        {{'buttons.delete'| translate}}
+      </button>
+      }
+    </mat-toolbar>
+    
+    <table mat-table [dataSource]="dataSource()" class="mat-elevation-z1">
+    
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="customId">
+        <th mat-header-cell *matHeaderCellDef> {{'search.customId' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.idFormat }} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="inventory">
+        <th mat-header-cell *matHeaderCellDef> {{'search.inventory' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> {{'search.description' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.description }} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef> {{'search.category' | translate}} </th>
+        <td mat-cell *matCellDef="let element"> {{ element.category?.name }} </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+    </table>
+  }
+  @else {
+    <p>{{'search.resultSearch' | translate}}</p>
+  }
 </div>
 

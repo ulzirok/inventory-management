@@ -1,19 +1,21 @@
 import { inject } from '@angular/core';
 import { HttpErrorResponse, HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../services/notification.service';
+import { TokenService } from '../services/token.service';
 
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
-  const auth = inject(AuthService);
+  const tokenService = inject(TokenService);
   const router = inject(Router);
-  const notification = inject(NotificationService)
+  const notification = inject(NotificationService);
+  
+  const token = tokenService.getToken();
 
-  if (auth.isAuthenticated()) {
+  if (token) {
     req = req.clone({
       setHeaders: {
-        Authorization: auth.getToken()
+        Authorization: `Bearer ${token}`
       }
     });
   }

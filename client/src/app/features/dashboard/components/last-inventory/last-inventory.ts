@@ -13,14 +13,6 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
 })
 export class LastInventory {
   latestInventory = input<Inventory[]>([]);
-  displayedColumns = ['inventory', 'item', 'author', 'date'];
-  
-  dataSource = computed(() => {
-    return this.latestInventory().map(item => ({
-      inventory: item.title,
-      items: item.title,
-      author: item.author?.name || '', 
-      date: item.updatedAt,
-    }));
-  });
+  dataSource = computed(() => this.latestInventory());
+  displayedColumns = ['inventory', 'description', 'author', 'date'];
 }

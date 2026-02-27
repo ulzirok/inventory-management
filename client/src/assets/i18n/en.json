@@ -27,7 +27,13 @@
   },
   "search": {
     "placeholder": "Search",
-    "resultSearch": "Position not found"
+    "resultSearch": "Position not found",
+    "customId": "Custom ID",
+    "inventoriesList": "Inventories List",
+    "inventory": "Inventory",
+    "description": "Description",
+    "category": "Category",
+    "author": "Author"
   },
   "oAuthSuccess": {
     "redirect": "Login successful! Redirecting"
@@ -40,6 +46,13 @@
     "items": "Items",
     "author": "Author",
     "date": "Date",
-    "owner": "Owner"
+    "owner": "Owner",
+    "description": "Description"
+  },
+  "buttons": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "items": "Items"
   }
 }

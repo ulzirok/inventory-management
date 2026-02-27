@@ -6,17 +6,17 @@
 
       <ng-container matColumnDef="inventory">
         <th mat-header-cell *matHeaderCellDef> {{'dashboard.inventory' | translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{element.inventory}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
       </ng-container>
       
       <ng-container matColumnDef="items">
         <th mat-header-cell *matHeaderCellDef> {{'dashboard.items' | translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{element.items}} </td>
+        <td mat-cell *matCellDef="let element"> {{element._count?.items ?? 0}} </td>
       </ng-container>
 
       <ng-container matColumnDef="owner">
         <th mat-header-cell *matHeaderCellDef> {{'dashboard.owner' | translate}} </th>
-        <td mat-cell *matCellDef="let element"> {{element.owner}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.author?.email || ''}} </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

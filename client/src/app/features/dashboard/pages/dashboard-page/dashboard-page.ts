@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Tag } from '../../../search/models/search.interface';
 import { DashboardService } from '../../services/dashboard.service';
@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Inventory } from '../../../inventory/models/inventory.interface';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -20,12 +21,14 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
 })
 export class DashboardPage {
   private dashboardService = inject(DashboardService)
+  private authService = inject(AuthService)
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
   
   public tags = signal<Tag[]>([]);
   public latestInventory = signal<Inventory[]>([]);
   public topInventory = signal<Inventory[]>([]);
+  public isAuthenticated = computed(() => this.authService.isAuthenticated());
   
   ngOnInit(): void {
     this.dashboardService.getTags().pipe(
