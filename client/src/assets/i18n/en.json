@@ -1,7 +1,7 @@
 {
   "header": {
     "home": "Home",
-    "inventories": "Inventories",
+    "inventories": "My Inventories",
     "admin": "Admin",
     "login": "Login",
     "logout": "Logout"
@@ -22,10 +22,9 @@
     "registerNotificationSuccess": "Account created successfully."
     
   },
+  
   "inventory": {
-    "title": "Inventory"
-  },
-  "search": {
+    "title": "Inventory",
     "placeholder": "Search",
     "resultSearch": "Position not found",
     "customId": "Custom ID",
@@ -33,10 +32,14 @@
     "inventory": "Inventory",
     "description": "Description",
     "category": "Category",
-    "author": "Author"
+    "author": "Author",
+    "image": "Image"
   },
   "oAuthSuccess": {
     "redirect": "Login successful! Redirecting"
+  },
+  "search": {
+    "placeholder": "Search"
   },
   "dashboard": {
     "lastInventories": "Latest inventories",
@@ -54,6 +57,19 @@
     "edit": "Edit",
     "delete": "Delete",
     "item": "Item",
-    "items": "View all Items"
+    "items": "View all Items",
+    "viewAllInventory": "View All Inventories"
+  },
+  "createInventory": {
+    "creating": "Creating a new inventory",
+    "category": "Category",
+    "name": "Inventory name",
+    "description": "Description",
+    "upload": "Upload image",
+    "tags": "Tags",
+    "create": "Create Inventory",
+    "goTo": "Go to the Inventory List",
+    "placeholder": "Enter tag"
+    
   }
 }

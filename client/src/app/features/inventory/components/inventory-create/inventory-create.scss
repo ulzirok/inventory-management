@@ -1,0 +1,27 @@
+.inventory-form {
+  display: flex;
+    flex-direction: column;
+    width: 400px;
+    gap: 5px;
+}
+
+.create-container {
+  min-height: 100vh;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.imageBtn {
+  border-radius: 0;
+}
+
+.backBtn {
+  width: 400px;
+  margin-top: 15px;
+}

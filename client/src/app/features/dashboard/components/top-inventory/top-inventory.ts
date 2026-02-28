@@ -13,5 +13,5 @@ import { Inventory } from '../../../inventory/models/inventory.interface';
 export class TopInventory {
   topInventory = input<Inventory[]>([])
   dataSource = computed(() => this.topInventory());
-  displayedColumns = ['inventory', 'items', 'owner'];
+  displayedColumns = ['inventory', 'items', 'owner', 'image'];
 }

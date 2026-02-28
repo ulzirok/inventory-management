@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Inventory } from '../../models/inventory.interface';
 import { InventoryService } from '../../services/inventory.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -25,7 +25,7 @@ export class InventoryPage implements OnInit {
   }
   
   loadInventories() {
-    this.inventoryService.getAll().pipe(
+    this.inventoryService.getMy().pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(
       data => this.inventories.set(data)

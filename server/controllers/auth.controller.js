@@ -6,8 +6,9 @@ const jwt = require("jsonwebtoken");
 const prisma = require("../prisma");
 
 module.exports.register = async (req, res) => {
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
+    
     const salt = await bycript.genSalt(10);
     const hashPassword = await bycript.hash(password, salt);
 
@@ -31,8 +32,9 @@ module.exports.register = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  const { email, password } = req.body;
   try {
+    const { email, password } = req.body;
+    
     const candidate = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -48,10 +50,7 @@ module.exports.login = async (req, res) => {
       return res.status(401).json({ message: "Incorrect email or password" });
 
     const token = jwt.sign(
-      {
-        userId: candidate.id,
-        email: candidate.email,
-      },
+      {userId: candidate.id, email: candidate.email},
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );
@@ -69,8 +68,9 @@ module.exports.login = async (req, res) => {
 };
 
 module.exports.getProfile = async (req, res) => {
-  const { id } = req.user;
   try {
+    const { id } = req.user;
+    
     const user = await prisma.user.findUnique({
       where: { id: Number(id) },
       select: {
@@ -88,13 +88,11 @@ module.exports.getProfile = async (req, res) => {
 };
 
 module.exports.socialCallback = async (req, res) => {
-  const user = req.user;
   try {
+    const user = req.user;
+    
     const token = jwt.sign(
-      {
-        userId: user.id,
-        email: user.email,
-      },
+      {userId: user.id, email: user.email},
       process.env.JWT_SECRET,
       { expiresIn: "1d" },
     );

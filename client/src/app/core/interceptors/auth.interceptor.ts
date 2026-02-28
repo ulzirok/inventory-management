@@ -22,14 +22,16 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      const errorMessage = error.error?.message || 'Unexpected server error.';
       if (error.status === 401) {
-        const message = error.error?.message || 'Something went wrong.';
-        notification.error(message);
+        notification.error(errorMessage);
         router.navigate(['/auth/login'], { queryParams: { sessionFailed: true } });
       }
+      else if (error.status === 400 || error.status === 409) {
+        notification.error(errorMessage);
+      }
       else {
-        const message = error.error?.message || 'Unexpected server error. Try again later.';
-        notification.error(message);
+        notification.error('Server error. Please try again later.');
       }
       return throwError(() => error);
     })

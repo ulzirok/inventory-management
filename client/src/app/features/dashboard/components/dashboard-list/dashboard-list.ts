@@ -1,20 +1,22 @@
-import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { InventoryService } from '../../../inventory/services/inventory.service';
+import { Inventory } from '../../../inventory/models/inventory.interface';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatCardModule } from '@angular/material/card';
-import { TranslateModule } from '@ngx-translate/core';
-import { Inventory } from '../../models/inventory.interface';
-import { AuthService } from '../../../../core/services/auth.service';
-import { Role } from '../../../auth/models/role.enum';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
-  selector: 'app-inventory-list',
+  selector: 'app-dashboard-list',
   imports: [
+    TranslateModule,
     TranslateModule,
     CommonModule,
     MatTableModule,
@@ -24,21 +26,15 @@ import { Role } from '../../../auth/models/role.enum';
     MatIconModule,
     MatCardModule
   ],
-  templateUrl: './inventory-list.html',
-  styleUrl: './inventory-list.scss',
+  templateUrl: './dashboard-list.html',
+  styleUrl: './dashboard-list.scss',
 })
-export class InventoryList {
-  private authService = inject(AuthService)
+export class DashboardList {
+  private router = inject(Router)
+  private inventoryService = inject(InventoryService)
+  private destroyRef = inject(DestroyRef);
   
-  inventories = input<Inventory[]>([]);
-  editInventory = output<number>()
-  deleteInventory = output<number[]>()
-  viewItems = output<number>()
-  viewAllItems = output<void>()
-  createInventory = output<void>()
-  
-  public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
-  public isAuthenticated = computed(() => this.authService.isAuthenticated());
+  inventories = signal<Inventory[]>([]);
   dataSource = this.inventories;
   displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image']; //+картинка
   selection = new SelectionModel<Inventory>(true, []);
@@ -46,10 +42,18 @@ export class InventoryList {
   isSingleSelected = computed(() => this.selectedCountSignal() === 1);
   isAnySelected = computed(() => this.selectedCountSignal() > 0);
   
+  ngOnInit() {
+    this.inventoryService.getAll().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(
+      data => this.inventories.set(data)
+    );
+  }
+
   updateSelectionCount() {
     this.selectedCountSignal.set(this.selection.selected.length);
   }
-  
+
   isAllSelected() {
     return this.selection.selected.length === this.dataSource().length;
   }
@@ -62,39 +66,18 @@ export class InventoryList {
     }
     this.updateSelectionCount();
   }
-  
+
   toggleRow(row: Inventory) {
     this.selection.toggle(row);
     this.updateSelectionCount();
   }
-
-  create() {
-    this.createInventory.emit()
-  }
-
-  edit() {
-    if (!this.isSingleSelected()) return;
-    const id = this.selection.selected[0].id
-    this.editInventory.emit(id)
-    this.selection.clear();
-  }
-
-  delete() {
-    if (!this.isAnySelected()) return;
-    const ids = this.selection.selected.map(item => item.id);
-    this.deleteInventory.emit(ids)
-    this.selection.clear();
-  }
   
   viewItem() {
-    if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id
-    this.viewItems.emit(id)
-    this.selection.clear();
-  }
-  
-  viewAllItem() {
-    this.viewAllItems.emit()
+    this.router.navigate([`/inventory/${id}/item`]);
   }
 
+  viewAllItem(): void {
+    this.router.navigate(['/inventory/items']);
+  }
 }

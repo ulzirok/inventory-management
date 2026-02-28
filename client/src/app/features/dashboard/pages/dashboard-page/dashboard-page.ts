@@ -1,5 +1,5 @@
 import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Tag } from '../../../search/models/search.interface';
 import { DashboardService } from '../../services/dashboard.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -15,7 +15,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule],
+  imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterLink],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
 })

@@ -1,5 +1,5 @@
 <div class="tags-cloud">
-  <h3>{{'dashboard.tags' | translate}}</h3>
+  <h3 class="title">{{'dashboard.tags' | translate}}</h3>
   <div class="tags">
     @for (tag of tags(); track $index) {
     <button mat-stroked-button (click)="onSearchByTag(tag.name)">

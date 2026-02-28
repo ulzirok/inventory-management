@@ -1,19 +1,16 @@
 const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
 
-module.exports.getTopTags = async (req, res) => {
+module.exports.getTags = async (req, res) => {
   try {
+    const query = req.query.search || '';
+    
     const tags = await prisma.tag.findMany({
-      select: {
-        id: true,
-        name: true,
-        _count: {
-          select: { inventories: true }
-        }
-      },
       where: {
+        name: { contains: query, mode: 'insensitive'},
         inventories: { some: {} }
       },
+      select: { id: true, name: true, _count: {select: { inventories: true } }},
       take: 30
     });
 

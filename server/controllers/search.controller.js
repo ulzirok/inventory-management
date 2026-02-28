@@ -2,9 +2,10 @@ const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
 
 module.exports.search = async (req, res) => {
-  const { query } = req.query;
-  if (!query) return res.status(200).json([]);
   try {
+    const { query } = req.query;
+    if (!query || query.trim().length < 2) return res.status(200).json([]);
+    
     const searchResult = await prisma.inventory.findMany({
       where: {
         OR: [
@@ -19,6 +20,7 @@ module.exports.search = async (req, res) => {
         tags: true,
         _count: { select: { items: true } },
       },
+      take: 50
     });
     res.status(200).json(searchResult);
   } catch (error) {

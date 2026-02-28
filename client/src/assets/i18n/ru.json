@@ -1,7 +1,7 @@
 {
   "header": {
     "home": "Главная",
-    "inventories": "Инвентарь",
+    "inventories": "Мои Инвентари",
     "admin": "Админ",
     "login": "Войти",
     "logout": "Выйти"
@@ -22,9 +22,7 @@
     "registerNotificationSuccess": "Аккаунт успешно создан."
   },
   "inventory": {
-    "title": "Инвентарь"
-  },
-  "search": {
+    "title": "Инвентарь",
     "placeholder": "Искать",
     "resultSearch": "Позиция не найдена",
     "customId": "Пользовательский ID",
@@ -32,10 +30,14 @@
     "inventory": "Инвентарь",
     "description": "Описание",
     "category": "Категория",
-    "author": "Автор"
+    "author": "Автор",
+    "image": "Изображение"
   },
   "oAuthSuccess": {
     "redirect": "Вход выполнен успешно! Перенаправление"
+  },
+  "search": {
+    "placeholder": "Поиск"
   },
   "dashboard": {
     "lastInventories": "Последние инвентари",
@@ -53,6 +55,18 @@
     "edit": "Редактировать",
     "delete": "Удалить",
     "item": "Предмет",
-    "items": "Посмотреть все предметы"
+    "items": "Посмотреть все предметы",
+    "viewAllInventory": "Посмотреть Все Инвентари"
+  },
+  "createInventory": {
+    "creating": "Создание нового инвентаря",
+    "category": "Категории",
+    "name": "Название инвентари",
+    "description": "Описание",
+    "upload": "Загрузить изображение",
+    "tags": "Теги",
+    "create": "Создать инвентарь",
+    "goTo": "Перейти в Список Инвентарей",
+    "placeholder": "Ввести тег"
   }
 }

@@ -1,7 +1,3 @@
-.title {
-  margin: 15px 0 5px 0;
-}
-
 table {
   width: 100%;
 }
@@ -10,6 +6,14 @@ mat-toolbar {
   margin-bottom: 8px;
 }
 
+.table-toolbar {
+  display: flex;
+}
+
 .spacer {
   flex: 1 1 auto;
+}
+
+.title {
+  margin: 15px 0 5px 0;
 }

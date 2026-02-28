@@ -1,17 +1,10 @@
 const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
-const Roles = require("../constants/roles");
+const imagekit = require('../imageKit.config.js');
 
 module.exports.getAll = async (req, res) => {
   try {
-    let isAdmin = {};
-
-    if (req.user.role !== Roles.ADMIN) {
-      isAdmin.authorId = req.user.id;
-    }
-
     const inventories = await prisma.inventory.findMany({
-      where: isAdmin,
       include: {
         category: true,
         tags: true,
@@ -26,9 +19,30 @@ module.exports.getAll = async (req, res) => {
   }
 };
 
-module.exports.getById = async (req, res) => {
-  const { id } = req.params;
+module.exports.getMy = async (req, res) => {
   try {
+    const inventories = await prisma.inventory.findMany({
+      where: {
+        authorId: Number(req.user.id)
+      },
+      include: {
+        category: true,
+        tags: true,
+        _count: { select: { items: true } }
+      },
+      orderBy: { updatedAt: "desc" }
+    });
+
+    res.status(200).json(inventories);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+module.exports.getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
     const inventory = await prisma.inventory.findUnique({
       where: { id: Number(id) },
     });
@@ -39,16 +53,31 @@ module.exports.getById = async (req, res) => {
 };
 
 module.exports.create = async (req, res) => {
-  const {
-    title,
-    description,
-    categoryId,
-    tags,
-    imageUrl,
-    idFormat,
-    ...customLabels
-  } = req.body;
   try {
+    let { title, description, categoryId, tags, idFormat, ...customLabels } = req.body;
+    if (!title || !categoryId || !description) {
+      return res.status(400).json({
+        message: "Please fill in the required fields."
+      });
+    }
+    
+    let imageUrl = ''; 
+    let tagsArray = [];
+    
+    if (Array.isArray(tags)) {
+      tagsArray = tags;
+    } else if (typeof tags === 'string' && tags.trim() !== '') {
+      tagsArray = [tags];
+    }
+    
+    if (req.file) {
+      const uploadResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: `inventory_${Date.now()}`,
+      });
+      imageUrl = uploadResponse.url;
+    }
+    
     const inventory = await prisma.inventory.create({
       data: {
         title,
@@ -59,9 +88,9 @@ module.exports.create = async (req, res) => {
         author: { connect: { id: req.user.id } },
         category: { connect: { id: Number(categoryId) } },
         tags: {
-          connectOrCreate: (tags || []).map((tag) => ({
-            where: { name: tag },
-            create: { name: tag },
+          connectOrCreate: tagsArray.map((tagName) => ({
+            where: { name: tagName },
+            create: { name: tagName },
           })),
         },
       },
@@ -78,6 +107,20 @@ module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
     const { version, categoryId, tags, ...updatedData } = req.body;
+    
+    if (!title || !categoryId || !description) {
+      return res.status(400).json({
+        message: "Please fill in the required fields."
+      });
+    }
+    
+    if (req.file) {
+      const uploadResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: `update_${Date.now()}`,
+      });
+      updatedData.imageUrl = uploadResponse.url;
+    }
 
     const updatePayload = {
       ...updatedData,
@@ -99,10 +142,7 @@ module.exports.update = async (req, res) => {
     }
 
     const updatedInventory = await prisma.inventory.update({
-      where: {
-        id: Number(id),
-        version: version,
-      },
+      where: { id: Number(id), version: Number(version) },
       data: updatePayload,
       include: { tags: true },
     });
@@ -116,13 +156,14 @@ module.exports.update = async (req, res) => {
 };
 
 module.exports.delete = async (req, res) => {
-  const { ids } = req.body;
   try {
-    if (!ids || ids.length === 0) return res.status(400).json({ message: "No inventories selected" });
+    const { ids } = req.body;
     
+    if (!ids || ids.length === 0) return res.status(400).json({ message: "No inventories selected" });
+
     await prisma.inventory.deleteMany({
       where: {
-        id:  {in: ids.map((id)=> Number(id))}
+        id: { in: ids.map((id) => Number(id)) }
       },
     });
     return res.status(200).json({ message: "Inventories successfully deleted" });
@@ -137,6 +178,7 @@ module.exports.delete = async (req, res) => {
 module.exports.getLatest = async (req, res) => {
   try {
     const latest = await prisma.inventory.findMany({
+      take: 5,
       orderBy: { updatedAt: "desc" },
       include: { author: { select: { name: true, email: true } }, category: true },
     });
@@ -163,3 +205,4 @@ module.exports.getTop = async (req, res) => {
     errorHandler(res, error);
   }
 };
+

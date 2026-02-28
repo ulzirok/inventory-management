@@ -11,9 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatCardModule } from '@angular/material/card';
-import { AuthService } from '../../../core/services/auth.service';
-import { Role } from '../../auth/models/role.enum';
 import { Inventory } from '../../inventory/models/inventory.interface';
+import { debounceTime, distinctUntilChanged, EMPTY, switchMap } from 'rxjs';
 @Component({
   selector: 'app-search-results-page',
   imports: [
@@ -37,26 +36,30 @@ export class SearchResultsPage {
 
   public inventories = computed(() => this.searchService.results());
   dataSource = computed(() => this.inventories());
-  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category']; //+картинка
+  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'image']; //+картинка
   selection = new SelectionModel<Inventory>(true, []);
   private selectedCountSignal = signal(0);
   isSingleSelected = computed(() => this.selectedCountSignal() === 1);
   isAnySelected = computed(() => this.selectedCountSignal() > 0);
-
+  
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const tag = params['tag'];
-      const query = params['q'];
-      if (tag) {
-        this.searchService.searchByTag(tag).pipe(
-          takeUntilDestroyed(this.destroyRef)
-        ).subscribe();
-      } else if (query) {
-        this.searchService.search(query).pipe(
-          takeUntilDestroyed(this.destroyRef)
-        ).subscribe();
-      }
-    });
+    this.route.queryParams.pipe(
+      debounceTime(400),
+      distinctUntilChanged((prev, curr) =>
+        prev['q'] === curr['q'] && prev['tag'] === curr['tag']
+      ),
+      switchMap(params => {
+        const tag = params['tag'];
+        const query = params['q'];
+        if (tag) {
+          return this.searchService.searchByTag(tag);
+        } else if (query) {
+          return this.searchService.search(query);
+        }
+        return EMPTY;
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe();
   }
 
   updateSelectionCount() {

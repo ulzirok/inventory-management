@@ -1,9 +1,18 @@
 const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
+const Roles = require("../constants/roles");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const users = await prisma.user.findMany();
+    let isAdmin = {};
+    if (req.user.role !== Roles.ADMIN) {
+      isAdmin.authorId = req.user.id;
+    }
+    
+    const users = await prisma.user.findMany({
+      where: isAdmin,
+      orderBy: { updatedAt: "desc" }
+    });
     res.status(200).json(users);
   } catch (error) {
     errorHandler(res, error);
@@ -11,8 +20,9 @@ module.exports.getAll = async (req, res) => {
 };
 
 module.exports.getUserById = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
+    
     const user = await prisma.user.findUnique({
       where: { id: Number(id) },
       select: {
@@ -67,8 +77,9 @@ module.exports.changeRole = async (req, res) => {
 };
 
 module.exports.delete = async (req, res) => {
-  const { ids } = req.body;
   try {
+    const { ids } = req.body;
+    
     if (!ids || ids.length === 0) return res.status(400).json({ message: "No users selected" });
 
     await prisma.user.deleteMany({
