@@ -52,6 +52,7 @@ export class Login implements OnInit{
       next: () => {
         this.notificationService.success('Logged in successfully.')
         this.router.navigate(['/dashboard'])
+        this.form.enable()
       },
       error: (err) => {
         this.form.enable();

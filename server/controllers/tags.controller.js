@@ -11,7 +11,7 @@ module.exports.getTags = async (req, res) => {
         inventories: { some: {} }
       },
       select: { id: true, name: true, _count: {select: { inventories: true } }},
-      take: 30
+      take: 20
     });
 
     res.status(200).json(tags);

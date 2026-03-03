@@ -7,9 +7,9 @@
   }
 
   @if (isAuthenticated()) {
-    <button mat-flat-button (click)="edit()" [disabled]="!isSingleSelected()">
-      <mat-icon>edit</mat-icon>
-      {{'buttons.edit'| translate}}
+    <button mat-flat-button (click)="details()" [disabled]="!isSingleSelected()">
+      <mat-icon>details</mat-icon>
+      {{'buttons.details'| translate}}
     </button>
   }
 

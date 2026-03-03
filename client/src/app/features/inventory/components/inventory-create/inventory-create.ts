@@ -129,6 +129,7 @@ export class InventoryCreate {
   }
   
   onSubmit() {
+    if (this.form.invalid) return;
     this.form.disable();
     const formData = new FormData();
     formData.append('categoryId', this.form.get('categoryId')?.value);

@@ -33,7 +33,24 @@
     "description": "Description",
     "category": "Category",
     "author": "Author",
-    "image": "Image"
+    "image": "Image",
+    "date": "Date",
+    "items": "Items",
+    "chat": "Chat",
+    "settings": "Settings",
+    "fields": "Fields",
+    "access": "Access",
+    "stats": "Stats",
+    "export": "Export",
+    "details": "Details"
+    
+  },
+  "fields": {
+    "title": "Configured fields",
+    "noFields": "No fields yet",
+    "add": "Add Field",
+    "choose": "Choose type",
+    "fieldName": "Field name"
   },
   "oAuthSuccess": {
     "redirect": "Login successful! Redirecting"
@@ -58,7 +75,10 @@
     "delete": "Delete",
     "item": "Item",
     "items": "View all Items",
-    "viewAllInventory": "View All Inventories"
+    "viewAllInventory": "View All Inventories",
+    "details": "Details",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "createInventory": {
     "creating": "Creating a new inventory",

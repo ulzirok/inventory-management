@@ -36,9 +36,10 @@ export class InventoryPage implements OnInit {
     this.router.navigate(['/inventory/create'])
   }
   
-  onEditInventory(id: number) {
+  onDetailsInventory(id: number) {
     this.router.navigate([`/inventory/${id}/details`])
   }
+  
   onDeleteInventory(ids: number[]) {
     this.inventoryService.delete(ids).pipe(
       takeUntilDestroyed(this.destroyRef)

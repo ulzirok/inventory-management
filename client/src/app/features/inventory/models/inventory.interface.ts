@@ -9,21 +9,21 @@ export interface Inventory {
   isPublic: boolean;
   version: number;
   updatedAt: string;
-  str1_label: any;
-  str2_label: any;
-  str3_label: any;
-  int1_label: any;
-  int2_label: any;
-  int3_label: any;
-  txt1_label: any;
-  txt2_label: any;
-  txt3_label: any;
-  bool1_label: any;
-  bool2_label: any;
-  bool3_label: any;
-  url1_label: any;
-  url2_label: any;
-  url3_label: any;
+  str1_label?: string | null;
+  str2_label?: string | null;
+  str3_label?: string | null;
+  int1_label?: string | null;
+  int2_label?: string | null;
+  int3_label?: string | null;
+  txt1_label?: string | null;
+  txt2_label?: string | null;
+  txt3_label?: string | null;
+  bool1_label?: string | null;
+  bool2_label?: string | null;
+  bool3_label?: string | null;
+  url1_label?: string | null;
+  url2_label?: string | null;
+  url3_label?: string | null;
   author: Author;
   category: Category;
   tags: Tag[];
@@ -31,8 +31,8 @@ export interface Inventory {
 }
 
 export interface Author {
-  name: any;
-  email: any;
+  name: string;
+  email: string;
 }
 
 export interface Category {
@@ -47,3 +47,29 @@ export interface Tag {
 export interface Count {
   items: number;
 }
+
+export interface InventoryFieldsDto {
+  version: number;
+
+  str1_label?: string | null;
+  str2_label?: string | null;
+  str3_label?: string | null;
+
+  int1_label?: string | null;
+  int2_label?: string | null;
+  int3_label?: string | null;
+
+  txt1_label?: string | null;
+  txt2_label?: string | null;
+  txt3_label?: string | null;
+
+  bool1_label?: string | null;
+  bool2_label?: string | null;
+  bool3_label?: string | null;
+
+  url1_label?: string | null;
+  url2_label?: string | null;
+  url3_label?: string | null;
+}
+
+export type FieldKey = keyof Omit<InventoryFieldsDto, 'version'>;

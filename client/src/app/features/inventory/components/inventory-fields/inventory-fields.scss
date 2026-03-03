@@ -1,0 +1,30 @@
+.fieldsShowBtn {
+  margin-bottom: 20px;
+}
+
+.fields-content {
+  display: flex;
+  gap: 20px 60px;
+  margin-top: 20px;
+}
+
+.fields-item {
+  display: flex;
+  align-items: center;
+}
+
+.fields-subtitle {
+  font-weight: 700;
+  margin-top: 0;
+  margin-left: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .fields-content {
+    flex-wrap: wrap;
+  }
+}

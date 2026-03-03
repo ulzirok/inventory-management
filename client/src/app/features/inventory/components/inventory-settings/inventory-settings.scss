@@ -1,0 +1,16 @@
+.details-wrapper {
+  display: flex;
+  gap: 10px 30px ;
+}
+
+.details-btns {
+  margin-top: 30px;
+  display: flex;
+  gap: 7px;
+}
+
+@media (max-width: 1024px) {
+  .details-wrapper {
+    flex-wrap: wrap;
+  }
+}

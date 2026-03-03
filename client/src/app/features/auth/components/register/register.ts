@@ -50,8 +50,9 @@ export class Register implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.notificationService.success('Account created successfully')
+        this.notificationService.success('Account created successfully. Please login')
         this.router.navigate(['/auth/login'])
+        this.form.enable();
        },
       error: (err) => {
         this.form.enable();

@@ -31,7 +31,7 @@ export class InventoryList {
   private authService = inject(AuthService)
   
   inventories = input<Inventory[]>([]);
-  editInventory = output<number>()
+  detailsInventory = output<number>()
   deleteInventory = output<number[]>()
   viewItems = output<number>()
   viewAllItems = output<void>()
@@ -40,7 +40,7 @@ export class InventoryList {
   public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   public isAuthenticated = computed(() => this.authService.isAuthenticated());
   dataSource = this.inventories;
-  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image']; //+картинка
+  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image'];
   selection = new SelectionModel<Inventory>(true, []);
   private selectedCountSignal = signal(0);
   isSingleSelected = computed(() => this.selectedCountSignal() === 1);
@@ -72,10 +72,10 @@ export class InventoryList {
     this.createInventory.emit()
   }
 
-  edit() {
+  details() {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id
-    this.editInventory.emit(id)
+    this.detailsInventory.emit(id)
     this.selection.clear();
   }
 

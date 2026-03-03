@@ -106,37 +106,39 @@ module.exports.create = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { version, categoryId, tags, ...updatedData } = req.body;
-    
-    if (!title || !categoryId || !description) {
-      return res.status(400).json({
-        message: "Please fill in the required fields."
-      });
-    }
+    let { version, categoryId, tags, title, description, ...customLabels } = req.body;
+    let imageUrl = req.body.imageUrl; 
     
     if (req.file) {
       const uploadResponse = await imagekit.upload({
         file: req.file.buffer,
         fileName: `update_${Date.now()}`,
       });
-      updatedData.imageUrl = uploadResponse.url;
+      imageUrl = uploadResponse.url;
     }
 
     const updatePayload = {
-      ...updatedData,
+      title,
+      description,
+      ...customLabels,
       version: { increment: 1 },
     };
 
     if (categoryId) {
       updatePayload.category = { connect: { id: Number(categoryId) } };
     }
+    
+    if (categoryId) {
+      updatePayload.category = { connect: { id: Number(categoryId) } };
+    }
 
     if (tags) {
+      const tagsArray = Array.isArray(tags) ? tags : [tags];
       updatePayload.tags = {
         set: [],
-        connectOrCreate: tags.map((tag) => ({
-          where: { name: tag },
-          create: { name: tag },
+        connectOrCreate: tagsArray.map((tagName) => ({
+          where: { name: tagName },
+          create: { name: tagName },
         })),
       };
     }
