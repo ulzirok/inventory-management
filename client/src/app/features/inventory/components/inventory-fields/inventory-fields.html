@@ -3,7 +3,7 @@
     <mat-card-title class="fields-subtitle">{{'fields.title' | translate}}:</mat-card-title>
     @if (existingFields().length > 0) {
     <mat-list>
-      @for (field of existingFields(); track $index) {
+      @for (field of existingFields(); track field.label) {
       <mat-list-item>
         <div matLine class="fields-item">{{ field.label }}
           <button mat-icon-button color="warn" (click)="delete(field.key)">
@@ -30,7 +30,7 @@
       <mat-form-field appearance="outline">
         <mat-label>{{'fields.choose' | translate}}</mat-label>
         <mat-select formControlName="slot">
-          @for (slot of availableSlots(); track $index) {
+          @for (slot of availableSlots(); track slot) {
           <mat-option [value]="slot">
             {{ slot }}
           </mat-option>

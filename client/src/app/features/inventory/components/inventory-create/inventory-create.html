@@ -53,8 +53,10 @@
     </button>
   </form>
   
-  <button mat-flat-button color="primary" class="backBtn" routerLink="/inventory">
-    <mat-icon>arrow_back</mat-icon>
-    {{'createInventory.goTo' | translate}}
-  </button>
+  <div class="inventory-btns"> 
+    <button mat-raised-button color="primary" class="backBtn" routerLink="/inventory">
+      <mat-icon>arrow_back</mat-icon>
+      {{'createInventory.goToBack' | translate}}
+    </button>
+  </div>
 </div>

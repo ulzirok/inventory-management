@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ItemsList } from '../items-list/items-list';
-import { Item } from '../../models/item.interface';
+import { Item, ItemDto } from '../../models/item.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -111,8 +111,18 @@ export class InventoryDetails implements OnInit {
     });
   }
   
-  onCreateItem(): void {
+  onCreateItem(item: ItemDto): void {
     //проверка, если нет fields - сначала заполните fields
+    
+    this.inventoryService.createItem(this.inventory()!.id, item).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.loadItems();
+        this.notificationService.success('Item created successfully.');
+      },
+      error: (err) => {}
+    })
   }
   onEditItem(): void {
     

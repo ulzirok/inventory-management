@@ -22,7 +22,47 @@
     "registerNotificationSuccess": "Account created successfully."
     
   },
-  
+  "oAuthSuccess": {
+    "redirect": "Login successful! Redirecting"
+  },
+  "search": {
+    "placeholder": "Search"
+  },
+  "dashboard": {
+    "lastInventories": "Latest inventories",
+    "topInventories": "Top inventories",
+    "tags": "Tags",
+    "inventory": "Inventory",
+    "items": "Items",
+    "author": "Author",
+    "date": "Date",
+    "owner": "Owner",
+    "description": "Description"
+  },
+  "buttons": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "item": "Items",
+    "items": "View all Items",
+    "viewAllInventory": "View All Inventories",
+    "settings": "Settings",
+    "save": "Save",
+    "cancel": "Cancel",
+    "details": "Details"
+  },
+  "createInventory": {
+    "creating": "Creating a new inventory",
+    "category": "Category",
+    "name": "Inventory name",
+    "description": "Description",
+    "upload": "Upload image",
+    "tags": "Tags",
+    "create": "Create Inventory",
+    "goToBack": "Go to the Inventory List",
+    "goToSettings": "Go to the Settings",
+    "placeholder": "Enter tag"
+  },
   "inventory": {
     "title": "Inventory",
     "placeholder": "Search",
@@ -52,44 +92,9 @@
     "choose": "Choose type",
     "fieldName": "Field name"
   },
-  "oAuthSuccess": {
-    "redirect": "Login successful! Redirecting"
-  },
-  "search": {
-    "placeholder": "Search"
-  },
-  "dashboard": {
-    "lastInventories": "Latest inventories",
-    "topInventories": "Top inventories",
-    "tags": "Tags",
-    "inventory": "Inventory",
-    "items": "Items",
-    "author": "Author",
-    "date": "Date",
-    "owner": "Owner",
-    "description": "Description"
-  },
-  "buttons": {
-    "create": "Create",
-    "edit": "Edit",
-    "delete": "Delete",
-    "item": "Item",
-    "items": "View all Items",
-    "viewAllInventory": "View All Inventories",
-    "details": "Details",
-    "save": "Save",
-    "cancel": "Cancel"
-  },
-  "createInventory": {
-    "creating": "Creating a new inventory",
-    "category": "Category",
-    "name": "Inventory name",
-    "description": "Description",
-    "upload": "Upload image",
-    "tags": "Tags",
-    "create": "Create Inventory",
-    "goTo": "Go to the Inventory List",
-    "placeholder": "Enter tag"
+  "items": {
+    "createTitle": "Create Item",
+    "errorNumber": "Minimum 2 characters"
     
   }
 }

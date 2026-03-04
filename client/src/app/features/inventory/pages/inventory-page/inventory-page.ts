@@ -36,7 +36,7 @@ export class InventoryPage implements OnInit {
     this.router.navigate(['/inventory/create'])
   }
   
-  onDetailsInventory(id: number) {
+  onSettingsInventory(id: number) {
     this.router.navigate([`/inventory/${id}/details`])
   }
   
@@ -48,16 +48,12 @@ export class InventoryPage implements OnInit {
         this.notificationService.success(response.message);
         this.loadInventories()
       },
-      error: () => { }
+      error: (err) => { }
     })
   }
   
   onviewItems(id: number) {
     this.router.navigate([`/inventory/${id}/item`])
-  }
-  
-  onViewAllItems(): void {
-    this.router.navigate(['/inventory/items'])
   }
   
 }

@@ -2,10 +2,10 @@
   <h2 class="title">{{'inventory.inventoriesList'| translate}}</h2>
 <app-inventory-list 
 [inventories]="inventories()" 
+[isEditable]="true"
 (createInventory)="onCreateInventory()" 
-(detailsInventory)="onDetailsInventory($event)" 
+(settingsInventory)="onSettingsInventory($event)" 
 (deleteInventory)="onDeleteInventory($event)" 
 (viewItems)="onviewItems($event)" 
-(viewAllItems)="onViewAllItems()">
-</app-inventory-list>
+></app-inventory-list>
 </div>

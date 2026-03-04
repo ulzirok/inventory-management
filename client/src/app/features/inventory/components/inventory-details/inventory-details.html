@@ -18,9 +18,11 @@
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.fields'| translate}}</mat-card-title>
         <mat-card-content>
-          
-        <app-inventory-fields [inventory]="inventory()!" (saveField)="onSaveField($event)" (deleteField)="onDeleteField($event)"></app-inventory-fields>
-          
+        <app-inventory-fields 
+        [inventory]="inventory()!" 
+        (saveField)="onSaveField($event)" 
+        (deleteField)="onDeleteField($event)"
+        ></app-inventory-fields>
         </mat-card-content>
       </mat-card>
     </mat-tab>
@@ -30,13 +32,15 @@
       <mat-card class="tab-card">
         <mat-card-content class="itemsContent">
 
-          <!-- <app-items-list 
+          <app-items-list 
+          [inventory]="inventory()!"
           [items]="items()"
-          (createItem)="onCreateItem()"
+          [isEditable]="true"
+          (createItem)="onCreateItem($event)"
           (editItem)="onEditItem()"
           (deleteItem)="onDeleteItem($event)"
           (detailsItem)="onViewDetailsItem($event)"
-          ></app-items-list> -->
+          ></app-items-list>
 
         </mat-card-content>
       </mat-card>

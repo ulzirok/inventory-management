@@ -1,19 +1,15 @@
 <mat-toolbar class="table-toolbar">
-  @if (isAuthenticated()) {
+  @if (canManage()) {
     <button mat-flat-button color="primary" (click)="create()">
       <mat-icon>add</mat-icon>
       {{'buttons.create'| translate}}
     </button>
-  }
-
-  @if (isAuthenticated()) {
-    <button mat-flat-button (click)="details()" [disabled]="!isSingleSelected()">
-      <mat-icon>details</mat-icon>
-      {{'buttons.details'| translate}}
+    
+    <button mat-flat-button (click)="settings()" [disabled]="!isSingleSelected()">
+      <mat-icon>settings</mat-icon>
+      {{'buttons.settings'| translate}}
     </button>
-  }
-
-  @if (isAuthenticated()) {
+    
     <button mat-flat-button color="warn" (click)="delete()" [disabled]="!isAnySelected()">
       <mat-icon>delete</mat-icon>
       {{'buttons.delete'| translate}}
@@ -23,13 +19,6 @@
   <button mat-flat-button color="primary" (click)="viewItem()" [disabled]="!isSingleSelected()">
     <mat-icon>visibility</mat-icon>
     {{'buttons.item'| translate}}
-  </button>
-  
-  <span class="spacer"></span>
-  
-  <button mat-flat-button color="primary" (click)="viewAllItem()">
-    <mat-icon>list</mat-icon>
-    {{'buttons.items'| translate}}
   </button>
   
 </mat-toolbar>
@@ -76,8 +65,11 @@
   <ng-container matColumnDef="image">
     <th mat-header-cell *matHeaderCellDef> {{ 'inventory.image' | translate }} </th>
     <td mat-cell *matCellDef="let element">
-      <img [src]="element.imageUrl" alt="{{element.title}}" width="50" height="50"
-        style="object-fit: cover; border-radius: 4px;">
+      @if (element.imageUrl) {
+        <img [src]="element.imageUrl" alt="{{element.title}}" width="50" height="50"
+          style="object-fit: cover; border-radius: 4px;">
+      }
+      
     </td>
   </ng-container>
 

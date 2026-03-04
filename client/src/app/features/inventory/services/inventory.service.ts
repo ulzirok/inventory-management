@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category, Inventory, InventoryFieldsDto, Tag } from '../models/inventory.interface';
 import { environment } from '../../../../environment/environment.prod';
-import { Item } from '../models/item.interface';
+import { Item, ItemDto } from '../models/item.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -44,5 +44,13 @@ export class InventoryService {
   
   getItems(inventoryId: string): Observable<Item[]> {
     return this.http.get<Item[]>(`${environment.apiUrl}/api/items/${inventoryId}`)
+  }
+  
+  getPublicItems(inventoryId: string): Observable<Item[]> {
+    return this.http.get<Item[]>(`${environment.apiUrl}/api/items/${inventoryId}/public`)
+  }
+  
+  createItem(inventoryId: number, item: ItemDto): Observable<Item[]> {
+    return this.http.post<Item[]>(`${environment.apiUrl}/api/items/inventory/${inventoryId}`, item)
   }
 }

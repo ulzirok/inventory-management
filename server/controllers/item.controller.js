@@ -7,6 +7,22 @@ module.exports.getByInventoryId = async (req, res) => {
     const { inventoryId } = req.params;
     
     const item = await prisma.item.findMany({
+      where: {
+        inventoryId: Number(inventoryId),
+        authorId: Number(req.user.id)
+      },
+    });
+    res.status(200).json(item);
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
+module.exports.getPublic = async (req, res) => {
+  try {
+    const { inventoryId } = req.params;
+    
+    const item = await prisma.item.findMany({
       where: { inventoryId: Number(inventoryId) },
     });
     res.status(200).json(item);
@@ -21,7 +37,10 @@ module.exports.create = async (req, res) => {
     const { ...data } = req.body;
     
     const inventory = await prisma.inventory.findUnique({
-      where: { id: Number(inventoryId) },
+      where: {
+        id: Number(inventoryId),
+        authorId: Number(req.user.id)
+      },
     });
     if (!inventory)
       return res.status(404).json({ message: "Inventory not found" });
@@ -54,7 +73,11 @@ module.exports.update = async (req, res) => {
     const { version, ...updatedData } = req.body;
     
     const updatedItem = await prisma.item.update({
-      where: { id: id, version: Number(version) },
+      where: {
+        id: id,
+        authorId: Number(req.user.id),
+        version: Number(version)
+      },
       data: { ...updatedData, version: { increment: 1 },
       },
     });
@@ -72,7 +95,10 @@ module.exports.delete = async (req, res) => {
     const { id } = req.params;
     
     await prisma.item.delete({
-      where: { id: id },
+      where: {
+        id: id,
+        authorId: Number(req.user.id)
+      },
     });
     return res.status(200).json({ message: "Item removed" });
   } catch (error) {

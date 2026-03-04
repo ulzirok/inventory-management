@@ -6,19 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatLabel, MatSelectModule } from '@angular/material/select';
 import { TranslateModule } from '@ngx-translate/core';
-import { FieldKey, Inventory, InventoryFieldsDto } from '../../models/inventory.interface';
+import { FIELD_KEYS, Inventory, InventoryFieldKey, InventoryFieldsDto } from '../../models/inventory.interface';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
-
-const FIELD_KEYS: FieldKey[] = [
-  'str1_label', 'str2_label', 'str3_label',
-  'int1_label', 'int2_label', 'int3_label',
-  'txt1_label', 'txt2_label', 'txt3_label',
-  'bool1_label', 'bool2_label', 'bool3_label',
-  'url1_label', 'url2_label', 'url3_label'
-] as const;
 
 @Component({
   selector: 'app-inventory-fields',
@@ -83,14 +75,14 @@ export class InventoryFields {
     const payload: InventoryFieldsDto = {
       version: this.inventory()!.version
     };
-    payload[slot as FieldKey] = label;
+    payload[slot as InventoryFieldKey] = label;
 
     this.saveField.emit(payload)
     this.cancelFieldForm();
     this.form.enable();
   }
 
-  delete(slot: FieldKey) {
+  delete(slot: InventoryFieldKey) {
     this.form.disable();
     const payload: InventoryFieldsDto = {
       version: this.inventory()!.version

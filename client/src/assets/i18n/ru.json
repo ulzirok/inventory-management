@@ -21,6 +21,47 @@
     "or": "или",
     "registerNotificationSuccess": "Аккаунт успешно создан."
   },
+  "oAuthSuccess": {
+    "redirect": "Вход выполнен успешно! Перенаправление"
+  },
+  "search": {
+    "placeholder": "Поиск"
+  },
+  "dashboard": {
+    "lastInventories": "Последние инвентари",
+    "topInventories": "Топ инвентари",
+    "tags": "Теги",
+    "inventory": "Инвентарь",
+    "items": "Предметы",
+    "author": "Автор",
+    "date": "Дата",
+    "owner": "Создатель",
+    "description": "Описание"
+  },
+  "buttons": {
+    "create": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "item": "Предметы",
+    "items": "Посмотреть все предметы",
+    "viewAllInventory": "Посмотреть Все Инвентари",
+    "settings": "Настройки",
+    "save": "Сохранить",
+    "cancel": "Отменить",
+    "details": "Детали"
+  },
+  "createInventory": {
+    "creating": "Создание нового инвентаря",
+    "category": "Категории",
+    "name": "Название инвентари",
+    "description": "Описание",
+    "upload": "Загрузить изображение",
+    "tags": "Теги",
+    "create": "Создать инвентарь",
+    "goToBack": "Перейти в Список Инвентарей",
+    "goToSettings": "Перейти в Настройки",
+    "placeholder": "Ввести тег"
+  },
   "inventory": {
     "title": "Инвентарь",
     "placeholder": "Искать",
@@ -49,43 +90,9 @@
     "choose": "Выбрать тип",
     "fieldName": "Имя поля"
   },
-  "oAuthSuccess": {
-    "redirect": "Вход выполнен успешно! Перенаправление"
-  },
-  "search": {
-    "placeholder": "Поиск"
-  },
-  "dashboard": {
-    "lastInventories": "Последние инвентари",
-    "topInventories": "Топ инвентари",
-    "tags": "Теги",
-    "inventory": "Инвентарь",
-    "items": "Предметы",
-    "author": "Автор",
-    "date": "Дата",
-    "owner": "Создатель",
-    "description": "Описание"
-  },
-  "buttons": {
-    "create": "Создать",
-    "edit": "Редактировать",
-    "delete": "Удалить",
-    "item": "Предмет",
-    "items": "Посмотреть все предметы",
-    "viewAllInventory": "Посмотреть Все Инвентари",
-    "details": "Детали",
-    "save": "Сохранить",
-    "cancel": "Отменить"
-  },
-  "createInventory": {
-    "creating": "Создание нового инвентаря",
-    "category": "Категории",
-    "name": "Название инвентари",
-    "description": "Описание",
-    "upload": "Загрузить изображение",
-    "tags": "Теги",
-    "create": "Создать инвентарь",
-    "goTo": "Перейти в Список Инвентарей",
-    "placeholder": "Ввести тег"
+  "items": {
+    "createTitle": "Создать предмет",
+    "errorNumber": "Минимум 2 символа"
   }
+  
 }

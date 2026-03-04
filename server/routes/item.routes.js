@@ -4,9 +4,11 @@ const passport = require("passport");
 const { isAuthenticated } = require("../middleware/role");
 const controller = require("../controllers/item.controller");
 
-router.get("/:inventoryId", controller.getByInventoryId);
+router.get("/:inventoryId/public", controller.getPublic);
 
 router.use(passport.authenticate("jwt", { session: false }), isAuthenticated);
+
+router.get("/:inventoryId", controller.getByInventoryId);
 
 router.post("/inventory/:inventoryId", controller.create);
 router.patch("/:id", controller.update);

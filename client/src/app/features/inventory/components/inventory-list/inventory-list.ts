@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,17 +28,18 @@ import { Role } from '../../../auth/models/role.enum';
   styleUrl: './inventory-list.scss',
 })
 export class InventoryList {
-  private authService = inject(AuthService)
-  
   inventories = input<Inventory[]>([]);
-  detailsInventory = output<number>()
+  isEditable = input<boolean>(false);
+  settingsInventory = output<number>()
   deleteInventory = output<number[]>()
   viewItems = output<number>()
   viewAllItems = output<void>()
   createInventory = output<void>()
   
+  private authService = inject(AuthService)
+  
   public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
-  public isAuthenticated = computed(() => this.authService.isAuthenticated());
+  canManage = computed(() => this.isAdmin() || this.isEditable());
   dataSource = this.inventories;
   displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image'];
   selection = new SelectionModel<Inventory>(true, []);
@@ -72,10 +73,10 @@ export class InventoryList {
     this.createInventory.emit()
   }
 
-  details() {
+  settings() {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id
-    this.detailsInventory.emit(id)
+    this.settingsInventory.emit(id)
     this.selection.clear();
   }
 
@@ -92,9 +93,4 @@ export class InventoryList {
     this.viewItems.emit(id)
     this.selection.clear();
   }
-  
-  viewAllItem() {
-    this.viewAllItems.emit()
-  }
-
 }
