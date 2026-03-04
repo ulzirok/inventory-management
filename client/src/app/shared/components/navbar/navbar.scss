@@ -1,0 +1,61 @@
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+a,
+button {
+  text-decoration: none;
+}
+
+.lang-switcher {
+  margin-right: 15px;
+  width: 85px;
+  margin-left: 8px;
+}
+
+.mat-select-trigger {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.search-field {
+  margin: 0 15px;
+  width: 250px;
+  --mat-form-field-container-height: 40px;
+}
+
+::ng-deep .search-field .mat-mdc-text-field-wrapper {
+  border-radius: 8px !important;
+  padding-top: 0 !important;
+}
+
+.search-field input,
+.search-field mat-icon {
+  color: #ffffff !important;
+}
+
+::ng-deep .search-field .mdc-notched-outline__leading,
+::ng-deep .search-field .mdc-notched-outline__notch,
+::ng-deep .search-field .mdc-notched-outline__trailing {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  border-width: 1px !important;
+}
+
+::ng-deep .search-field:hover .mdc-notched-outline>div {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+::ng-deep .search-field.mat-form-field-focused .mdc-notched-outline>div {
+  border-color: #ffffff !important;
+  border-width: 2px !important;
+}

@@ -1,0 +1,57 @@
+import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { Tag } from '../../../search/models/search.interface';
+import { DashboardService } from '../../services/dashboard.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LastInventory } from '../../components/last-inventory/last-inventory';
+import { TopInventory } from '../../components/top-inventory/top-inventory';
+import { Tags } from '../../components/tags/tags';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { Inventory } from '../../../inventory/models/inventory.interface';
+import { AuthService } from '../../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-dashboard-page',
+  imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterLink],
+  templateUrl: './dashboard-page.html',
+  styleUrl: './dashboard-page.scss',
+})
+export class DashboardPage {
+  private dashboardService = inject(DashboardService)
+  private authService = inject(AuthService)
+  private router = inject(Router)
+  private destroyRef = inject(DestroyRef);
+  
+  public tags = signal<Tag[]>([]);
+  public latestInventory = signal<Inventory[]>([]);
+  public topInventory = signal<Inventory[]>([]);
+  public isAuthenticated = computed(() => this.authService.isAuthenticated());
+  
+  ngOnInit(): void {
+    this.dashboardService.getTags().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(
+      data => this.tags.set(data)
+    )
+    
+    this.dashboardService.getLatest().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(
+      data => this.latestInventory.set(data)
+    )
+    
+    this.dashboardService.getTop().pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(
+      data => this.topInventory.set(data)
+    )
+  }
+  
+  onSearchByTag(tag: string) {
+    this.router.navigate(['/search'], { queryParams: { tag: tag } });
+  }
+  
+}

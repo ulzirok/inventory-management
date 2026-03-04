@@ -1,0 +1,98 @@
+{
+  "header": {
+    "home": "Главная",
+    "inventories": "Мои Инвентари",
+    "admin": "Админ",
+    "login": "Войти",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "loginTitle": "Вход в систему",
+    "registerTitle": "Создать новый аккаунт",
+    "name": "ФИО",
+    "email": "Email",
+    "password": "Пароль",
+    "authGoogle": "Войти с аккаунтом Google",
+    "authFB": "Войти с аккаунтом Facebook",
+    "loginBtn": "Войти",
+    "registerBtn": "Зарегистрироваться",
+    "loginLink": "У вас нет аккаунта?",
+    "registerLink": "У вас уже есть аккаунт?",
+    "or": "или",
+    "registerNotificationSuccess": "Аккаунт успешно создан."
+  },
+  "oAuthSuccess": {
+    "redirect": "Вход выполнен успешно! Перенаправление"
+  },
+  "search": {
+    "placeholder": "Поиск"
+  },
+  "dashboard": {
+    "lastInventories": "Последние инвентари",
+    "topInventories": "Топ инвентари",
+    "tags": "Теги",
+    "inventory": "Инвентарь",
+    "items": "Предметы",
+    "author": "Автор",
+    "date": "Дата",
+    "owner": "Создатель",
+    "description": "Описание"
+  },
+  "buttons": {
+    "create": "Создать",
+    "edit": "Редактировать",
+    "delete": "Удалить",
+    "item": "Предметы",
+    "items": "Посмотреть все предметы",
+    "viewAllInventory": "Посмотреть Все Инвентари",
+    "settings": "Настройки",
+    "save": "Сохранить",
+    "cancel": "Отменить",
+    "details": "Детали"
+  },
+  "createInventory": {
+    "creating": "Создание нового инвентаря",
+    "category": "Категории",
+    "name": "Название инвентари",
+    "description": "Описание",
+    "upload": "Загрузить изображение",
+    "tags": "Теги",
+    "create": "Создать инвентарь",
+    "goToBack": "Перейти в Список Инвентарей",
+    "goToSettings": "Перейти в Настройки",
+    "placeholder": "Ввести тег"
+  },
+  "inventory": {
+    "title": "Инвентарь",
+    "placeholder": "Искать",
+    "resultSearch": "Позиция не найдена",
+    "customId": "Пользовательский ID",
+    "inventoriesList": "Список инвентарей",
+    "inventory": "Инвентарь",
+    "description": "Описание",
+    "category": "Категория",
+    "author": "Автор",
+    "image": "Изображение",
+    "date": "Дата",
+    "items": "Предметы",
+    "chat": "Чат",
+    "settings": "Настройки",
+    "fields": "Поля",
+    "access": "Доступ",
+    "stats": "Статистика",
+    "export": "Экспорт",
+    "details": "Детали"
+  },
+  "fields": {
+    "title": "Настроенные поля",
+    "noFields": "Полей пока нет",
+    "add": "Добавить поле",
+    "choose": "Выбрать тип",
+    "fieldName": "Имя поля"
+  },
+  "items": {
+    "createTitle": "Создать предмет",
+    "errorNumber": "Минимум 2 символа"
+  }
+  
+}

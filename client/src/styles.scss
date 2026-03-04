@@ -1,1 +1,86 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html {
+  height: 100%;
+  @include mat.theme((color: (primary: mat.$azure-palette,
+        tertiary: mat.$blue-palette,
+      ),
+      density: 0,
+    ));
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  transition: background-color 0.2s;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+.light-theme {
+  --mat-sys-primary: #94a3b8;
+  --mat-sys-on-primary: #ffffff;
+  --mat-sys-surface: #f8fafc;
+  --mat-sys-surface-container: #ffffff;
+  --mat-sys-on-surface: #334155;
+
+  .mat-icon,
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+    --mdc-icon-button-icon-color: var(--mat-sys-on-surface);
+  }
+
+  .mat-toolbar {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-sys-on-primary) !important;
+
+    .mat-icon,
+    .mat-mdc-icon-button {
+      color: var(--mat-sys-on-primary) !important;
+      --mdc-icon-button-icon-color: var(--mat-sys-on-primary);
+    }
+  }
+}
+
+.dark-theme {
+  --mat-sys-primary: #94a3b8;
+  --mat-sys-on-primary: #0f172a;
+  --mat-sys-surface: #09090b;
+  --mat-sys-surface-container: #18181b;
+  --mat-sys-on-surface: #fafafa;
+
+  .mat-icon,
+  .mat-mdc-icon-button {
+    color: var(--mat-sys-on-surface) !important;
+    --mdc-icon-button-icon-color: var(--mat-sys-on-surface);
+  }
+
+  .mat-toolbar {
+    background-color: var(--mat-sys-surface-container) !important;
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+.light-theme,
+.dark-theme {
+  background-color: var(--mat-sys-surface) !important;
+  color: var(--mat-sys-on-surface) !important;
+
+  .mat-mdc-table,
+  .mat-mdc-card {
+    background-color: var(--mat-sys-surface-container) !important;
+    color: var(--mat-sys-on-surface) !important;
+  }
+}
+
+.cdk-overlay-container {
+  .mat-mdc-select-panel {
+    background-color: var(--mat-sys-surface-container) !important;
+  }
+
+  .mat-mdc-option {
+    color: var(--mat-sys-on-surface) !important;
+  }
+}

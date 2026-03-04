@@ -1,0 +1,62 @@
+<div class="create-container">
+  <h3 class="title">{{'createInventory.creating' | translate}}</h3>
+  
+  <form [formGroup]="form" class="inventory-form" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>{{'createInventory.category' | translate}}</mat-label>
+      
+      <mat-select formControlName="categoryId">
+        @for (item of categories(); track $index) {
+          <mat-option [value]="item.id"> {{ item.name }} </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>{{'createInventory.name' | translate}}</mat-label>
+      <input matInput formControlName="title">
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>{{'createInventory.description' | translate}}</mat-label>
+      <textarea matInput rows="3" formControlName="description"></textarea>
+    </mat-form-field>
+    
+    <div class="image-upload">
+      <input type="file" hidden #fileInput accept="image/*" (change)="onFileSelected($event)"/>
+      <button mat-raised-button color="accent" type="button" class="imageBtn" (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
+        {{'createInventory.upload' | translate}}
+      </button>
+    </div>
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>{{'createInventory.tags' | translate}}</mat-label>
+      
+      <mat-chip-grid #chipGrid>
+        @for (tag of selectedTags(); track tag.id) {
+        <mat-chip-row (removed)="removeTag(tag)"> {{ tag?.name }} <button matChipRemove><mat-icon>cancel</mat-icon></button></mat-chip-row>
+        }
+      </mat-chip-grid>
+    
+      <input placeholder="{{'createInventory.placeholder' | translate}}..." #tagInput [formControl]="tag" [matChipInputFor]="chipGrid" [matAutocomplete]="auto" (matChipInputTokenEnd)="addTagFromInput($event)" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (blur)="addTagOnBlur()" />
+    
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTag($event.option.value)">
+        @for (tag of filteredTags$ | async; track tag.id) {
+        <mat-option [value]="tag">{{ tag?.name }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary">
+      {{'createInventory.create' | translate}}
+    </button>
+  </form>
+  
+  <div class="inventory-btns"> 
+    <button mat-raised-button color="primary" class="backBtn" routerLink="/inventory">
+      <mat-icon>arrow_back</mat-icon>
+      {{'createInventory.goToBack' | translate}}
+    </button>
+  </div>
+</div>

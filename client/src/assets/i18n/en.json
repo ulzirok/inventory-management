@@ -1,0 +1,100 @@
+{
+  "header": {
+    "home": "Home",
+    "inventories": "My Inventories",
+    "admin": "Admin",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "auth": {
+    "loginTitle": "Sign In",
+    "registerTitle": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "authGoogle": "Continue with Google",
+    "authFB": "Continue with Facebook",
+    "loginBtn": "Sign In",
+    "registerBtn": "Create an account",
+    "loginLink": "Don't have an account?",
+    "registerLink": "Already have an account?",
+    "or": "or",
+    "registerNotificationSuccess": "Account created successfully."
+    
+  },
+  "oAuthSuccess": {
+    "redirect": "Login successful! Redirecting"
+  },
+  "search": {
+    "placeholder": "Search"
+  },
+  "dashboard": {
+    "lastInventories": "Latest inventories",
+    "topInventories": "Top inventories",
+    "tags": "Tags",
+    "inventory": "Inventory",
+    "items": "Items",
+    "author": "Author",
+    "date": "Date",
+    "owner": "Owner",
+    "description": "Description"
+  },
+  "buttons": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "item": "Items",
+    "items": "View all Items",
+    "viewAllInventory": "View All Inventories",
+    "settings": "Settings",
+    "save": "Save",
+    "cancel": "Cancel",
+    "details": "Details"
+  },
+  "createInventory": {
+    "creating": "Creating a new inventory",
+    "category": "Category",
+    "name": "Inventory name",
+    "description": "Description",
+    "upload": "Upload image",
+    "tags": "Tags",
+    "create": "Create Inventory",
+    "goToBack": "Go to the Inventory List",
+    "goToSettings": "Go to the Settings",
+    "placeholder": "Enter tag"
+  },
+  "inventory": {
+    "title": "Inventory",
+    "placeholder": "Search",
+    "resultSearch": "Position not found",
+    "customId": "Custom ID",
+    "inventoriesList": "Inventories List",
+    "inventory": "Inventory",
+    "description": "Description",
+    "category": "Category",
+    "author": "Author",
+    "image": "Image",
+    "date": "Date",
+    "items": "Items",
+    "chat": "Chat",
+    "settings": "Settings",
+    "fields": "Fields",
+    "access": "Access",
+    "stats": "Stats",
+    "export": "Export",
+    "details": "Details"
+    
+  },
+  "fields": {
+    "title": "Configured fields",
+    "noFields": "No fields yet",
+    "add": "Add Field",
+    "choose": "Choose type",
+    "fieldName": "Field name"
+  },
+  "items": {
+    "createTitle": "Create Item",
+    "errorNumber": "Minimum 2 characters"
+    
+  }
+}

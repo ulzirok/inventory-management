@@ -1,0 +1,42 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <mat-card-header class="auth-card__header">
+      <mat-card-title class="title">{{'auth.loginTitle' | translate}}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="social-buttons">
+        <button mat-stroked-button class="full-width" (click)="authWithGoogle()">
+          {{'auth.authGoogle' | translate}}
+        </button>
+        <button mat-stroked-button class="full-width" (click)="authWithFacebook()">
+          {{'auth.authFB' | translate}}
+        </button>
+      </div>
+
+      <div class="divider"><span>{{'auth.or' | translate}}</span></div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="auth-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{'auth.email' | translate}}</mat-label>
+          <input matInput formControlName="email" type="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>{{'auth.password' | translate}}</mat-label>
+          <input matInput formControlName="password" type="password">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" class="full-width main-btn">
+          {{'auth.loginBtn' | translate}}
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-footer>
+      <p class="auth-link">
+        {{'auth.loginLink' | translate}} <a routerLink="/auth/register">{{'auth.registerBtn' | translate}}</a>
+      </p>
+    </mat-card-footer>
+  </mat-card>
+</div>

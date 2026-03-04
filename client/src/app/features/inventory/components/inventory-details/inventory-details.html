@@ -1,0 +1,101 @@
+<div class="inventory-container">
+  <h2 class="title">{{inventory()?.title}}</h2>
+
+  <mat-tab-group animationDuration="300ms">
+
+    <!-- settings -->
+    <mat-tab label="{{'inventory.settings'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.details'| translate}}</mat-card-title>
+        <mat-card-content>
+          <app-inventory-settings [inventory]="inventory()!" (editInventory)="onEditInventory()"></app-inventory-settings>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>    
+    
+    <!-- fields -->
+    <mat-tab label="{{'inventory.fields'| translate}}" class="fields-container">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.fields'| translate}}</mat-card-title>
+        <mat-card-content>
+        <app-inventory-fields 
+        [inventory]="inventory()!" 
+        (saveField)="onSaveField($event)" 
+        (deleteField)="onDeleteField($event)"
+        ></app-inventory-fields>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+    
+    <!-- items -->
+    <mat-tab label="{{'inventory.items'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-content class="itemsContent">
+
+          <app-items-list 
+          [inventory]="inventory()!"
+          [items]="items()"
+          [isEditable]="true"
+          (createItem)="onCreateItem($event)"
+          (editItem)="onEditItem()"
+          (deleteItem)="onDeleteItem($event)"
+          (detailsItem)="onViewDetailsItem($event)"
+          ></app-items-list>
+
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- customId -->
+    <mat-tab label="{{'inventory.customId'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.customId' | translate}}</mat-card-title>
+        <mat-card-content>
+          <p>Soon...</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- access -->
+    <mat-tab label="{{'inventory.access'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.access'| translate}}</mat-card-title>
+        <mat-card-content>
+          <p>Soon...</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- chat -->
+    <mat-tab label="{{'inventory.chat'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.chat'| translate}}</mat-card-title>
+        <mat-card-content>
+          <p><strong>Alex:</strong> Hi!</p>
+          <p>Soon...</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- stats -->
+    <mat-tab label="{{'inventory.stats'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.stats'| translate}}</mat-card-title>
+        <mat-card-content>
+          <p>Soon...</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- export -->
+    <mat-tab label="{{'inventory.export'| translate}}">
+      <mat-card class="tab-card">
+        <mat-card-title class="subtitle">{{'inventory.export'| translate}}</mat-card-title>
+        <mat-card-content>
+          <p>Soon...</p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

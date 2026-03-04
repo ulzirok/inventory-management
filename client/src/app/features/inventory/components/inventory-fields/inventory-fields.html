@@ -1,0 +1,55 @@
+<div class="fields-content">
+  <div>
+    <mat-card-title class="fields-subtitle">{{'fields.title' | translate}}:</mat-card-title>
+    @if (existingFields().length > 0) {
+    <mat-list>
+      @for (field of existingFields(); track field.label) {
+      <mat-list-item>
+        <div matLine class="fields-item">{{ field.label }}
+          <button mat-icon-button color="warn" (click)="delete(field.key)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+      }
+    </mat-list>
+    }
+    @if (existingFields().length === 0) {
+    <p>{{'fields.noFields' | translate}}</p>
+    }
+    <button mat-raised-button color="primary" class="fieldsShowBtn" (click)="openFieldForm()"
+      [disabled]="availableSlots().length === 0">
+      <mat-icon>add</mat-icon>
+      {{'fields.add' | translate}}
+    </button>
+  </div>
+  
+  <div>
+    @if (showForm()) {
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'fields.choose' | translate}}</mat-label>
+        <mat-select formControlName="slot">
+          @for (slot of availableSlots(); track slot) {
+          <mat-option [value]="slot">
+            {{ slot }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'fields.fieldName' | translate}}</mat-label>
+        <input matInput formControlName="label">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="save()">
+        <mat-icon>save</mat-icon>
+        {{'buttons.save' | translate}}
+      </button>
+      <button mat-button type="button" (click)="cancelFieldForm()">
+        <mat-icon>cancel</mat-icon>
+        {{'buttons.cancel' | translate}}
+      </button>
+    </form>
+    }
+  </div>
+</div>
