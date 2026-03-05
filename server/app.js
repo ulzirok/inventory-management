@@ -15,13 +15,12 @@ const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
 
 app.use(
-    cors({
-        origin: ["https://frontend.com", "http://localhost:4200"],
-        credentials: true,
-        allowedHeaders: ["Content-Type", "Authorization"],
-        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    }),
+  cors({
+    origin: true,
+    credentials: true
+  })
 );
+app.options("*", cors());
 
 app.use(express.json());
 
