@@ -97,8 +97,8 @@ module.exports.socialCallback = async (req, res) => {
       { expiresIn: "1d" },
     );
 
-    // res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
-    res.redirect(`http://localhost:4200/oauth-success?token=${token}`);
+    res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
+    // res.redirect(`http://localhost:4200/oauth-success?token=${token}`);
   } catch (error) {
     errorHandler(res, error);
   }
