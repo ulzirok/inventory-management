@@ -26,7 +26,9 @@
     "redirect": "Login successful! Redirecting"
   },
   "search": {
-    "placeholder": "Search"
+    "placeholder": "Search",
+    "noInventoryFound": "Inventory not found"
+    
   },
   "dashboard": {
     "lastInventories": "Latest inventories",
@@ -53,12 +55,14 @@
   },
   "createInventory": {
     "creating": "Creating a new inventory",
+    "editing": "Editing inventory",
     "category": "Category",
     "name": "Inventory name",
     "description": "Description",
     "upload": "Upload image",
     "tags": "Tags",
     "create": "Create Inventory",
+    "edit": "Edit Inventory",
     "goToBack": "Go to the Inventory List",
     "goToSettings": "Go to the Settings",
     "placeholder": "Enter tag"
@@ -94,7 +98,13 @@
   },
   "items": {
     "createTitle": "Create Item",
-    "errorNumber": "Minimum 2 characters"
+    "errorNumber": "Minimum 2 characters",
+    "noItemsFound": "There are no items yet",
+    "infoMessage": "Please create the items if the fields are already configured in the Fields tab."
     
+  },
+  "confirmDialog": {
+    "title": "Confirmation",
+    "confirm": "Are you sure you want to delete the selected entries?"
   }
 }

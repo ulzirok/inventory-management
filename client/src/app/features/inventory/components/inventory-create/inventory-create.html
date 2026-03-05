@@ -1,5 +1,5 @@
 <div class="create-container">
-  <h3 class="title">{{'createInventory.creating' | translate}}</h3>
+  <h3 class="title">{{ (isEditMode() ? 'createInventory.editing' : 'createInventory.creating') | translate }}</h3>
   
   <form [formGroup]="form" class="inventory-form" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="outline">
@@ -48,15 +48,15 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <button mat-flat-button color="primary">
-      {{'createInventory.create' | translate}}
-    </button>
+    <div class="inventory-btns">
+      @if (isEditMode()) {
+      <button mat-raised-button color="primary" type="button" (click)="cancel()">
+        {{ 'buttons.cancel' | translate }}
+      </button>
+      }
+      <button mat-flat-button color="primary" [disabled]="form.invalid">
+        {{ (isEditMode() ? 'createInventory.edit' : 'createInventory.create') | translate }}
+      </button>
+    </div>
   </form>
-  
-  <div class="inventory-btns"> 
-    <button mat-raised-button color="primary" class="backBtn" routerLink="/inventory">
-      <mat-icon>arrow_back</mat-icon>
-      {{'createInventory.goToBack' | translate}}
-    </button>
-  </div>
 </div>

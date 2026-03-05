@@ -69,7 +69,7 @@ export class ItemsList {
   displayedColumns = computed(() => {
     return ['select', ...this.activeFields().map(field => field.columnDef)]
   })
-  dataSource = this.items;
+  dataSource = computed(() => this.items());
 
   selection = new SelectionModel<Item>(true, []);
   private selectedCountSignal = signal(0);

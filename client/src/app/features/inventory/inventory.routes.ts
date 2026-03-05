@@ -8,7 +8,7 @@ import { ItemsList } from './components/items-list/items-list';
 export const InventoryRoutes: Routes = [
     { path: '', component: InventoryPage },
     { path: 'create', component: InventoryCreate },
+    { path: ':id/edit', component: InventoryCreate },
     { path: ':id/details', component: InventoryDetails },
     { path: ':id/item', component: ItemDetails },
-    { path: 'items', component: ItemsList },
 ];

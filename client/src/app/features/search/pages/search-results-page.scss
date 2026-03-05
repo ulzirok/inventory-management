@@ -14,3 +14,11 @@ mat-toolbar {
 .spacer {
   flex: 1 1 auto;
 }
+
+.empty {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

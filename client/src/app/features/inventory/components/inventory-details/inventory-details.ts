@@ -3,20 +3,13 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InventoryService } from '../../services/inventory.service';
 import { Inventory, InventoryFieldsDto } from '../../models/inventory.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatIconModule } from '@angular/material/icon';
 import { ItemsList } from '../items-list/items-list';
 import { Item, ItemDto } from '../../models/item.interface';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatChipsModule } from '@angular/material/chips';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MatListModule } from '@angular/material/list';
 import { InventorySettings } from '../inventory-settings/inventory-settings';
@@ -30,14 +23,7 @@ import { InventoryFields } from '../inventory-fields/inventory-fields';
     MatCardModule,
     MatButtonModule,
     TranslateModule,
-    MatIconModule,
     ItemsList,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatChipsModule,
     MatListModule,
     InventorySettings,
     InventoryFields
@@ -47,6 +33,7 @@ import { InventoryFields } from '../inventory-fields/inventory-fields';
 })
 export class InventoryDetails implements OnInit {
   private route = inject(ActivatedRoute)
+  private router = inject(Router)
   private inventoryService = inject(InventoryService)
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService)
@@ -96,7 +83,7 @@ export class InventoryDetails implements OnInit {
   }
   
   onEditInventory() {
-
+    this.router.navigate([`/inventory/${Number(this.inventory()!.id)}/edit`])
   }
   
   onDeleteField(payload: InventoryFieldsDto) {
@@ -111,9 +98,7 @@ export class InventoryDetails implements OnInit {
     });
   }
   
-  onCreateItem(item: ItemDto): void {
-    //проверка, если нет fields - сначала заполните fields
-    
+  onCreateItem(item: ItemDto): void {    
     this.inventoryService.createItem(this.inventory()!.id, item).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
@@ -124,6 +109,7 @@ export class InventoryDetails implements OnInit {
       error: (err) => {}
     })
   }
+  
   onEditItem(): void {
     
   }

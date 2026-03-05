@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { environment } from '../../../environment/environment.prod';
+import { environment } from '../../../environment/environment';
 import { Inventory } from '../../features/inventory/models/inventory.interface';
 
 @Injectable({
@@ -13,11 +13,11 @@ export class SearchService {
 
   search(query: string): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(`${environment.apiUrl}/api/search`, { params: { query } }).pipe(
-        tap(data => this.results.set(data)));
+      tap(data => this.results.set(data)));
   }
 
   searchByTag(tag: string): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(`${environment.apiUrl}/api/search-by-tag`, { params: { tag } }).pipe(
-      tap(data => this.results.set(data))); 
+      tap(data => this.results.set(data)));
   }
 }

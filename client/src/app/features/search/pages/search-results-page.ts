@@ -87,12 +87,10 @@ export class SearchResultsPage {
   viewItem() {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id;
-    this.router.navigate([`/inventory/${id}/item`])
+
+    this.router.navigate([`/dashboard/${id}/items`])
     this.selection.clear();
   }
   
-  viewAllItems() {
-    this.router.navigate(['/inventory/items'])
-  }
   
 }

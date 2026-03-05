@@ -12,10 +12,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Inventory } from '../../../inventory/models/inventory.interface';
 import { AuthService } from '../../../../core/services/auth.service';
+import { Loader } from '../../../../shared/components/loader/loader';
+import { finalize, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-page',
-  imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterLink],
+  imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterLink, Loader],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
 })
@@ -25,29 +27,30 @@ export class DashboardPage {
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
   
+  public isLoading = signal(false);
   public tags = signal<Tag[]>([]);
   public latestInventory = signal<Inventory[]>([]);
   public topInventory = signal<Inventory[]>([]);
   public isAuthenticated = computed(() => this.authService.isAuthenticated());
   
   ngOnInit(): void {
-    this.dashboardService.getTags().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(
-      data => this.tags.set(data)
-    )
+    this.isLoading.set(true); 
     
-    this.dashboardService.getLatest().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(
-      data => this.latestInventory.set(data)
-    )
-    
-    this.dashboardService.getTop().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(
-      data => this.topInventory.set(data)
-    )
+    forkJoin({
+      latest: this.dashboardService.getLatest(),
+      top: this.dashboardService.getTop(),
+      tags: this.dashboardService.getTags()
+    }).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(()=> this.isLoading.set(false))
+    ).subscribe({
+      next: (data) => { 
+        this.latestInventory.set(data.latest)
+        this.topInventory.set(data.top)
+        this.tags.set(data.tags)
+      },
+      error: (err)=> {}
+    })
   }
   
   onSearchByTag(tag: string) {

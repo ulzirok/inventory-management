@@ -11,6 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Inventory } from '../../models/inventory.interface';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../auth/models/role.enum';
+import { Item } from '../../models/item.interface';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-inventory-list',
@@ -30,6 +33,7 @@ import { Role } from '../../../auth/models/role.enum';
 export class InventoryList {
   inventories = input<Inventory[]>([]);
   isEditable = input<boolean>(false);
+  showViewItems = input<boolean>(true); 
   settingsInventory = output<number>()
   deleteInventory = output<number[]>()
   viewItems = output<number>()
@@ -37,10 +41,12 @@ export class InventoryList {
   createInventory = output<void>()
   
   private authService = inject(AuthService)
+  private dialog = inject(MatDialog);
   
   public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   canManage = computed(() => this.isAdmin() || this.isEditable());
-  dataSource = this.inventories;
+  dataSource = computed(() => this.inventories());
+  
   displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image'];
   selection = new SelectionModel<Inventory>(true, []);
   private selectedCountSignal = signal(0);
@@ -78,13 +84,20 @@ export class InventoryList {
     const id = this.selection.selected[0].id
     this.settingsInventory.emit(id)
     this.selection.clear();
+    this.updateSelectionCount(); 
   }
 
   delete() {
     if (!this.isAnySelected()) return;
-    const ids = this.selection.selected.map(item => item.id);
-    this.deleteInventory.emit(ids)
-    this.selection.clear();
+    const dialogRef = this.dialog.open(ConfirmDialog)
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return
+      const ids = this.selection.selected.map(item => item.id);
+      this.deleteInventory.emit(ids);
+      this.selection.clear();
+      this.updateSelectionCount(); 
+    })
   }
   
   viewItem() {
@@ -92,5 +105,6 @@ export class InventoryList {
     const id = this.selection.selected[0].id
     this.viewItems.emit(id)
     this.selection.clear();
+    this.updateSelectionCount(); 
   }
 }

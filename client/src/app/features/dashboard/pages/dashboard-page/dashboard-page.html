@@ -1,23 +1,30 @@
-<div class="dashboard-container">
-  <div class="tables">
-    <app-last-inventory [latestInventory]="latestInventory()"></app-last-inventory>
-    <app-top-inventory [topInventory]="topInventory()"></app-top-inventory>
+@if (isLoading()) {
+<app-loader></app-loader>
+} @else {
+  <div class="dashboard-container">
+    <div class="tables">
+  
+      <app-last-inventory [latestInventory]="latestInventory()"></app-last-inventory>
+      <app-top-inventory [topInventory]="topInventory()"></app-top-inventory>
+    </div>
+  
+    <button mat-raised-button color="primary" routerLink="/dashboard/list" class="viewAllBtn">
+      <mat-icon>keyboard_double_arrow_right</mat-icon>
+      {{'buttons.viewAllInventory' | translate}}
+    </button>
+  
+    <div class="tags-section">
+      <app-tags [tags]="tags()" (searchByTag)="onSearchByTag($event)">
+      </app-tags>
+    </div>
   </div>
   
-  <button mat-raised-button color="primary" routerLink="/dashboard/list" class="viewAllBtn">
-    <mat-icon>keyboard_double_arrow_right</mat-icon>
-    {{'buttons.viewAllInventory' | translate}}
-  </button>
-
-  <div class="tags-section">
-    <app-tags [tags]="tags()" (searchByTag)="onSearchByTag($event)">
-    </app-tags>
-  </div>
-</div>
-
-@if (isAuthenticated()) {
+  @if (isAuthenticated()) {
   <button mat-fab color="primary" class="fab" routerLink="/inventory/create">
     <mat-icon>add</mat-icon>
   </button>
+  }
 }
+
+
 

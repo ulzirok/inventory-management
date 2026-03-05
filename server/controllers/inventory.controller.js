@@ -109,23 +109,19 @@ module.exports.update = async (req, res) => {
     let { version, categoryId, tags, title, description, ...customLabels } = req.body;
     let imageUrl = req.body.imageUrl; 
     
-    if (req.file) {
-      const uploadResponse = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: `update_${Date.now()}`,
-      });
-      imageUrl = uploadResponse.url;
-    }
-
     const updatePayload = {
       title,
       description,
       ...customLabels,
       version: { increment: 1 },
     };
-
-    if (categoryId) {
-      updatePayload.category = { connect: { id: Number(categoryId) } };
+    
+    if (req.file) {
+      const uploadResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: `update_${Date.now()}`,
+      });
+      updatePayload.imageUrl = uploadResponse.url;
     }
     
     if (categoryId) {
@@ -168,7 +164,7 @@ module.exports.delete = async (req, res) => {
         id: { in: ids.map((id) => Number(id)) }
       },
     });
-    return res.status(200).json({ message: "Inventories successfully deleted" });
+    return res.status(200).json({ message: "Inventories deleted" });
   } catch (error) {
     if (error.code === "P2025") {
       return res.status(404).json({ message: "Inventory not found" });
