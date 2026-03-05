@@ -1,7 +1,7 @@
 export const environment = {
-  // production: true,
-  // apiUrl: 'https://backend.com'
+  production: true,
+  apiUrl: 'https://backend.com'
   
-  production: false,
-  apiUrl: 'http://localhost:5000'
+  // production: false,
+  // apiUrl: 'http://localhost:5000'
 };
