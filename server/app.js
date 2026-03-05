@@ -15,12 +15,13 @@ const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
 
 app.use(
-  cors({
-    origin: true,
-    credentials: true
-  })
+    cors({
+        origin: ["https://spiffy-biscochitos-96b7d0.netlify.app", "http://localhost:4200"],
+        credentials: true,
+        allowedHeaders: ["Content-Type", "Authorization"],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    }),
 );
-app.options("*", cors());
 
 app.use(express.json());
 
