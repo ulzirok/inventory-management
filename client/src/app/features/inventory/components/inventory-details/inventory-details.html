@@ -37,9 +37,8 @@
           [items]="items()"
           [isEditable]="true"
           (createItem)="onCreateItem($event)"
-          (editItem)="onEditItem()"
+          (editItem)="onEditItem($event)"
           (deleteItem)="onDeleteItem($event)"
-          (detailsItem)="onViewDetailsItem($event)"
           ></app-items-list>
 
         </mat-card-content>

@@ -43,7 +43,7 @@ module.exports.create = async (req, res) => {
       },
     });
     if (!inventory)
-      return res.status(404).json({ message: "Inventory not found" });
+      return res.status(404).json({ message: "Item not found" });
     const customId = await generateCustomId(
       inventory.idFormat,
       Number(inventoryId),
@@ -92,11 +92,15 @@ module.exports.update = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { ids } = req.body;
     
-    await prisma.item.delete({
+    if (!ids || ids.length === 0) return res.status(400).json({ message: "No items selected" });
+    
+    await prisma.item.deleteMany({
       where: {
-        id: id,
+        id: {
+          in: ids
+        },
         authorId: Number(req.user.id)
       },
     });

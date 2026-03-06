@@ -70,8 +70,8 @@ export class InventoryList {
     this.updateSelectionCount();
   }
   
-  toggleRow(row: Inventory) {
-    this.selection.toggle(row);
+  toggleRow(inventory: Inventory) {
+    this.selection.toggle(inventory);
     this.updateSelectionCount();
   }
 

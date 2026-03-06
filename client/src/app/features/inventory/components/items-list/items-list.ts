@@ -37,8 +37,7 @@ export class ItemsList {
   isEditable = input<boolean>(false);
   createItem = output<ItemDto>()
   editItem = output<void>();
-  deleteItem = output<number[]>();
-  detailsItem = output<number>();
+  deleteItem = output<string[]>();
   
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
@@ -67,7 +66,8 @@ export class ItemsList {
    }
   
   displayedColumns = computed(() => {
-    return ['select', ...this.activeFields().map(field => field.columnDef)]
+    const fields = this.activeFields().map(field => field.columnDef)
+    return this.canManage() ? ['select', ...fields] : fields
   })
   dataSource = computed(() => this.items());
 
@@ -93,8 +93,8 @@ export class ItemsList {
     this.updateSelectionCount();
   }
 
-  toggleRow(row: Item) {
-    this.selection.toggle(row);
+  toggleRow(item: Item) {
+    this.selection.toggle(item);
     this.updateSelectionCount();
   }
 
@@ -114,22 +114,29 @@ export class ItemsList {
   
   edit() {
     if (!this.isSingleSelected()) return;
-    const id = this.selection.selected[0].id;
-    this.editItem.emit();
-    this.selection.clear();
+    const item = this.selection.selected[0];
+    const dialogRef = this.dialog.open(ItemCreate, {
+      data: {
+        inventory: this.inventory(),
+        activeFields: this.activeFields(),
+        item: item
+      }
+    })
+    
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return
+      this.editItem.emit(result);
+      this.selection.clear();
+    })
+    
   }
   
   delete() {
     if (!this.isAnySelected()) return;
-    const ids = this.selection.selected.map(item => Number(item.id));
+    const ids = this.selection.selected.map(item => item.id);
     this.deleteItem.emit(ids);
     this.selection.clear();
+    this.updateSelectionCount(); 
   }
   
-  details() {
-    if (!this.isSingleSelected()) return;
-    const id = this.selection.selected[0].id;
-    this.detailsItem.emit(Number(id));
-    this.selection.clear();
-  }
 }

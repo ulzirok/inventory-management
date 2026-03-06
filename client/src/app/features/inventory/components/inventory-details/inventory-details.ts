@@ -103,22 +103,37 @@ export class InventoryDetails implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
+        this.notificationService.success('Item created.');
         this.loadItems();
-        this.notificationService.success('Item created successfully.');
       },
       error: (err) => {}
     })
   }
   
-  onEditItem(): void {
+  onEditItem(item: any): void {
+    const itemId = item.id
     
+    this.inventoryService.updateItem(itemId, item).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.notificationService.success('Item updated.');
+        this.loadItems();
+      },
+      error: (err) => { }
+    })
   }
 
-  onDeleteItem(ids: number[]) {
-    
+  onDeleteItem(ids: string[]) {
+    this.inventoryService.deleteItem(ids).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message)
+        this.loadItems()
+      },
+      error: (err)=> {}
+    })
   }
   
-  onViewDetailsItem(id: number) {
-    
-  }
 }

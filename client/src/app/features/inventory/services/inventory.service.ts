@@ -53,4 +53,12 @@ export class InventoryService {
   createItem(inventoryId: number, item: ItemDto): Observable<Item[]> {
     return this.http.post<Item[]>(`${environment.apiUrl}/api/items/inventory/${inventoryId}`, item);
   }
+  
+  updateItem(itemId: string, item: ItemDto): Observable<Item> {
+    return this.http.patch<Item>(`${environment.apiUrl}/api/items/${itemId}`, item);
+  }
+  
+  deleteItem(ids: string[]) {
+    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { ids });
+  }
 }

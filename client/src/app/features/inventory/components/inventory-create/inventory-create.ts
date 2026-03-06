@@ -13,7 +13,7 @@ import { Category, Tag } from '../../models/inventory.interface';
 import { InventoryService } from '../../services/inventory.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 

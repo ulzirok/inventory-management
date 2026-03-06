@@ -98,6 +98,7 @@
   },
   "items": {
     "createTitle": "Create Item",
+    "updateTitle": "Update Item",
     "errorNumber": "Minimum 2 characters",
     "noItemsFound": "There are no items yet",
     "infoMessage": "Please create the items if the fields are already configured in the Fields tab."
