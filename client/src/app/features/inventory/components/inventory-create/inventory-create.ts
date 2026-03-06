@@ -7,7 +7,7 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { startWith, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { startWith, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { Category, Tag } from '../../models/inventory.interface';
 import { InventoryService } from '../../services/inventory.service';
@@ -16,6 +16,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inventory-create',
@@ -52,6 +53,7 @@ export class InventoryCreate {
   isEditMode = signal(false);
   inventoryId = signal<string | null>(null);
   currentVersion = signal<number>(0);
+  private autoSaveSub?: Subscription;
 
   public filteredTags$ = this.tag.valueChanges.pipe(
     startWith(''),
@@ -94,6 +96,8 @@ export class InventoryCreate {
         });
         this.selectedTags.set(data.tags || []);
       });
+      
+      this.autoSave();
     }
 
   }
@@ -170,7 +174,6 @@ export class InventoryCreate {
     Object.keys(this.form.controls).forEach(key => {
       this.form.get(key)?.setErrors(null);
     });
-
   }
 
   private prepareFormData(): FormData {
@@ -208,12 +211,39 @@ export class InventoryCreate {
     this.inventoryService.update(id, formData).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
-      next: () => {
+      next: (updated) => {
+        this.currentVersion.set(updated.version);
+        this.form.markAsPristine();
+        
         this.notificationService.success('Inventory updated');
         this.router.navigate([`/inventory/${id}/details`]);
       },
       error: (err) => this.form.enable()
     });
+  }
+  
+  private autoSave() {
+    const id = Number(this.inventoryId()!)
+    
+    this.autoSaveSub = interval(10000).pipe(
+        filter(() => this.form.dirty && this.form.valid),
+        switchMap(() => {
+          const formData = this.prepareFormData();
+          return this.inventoryService.update(id, formData);
+        }),
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
+        next: (updated) => {
+          this.currentVersion.set(updated.version);
+          this.form.markAsPristine();
+        },
+        error: (err) => {
+          if (err.status === 409) {
+            this.notificationService.error('Autosave error: Data modified by another user');
+            this.autoSaveSub?.unsubscribe();
+          }
+        }
+      });
   }
 
 }

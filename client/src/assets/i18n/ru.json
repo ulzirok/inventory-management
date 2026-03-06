@@ -71,6 +71,8 @@
     "resultSearch": "Позиция не найдена",
     "customId": "Пользовательский ID",
     "inventoriesList": "Список инвентарей",
+    "inventoriesMy": "Мои инвентари",
+    "inventoriesShared": "Общие доступные инвентари",
     "inventory": "Инвентарь",
     "description": "Описание",
     "category": "Категория",
@@ -102,6 +104,9 @@
   "confirmDialog": {
     "title": "Подтверждение",
     "confirm": "Вы точно хотите удалить выбранные записи?"
+  },
+  "access": {
+    "title": "Изменить доступ"
   }
   
 }

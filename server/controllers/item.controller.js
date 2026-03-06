@@ -1,3 +1,4 @@
+const roles = require("../constants/roles");
 const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
 const generateCustomId = require("../utils/idGenerator");
@@ -6,11 +7,17 @@ module.exports.getByInventoryId = async (req, res) => {
   try {
     const { inventoryId } = req.params;
     
+    let whereCondition = {
+      inventoryId: Number(inventoryId)
+    };
+    
+    if (req.user.role !== roles.ADMIN) {
+      whereCondition.authorId = req.user.id;
+    }
+    
     const item = await prisma.item.findMany({
-      where: {
-        inventoryId: Number(inventoryId),
-        authorId: Number(req.user.id)
-      },
+      where: whereCondition,
+      orderBy: { updatedAt: "desc" }
     });
     res.status(200).json(item);
   } catch (error) {
@@ -24,6 +31,7 @@ module.exports.getPublic = async (req, res) => {
     
     const item = await prisma.item.findMany({
       where: { inventoryId: Number(inventoryId) },
+      orderBy: { updatedAt: "desc" }
     });
     res.status(200).json(item);
   } catch (error) {
@@ -36,14 +44,18 @@ module.exports.create = async (req, res) => {
     const { inventoryId } = req.params;
     const { ...data } = req.body;
     
-    const inventory = await prisma.inventory.findUnique({
+    const inventory = await prisma.inventory.findFirst({
       where: {
         id: Number(inventoryId),
-        authorId: Number(req.user.id)
+        OR: [
+          { authorId: Number(req.user.id) },
+          { isPublic: true },
+          { author: { role: req.user.role } }
+        ]
       },
     });
-    if (!inventory)
-      return res.status(404).json({ message: "Item not found" });
+    if (!inventory) return res.status(403).json({ message: "Inventory not found or private" });
+    
     const customId = await generateCustomId(
       inventory.idFormat,
       Number(inventoryId),
@@ -75,11 +87,15 @@ module.exports.update = async (req, res) => {
     const updatedItem = await prisma.item.update({
       where: {
         id: id,
-        authorId: Number(req.user.id),
-        version: Number(version)
+        version: Number(version),
+        OR: [
+          { authorId: Number(req.user.id) },
+          { inventory: { isPublic: true } },
+          { inventory: { authorId: Number(req.user.id) } },
+          { author: { role: req.user.role } }
+        ]
       },
-      data: { ...updatedData, version: { increment: 1 },
-      },
+      data: { ...updatedData, version: { increment: 1 }},
     });
     res.status(200).json(updatedItem);
   } catch (error) {
@@ -98,10 +114,12 @@ module.exports.delete = async (req, res) => {
     
     await prisma.item.deleteMany({
       where: {
-        id: {
-          in: ids
-        },
-        authorId: Number(req.user.id)
+        id: {in: ids},
+        OR: [
+          { authorId: Number(req.user.id) },
+          { inventory: { isPublic: true } },
+          { author: { role: req.user.role } }
+        ]
       },
     });
     return res.status(200).json({ message: "Item removed" });

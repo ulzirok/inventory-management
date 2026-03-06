@@ -14,6 +14,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { MatListModule } from '@angular/material/list';
 import { InventorySettings } from '../inventory-settings/inventory-settings';
 import { InventoryFields } from '../inventory-fields/inventory-fields';
+import { InventoryAccess } from '../inventory-access/inventory-access';
 
 @Component({
   selector: 'app-inventory-details',
@@ -26,7 +27,8 @@ import { InventoryFields } from '../inventory-fields/inventory-fields';
     ItemsList,
     MatListModule,
     InventorySettings,
-    InventoryFields
+    InventoryFields,
+    InventoryAccess
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
@@ -76,7 +78,7 @@ export class InventoryDetails implements OnInit {
     ).subscribe({
       next: () => {
         this.loadInventory();
-        this.notificationService.success('Fields saved successfully.');
+        this.notificationService.success('Fields saved.');
       },
       error: (err) => {}
     });
@@ -136,4 +138,16 @@ export class InventoryDetails implements OnInit {
     })
   }
   
+  onSaveAccess(payload: FormData) {
+    const id = Number(this.inventory()!.id)
+    this.inventoryService.update(id, payload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.loadInventory();
+        this.notificationService.success('Inventory access changed.');
+      },
+      error: (err) => { }
+    });
+  }
 }

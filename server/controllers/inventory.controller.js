@@ -28,6 +28,7 @@ module.exports.getMy = async (req, res) => {
       include: {
         category: true,
         tags: true,
+        author: { select: { name: true, email: true } },
         _count: { select: { items: true } }
       },
       orderBy: { updatedAt: "desc" }
@@ -38,6 +39,27 @@ module.exports.getMy = async (req, res) => {
     errorHandler(res, error);
   }
 };
+
+module.exports.getShared = async (req, res) => {
+  try {
+    const inventories = await prisma.inventory.findMany({
+      where: {
+        isPublic: true,
+        authorId: {not: Number(req.user.id)}
+      },
+      include: {
+        category: true,
+        tags: true,
+        author: { select: { name: true, email: true } },
+        _count: { select: { items: true } }
+      },
+      orderBy: { updatedAt: "desc" }
+    })
+    res.status(200).json(inventories)
+  } catch (error) {
+    errorHandler(res, error);
+  }
+}
 
 module.exports.getById = async (req, res) => {
   try {
@@ -106,7 +128,7 @@ module.exports.create = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    let { version, categoryId, tags, title, description, ...customLabels } = req.body;
+    let { version, categoryId, tags, title, description, isPublic, ...customLabels } = req.body;
     let imageUrl = req.body.imageUrl; 
     
     const updatePayload = {
@@ -115,6 +137,10 @@ module.exports.update = async (req, res) => {
       ...customLabels,
       version: { increment: 1 },
     };
+    
+    if (isPublic !== undefined) {
+      updatePayload.isPublic = isPublic === 'true' || isPublic === true;
+    }
     
     if (req.file) {
       const uploadResponse = await imagekit.upload({

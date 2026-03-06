@@ -60,7 +60,7 @@
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.access'| translate}}</mat-card-title>
         <mat-card-content>
-          <p>Soon...</p>
+          <app-inventory-access [inventory]="inventory()" (saveAccess)="onSaveAccess($event)"></app-inventory-access>
         </mat-card-content>
       </mat-card>
     </mat-tab>

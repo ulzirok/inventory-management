@@ -1,0 +1,8 @@
+<div class="items-container">
+  <app-items-list 
+    [inventory]="inventory()!" [items]="items()" 
+    [isEditable]="true" 
+    (createItem)="onCreateItem($event)"
+    (editItem)="onEditItem($event)" 
+    (deleteItem)="onDeleteItem($event)"></app-items-list>
+</div>

@@ -73,6 +73,8 @@
     "resultSearch": "Position not found",
     "customId": "Custom ID",
     "inventoriesList": "Inventories List",
+    "inventoriesMy": "My Inventories",
+    "inventoriesShared": "Shared Inventories",
     "inventory": "Inventory",
     "description": "Description",
     "category": "Category",
@@ -107,5 +109,8 @@
   "confirmDialog": {
     "title": "Confirmation",
     "confirm": "Are you sure you want to delete the selected entries?"
+  },
+  "access": {
+    "title": "Change access"
   }
 }

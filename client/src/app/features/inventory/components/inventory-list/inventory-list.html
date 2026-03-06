@@ -61,7 +61,7 @@
   
     <ng-container matColumnDef="author">
       <th mat-header-cell *matHeaderCellDef> {{'inventory.author' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{ element.author?.name }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.author?.email }} </td>
     </ng-container>
   
     <ng-container matColumnDef="image">

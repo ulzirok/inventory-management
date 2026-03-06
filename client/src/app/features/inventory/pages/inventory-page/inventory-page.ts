@@ -22,13 +22,15 @@ export class InventoryPage implements OnInit {
   private router = inject(Router);
   private notificationService = inject(NotificationService);
   
-  isLoading = signal(false)
+  public isLoading = signal(false)
   public inventories = signal<Inventory[]>([]);
   public items = signal<Item[]>([]);
+  public sharedInventories = signal<Inventory[]>([]);
   
   ngOnInit(): void {
     this.isLoading.set(true)
     this.loadInventories()
+    this.loadSharedInventories()
   }
   
   loadInventories() {
@@ -38,6 +40,15 @@ export class InventoryPage implements OnInit {
     ).subscribe(
       data => this.inventories.set(data)
     );
+  }
+  
+  loadSharedInventories() {
+    this.inventoryService.getShared().pipe(
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.isLoading.set(false))
+    ).subscribe(
+      data => this.sharedInventories.set(data)
+    )
   }
   
   onCreateInventory(): void {
@@ -60,4 +71,7 @@ export class InventoryPage implements OnInit {
     })
   }
   
+  onviewItems(id: number) {
+    this.router.navigate([`/inventory/${id}/items`]);
+  }
 }

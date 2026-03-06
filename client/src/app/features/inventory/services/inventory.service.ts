@@ -14,12 +14,17 @@ export class InventoryService {
   getAll(): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory`);
   }
+  
   getMy(): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory/my`);
   }
+  
+  getShared(): Observable<Inventory[]> {
+    return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory/shared`);
+  }
 
   getById(id: string): Observable<Inventory> {
-    return this.http.get<Inventory>(`${environment.apiUrl}/api/inventory/${id}`);
+    return this.http.get<Inventory>(`${environment.apiUrl}/api/inventory/info/${id}`);
   }
 
   create(inventory: FormData): Observable<Inventory[]> {
@@ -47,7 +52,7 @@ export class InventoryService {
   }
 
   getPublicItems(inventoryId: string): Observable<Item[]> {
-    return this.http.get<Item[]>(`${environment.apiUrl}/api/items/${inventoryId}/public`);
+    return this.http.get<Item[]>(`${environment.apiUrl}/api/items/public/${inventoryId}`);
   }
 
   createItem(inventoryId: number, item: ItemDto): Observable<Item[]> {

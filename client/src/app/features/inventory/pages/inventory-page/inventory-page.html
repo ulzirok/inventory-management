@@ -3,12 +3,24 @@
 } @else {
   <div class="inventory-container">
     <h2 class="title">{{'inventory.inventoriesList'| translate}}</h2>
-    <app-inventory-list 
-      [inventories]="inventories()" 
-      [isEditable]="true" 
-      [showViewItems]="false"
-      (createInventory)="onCreateInventory()" 
-      (settingsInventory)="onSettingsInventory($event)"
-      (deleteInventory)="onDeleteInventory($event)"></app-inventory-list>
+    
+    <div class="inventories">
+      <h3 class="subtitle">{{ 'inventory.inventoriesMy' | translate }}</h3>
+      <app-inventory-list 
+        [inventories]="inventories()" 
+        [isEditable]="true" 
+        [showViewItems]="false"
+        (createInventory)="onCreateInventory()" 
+        (settingsInventory)="onSettingsInventory($event)"
+        (deleteInventory)="onDeleteInventory($event)"></app-inventory-list>
+      
+      <h3 class="subtitle">{{ 'inventory.inventoriesShared' | translate }}</h3>
+      <app-inventory-list 
+        [inventories]="sharedInventories()" 
+        [isEditable]="false" 
+        [showViewItems]="true"
+        (viewItems)="onviewItems($event)"
+        ></app-inventory-list>
+    </div>
   </div>
 }
