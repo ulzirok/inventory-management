@@ -35,49 +35,42 @@ export class ItemsList {
   inventory = input<Inventory | null>(null);
   items = input<Item[]>([]);
   isEditable = input<boolean>(false);
-  createItem = output<ItemDto>()
+  createItem = output<ItemDto>();
   editItem = output<void>();
   deleteItem = output<string[]>();
-  
+
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
-  
-  public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
+
+  isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   canManage = computed(() => this.isAdmin() || this.isEditable());
-  
+
   activeFields = computed(() => {
-    const inventory = this.inventory()
-    if (!inventory) return []
-    
+    const inventory = this.inventory();
+    if (!inventory) return [];
+
     return Object.entries(FIELD_MAPPING)
       .filter(([inventoryKey]) => inventory[inventoryKey as InventoryFieldKey])
       .map(([inventoryKey, elKey]) => ({
         label: inventory[inventoryKey as InventoryFieldKey] as string,
         columnDef: elKey,
         type: this.detectFieldType(elKey)
-      }))
-  })
-  
-  detectFieldType(key: string): FieldType {
-    if (key.startsWith('integer')) return 'number'
-    if (key.startsWith('boolean')) return 'boolean'
-    if (key.startsWith('text')) return 'text';
-    return 'string'
-   }
-  
+      }));
+  });
+
   displayedColumns = computed(() => {
-    const fields = this.activeFields().map(field => field.columnDef)
-    return this.canManage() ? ['select', ...fields] : fields
-  })
+    const fields = this.activeFields().map(field => field.columnDef);
+    return this.canManage() ? ['select', ...fields] : fields;
+  });
   dataSource = computed(() => this.items());
 
   selection = new SelectionModel<Item>(true, []);
-  private selectedCountSignal = signal(0);
-  isSingleSelected = computed(() => this.selectedCountSignal() === 1);
-  isAnySelected = computed(() => this.selectedCountSignal() > 0);
+  private selectedCount = signal(0);
+  isSingleSelected = computed(() => this.selectedCount() === 1);
+  hasSelection = computed(() => this.selectedCount() > 0);
 
   updateSelectionCount() {
-    this.selectedCountSignal.set(this.selection.selected.length);
+    this.selectedCount.set(this.selection.selected.length);
   }
 
   isAllSelected() {
@@ -98,20 +91,27 @@ export class ItemsList {
     this.updateSelectionCount();
   }
 
+  detectFieldType(key: string): FieldType {
+    if (key.startsWith('integer')) return 'number';
+    if (key.startsWith('boolean')) return 'boolean';
+    if (key.startsWith('text')) return 'text';
+    return 'string';
+  }
+
   create() {
     const dialogRef = this.dialog.open(ItemCreate, {
       data: {
         inventory: this.inventory(),
         activeFields: this.activeFields()
       }
-    })
-    
+    });
+
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) return
-      this.createItem.emit(result)
-    })
+      if (!result) return;
+      this.createItem.emit(result);
+    });
   }
-  
+
   edit() {
     if (!this.isSingleSelected()) return;
     const item = this.selection.selected[0];
@@ -121,22 +121,22 @@ export class ItemsList {
         activeFields: this.activeFields(),
         item: item
       }
-    })
-    
+    });
+
     dialogRef.afterClosed().subscribe(result => {
-      if (!result) return
+      if (!result) return;
       this.editItem.emit(result);
       this.selection.clear();
-    })
-    
+    });
+
   }
-  
+
   delete() {
-    if (!this.isAnySelected()) return;
+    if (!this.hasSelection()) return;
     const ids = this.selection.selected.map(item => item.id);
     this.deleteItem.emit(ids);
     this.selection.clear();
-    this.updateSelectionCount(); 
+    this.updateSelectionCount();
   }
-  
+
 }

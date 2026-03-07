@@ -25,7 +25,6 @@ export class InventoryAccess implements OnChanges {
   
   save() {
     if (this.form.invalid || !this.inventory()) return;
-    
     const formData = new FormData();
     formData.append('isPublic', this.form.get('isPublic')?.value.toString());
     formData.append('version', this.inventory()!.version.toString());

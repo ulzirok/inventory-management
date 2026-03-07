@@ -53,9 +53,8 @@ export class InventoryCreate {
   isEditMode = signal(false);
   inventoryId = signal<string | null>(null);
   currentVersion = signal<number>(0);
-  private autoSaveSub?: Subscription;
 
-  public filteredTags$ = this.tag.valueChanges.pipe(
+  filteredTags$ = this.tag.valueChanges.pipe(
     startWith(''),
     debounceTime(400),
     distinctUntilChanged(),
@@ -64,20 +63,13 @@ export class InventoryCreate {
     )
   );
 
-  constructor() {
+  ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode.set(true);
       this.inventoryId.set(id);
     }
-  }
-
-  ngOnInit(): void {
     this.loadCategories();
-
-    this.inventoryService.getCategories().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(data => this.categories.set(data));
 
     this.form = this.fb.group({
       categoryId: ['', [Validators.required]],
@@ -96,10 +88,9 @@ export class InventoryCreate {
         });
         this.selectedTags.set(data.tags || []);
       });
-      
+
       this.autoSave();
     }
-
   }
 
   loadCategories() {
@@ -150,16 +141,16 @@ export class InventoryCreate {
     );
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
       this.selectedFile = file;
     }
   }
-  
+
   cancel() {
-    const id = Number(this.inventoryId()!)
+    const id = Number(this.inventoryId()!);
     this.router.navigate([`/inventory/${id}/details`]);
   }
 
@@ -168,12 +159,7 @@ export class InventoryCreate {
     this.form.disable();
     const formData = this.prepareFormData();
     this.isEditMode() ? this.updateInventory(formData) : this.createInventory(formData);
-    
-    this.tag.setValue('');
-    this.selectedTags.set([]);
-    Object.keys(this.form.controls).forEach(key => {
-      this.form.get(key)?.setErrors(null);
-    });
+    this.form.reset();
   }
 
   private prepareFormData(): FormData {
@@ -197,7 +183,6 @@ export class InventoryCreate {
       next: () => {
         this.notificationService.success('Inventory created');
         this.router.navigate(['/inventory']);
-        
         this.form.reset();
         this.form.enable();
       },
@@ -206,44 +191,38 @@ export class InventoryCreate {
   }
 
   private updateInventory(formData: FormData) {
-    const id = Number(this.inventoryId()!)
-    
+    const id = Number(this.inventoryId()!);
+
     this.inventoryService.update(id, formData).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: (updated) => {
         this.currentVersion.set(updated.version);
         this.form.markAsPristine();
-        
         this.notificationService.success('Inventory updated');
         this.router.navigate([`/inventory/${id}/details`]);
       },
       error: (err) => this.form.enable()
     });
   }
-  
-  private autoSave() {
-    const id = Number(this.inventoryId()!)
-    
-    this.autoSaveSub = interval(10000).pipe(
-        filter(() => this.form.dirty && this.form.valid),
-        switchMap(() => {
-          const formData = this.prepareFormData();
-          return this.inventoryService.update(id, formData);
-        }),
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe({
-        next: (updated) => {
-          this.currentVersion.set(updated.version);
-          this.form.markAsPristine();
-        },
-        error: (err) => {
-          if (err.status === 409) {
-            this.notificationService.error('Autosave error: Data modified by another user');
-            this.autoSaveSub?.unsubscribe();
-          }
-        }
-      });
-  }
 
+  private autoSave() {
+    const id = Number(this.inventoryId()!);
+    interval(10000).pipe(
+      filter(() => this.form.dirty && this.form.valid),
+      switchMap(() => {
+        const formData = this.prepareFormData();
+        return this.inventoryService.update(id, formData);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (updated) => {
+        this.currentVersion.set(updated.version);
+        this.form.markAsPristine();
+      },
+      error: (err) => {
+        if (err.status === 409) this.notificationService.error('Autosave error: Data modified by another user');
+      }
+    });
+  }
 }

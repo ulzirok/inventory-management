@@ -16,28 +16,28 @@ import { Loader } from '../../../../shared/components/loader/loader';
   styleUrl: './dashboard-list.scss',
 })
 export class DashboardList {
-  private router = inject(Router)
-  private notificationService = inject(NotificationService)
-  private inventoryService = inject(InventoryService)
+  private router = inject(Router);
+  private notificationService = inject(NotificationService);
+  private inventoryService = inject(InventoryService);
   private destroyRef = inject(DestroyRef);
-  
+
   isLoading = signal(false);
   inventories = signal<Inventory[]>([]);
-  
+
   ngOnInit() {
-    this.isLoading.set(true)
-    this.loadInventories()
+    this.isLoading.set(true);
+    this.loadInventories();
   }
-  
+
   loadInventories() {
     this.inventoryService.getAll().pipe(
       takeUntilDestroyed(this.destroyRef),
-      finalize(()=> this.isLoading.set(false))
+      finalize(() => this.isLoading.set(false))
     ).subscribe(
       data => this.inventories.set(data)
     );
   }
-  
+
   onCreateInventory(): void {
     this.router.navigate(['/inventory/create']);
   }
@@ -57,8 +57,8 @@ export class DashboardList {
       error: (err) => { }
     });
   }
-  
+
   onviewItems(id: number) {
-    this.router.navigate([`/dashboard/${id}/items`])
+    this.router.navigate([`/dashboard/${id}/items`]);
   }
 }

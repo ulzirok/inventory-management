@@ -27,11 +27,11 @@ export class DashboardPage {
   private router = inject(Router)
   private destroyRef = inject(DestroyRef);
   
-  public isLoading = signal(false);
-  public tags = signal<Tag[]>([]);
-  public latestInventory = signal<Inventory[]>([]);
-  public topInventory = signal<Inventory[]>([]);
-  public isAuthenticated = computed(() => this.authService.isAuthenticated());
+  isLoading = signal(false);
+  tags = signal<Tag[]>([]);
+  latestInventory = signal<Inventory[]>([]);
+  topInventory = signal<Inventory[]>([]);
+  isAuthenticated = computed(() => this.authService.isAuthenticated());
   
   ngOnInit(): void {
     this.isLoading.set(true); 
