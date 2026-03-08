@@ -13,7 +13,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private tokenService = inject(TokenService);
 
-  private currentUser = signal<User | null>(null);
+  currentUser = signal<User | null>(null);
 
   register(user: User): Observable<User> {
     return this.http.post<User>(`${environment.apiUrl}/api/auth/register`, user);

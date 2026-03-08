@@ -5,3 +5,8 @@ export interface User {
   role: string;
   isBlocked: boolean;
 }
+export interface UserDto {
+  ids: number[]
+  role?: string;
+  isBlocked?: boolean;
+}

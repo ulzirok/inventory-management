@@ -151,6 +151,8 @@
     "name": "Name",
     "email": "Email",
     "status": "Status",
-    "role": "Role"
+    "role": "Role",
+    "active": "active",
+    "blocked": "blocked"
   }
 }

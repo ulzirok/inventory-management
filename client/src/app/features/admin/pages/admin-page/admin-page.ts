@@ -8,9 +8,10 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize, forkJoin } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.interface';
+import { User, UserDto } from '../../models/user.interface';
 import { Loader } from '../../../../shared/components/loader/loader';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -21,6 +22,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class AdminPage implements OnInit {
   private inventoryService = inject(InventoryService);
   private userService = inject(UserService);
+  private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   private notificationService = inject(NotificationService);
@@ -70,19 +72,49 @@ export class AdminPage implements OnInit {
     });
   }
 
-  onChangeStatus(ids: number[]) {
-
+  onChangeStatus(upload: UserDto) {
+    this.userService.changeStatus(upload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message);
+        this.loadData();
+      },
+      error: (err) => { }
+    })
   }
 
-  onChangeRole(ids: number[]) {
-
+  onChangeRole(upload: UserDto) {
+    this.userService.changeRole(upload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message);
+        const currentUserId = this.authService.currentUser()
+        if (currentUserId && upload.ids.includes(currentUserId.id) && upload.role !== 'ADMIN') {
+          this.authService.logout();
+          this.router.navigate(['/auth/login']);
+          return;
+        }
+        this.loadData();
+      },
+      error: (err) => { }
+    })
   }
 
   onDeleteUsers(ids: number[]) {
-
+    this.userService.delete(ids).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message);
+        this.loadData()
+       },
+      error: (err) => {}
+    })
   }
 
   onGetUser(id: number) {
-
+    //navigate на user-details
   }
 }

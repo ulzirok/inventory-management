@@ -50,7 +50,6 @@ export class Login implements OnInit {
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.notificationService.success('Logged in successfully.');
         this.router.navigate(['/dashboard']);
         this.form.enable();
       },

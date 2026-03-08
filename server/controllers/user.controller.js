@@ -60,7 +60,7 @@ module.exports.changeStatus = async (req, res) => {
     });
 
     res.status(200).json({
-      message: `Status successfully updated to ${isBlocked ? "block" : "unblock"}`,
+      message: `Status updated to ${isBlocked ? "block" : "active"}`,
     });
   } catch (error) {
     errorHandler(res, error);
@@ -93,7 +93,7 @@ module.exports.delete = async (req, res) => {
         id: { in: ids.map((id) => Number(id)) },
       },
     });
-    res.status(200).json({ message: "Users successfully deleted" });
+    res.status(200).json({ message: "Users deleted" });
   } catch (error) {
     errorHandler(res, error);
   }

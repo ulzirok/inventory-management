@@ -7,12 +7,10 @@
     
     <button mat-flat-button (click)="settings()" [disabled]="!isSingleSelected()">
       <mat-icon>settings</mat-icon>
-      {{'buttons.settings'| translate}}
     </button>
     
     <button mat-flat-button color="warn" (click)="delete()" [disabled]="!hasSelection()">
       <mat-icon>delete</mat-icon>
-      {{'buttons.delete'| translate}}
     </button>
   }
   

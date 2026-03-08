@@ -35,7 +35,7 @@ export class InventoryService {
     return this.http.patch<Inventory>(`${environment.apiUrl}/api/inventory/${id}`, inventory);
   }
 
-  delete(ids: number[]) {
+  delete(ids: number[]): Observable<{ message: string; }> {
     return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/inventory/delete`, { ids });
   }
 

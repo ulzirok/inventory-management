@@ -1,5 +1,5 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { User } from '../../models/user.interface';
+import { User, UserDto } from '../../models/user.interface';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule } from '@angular/material/table';
@@ -8,6 +8,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-users-list',
@@ -25,10 +27,12 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class UsersList {
   users = input<User[]>([]);
-  changeUserStatus = output<number[]>();
-  changeUserRole = output<number[]>();
+  changeUserStatus = output<UserDto>();
+  changeUserRole = output<UserDto>();
   deleteUsersById = output<number[]>();
   getUserById = output<number>();
+  
+  private dialog = inject(MatDialog)
   
   dataSource = computed(() => this.users());
   displayedColumns = ['select', 'name', 'email', 'status', 'role'];
@@ -60,19 +64,48 @@ export class UsersList {
   }
   
   changeStatus() {
-    
+    if (!this.hasSelection()) return;
+    const selectedUsers = this.selection.selected;
+    const upload: UserDto = {
+      ids: selectedUsers.map(user => user.id),
+      isBlocked: selectedUsers.some(user => !user.isBlocked)
+    };
+    this.changeUserStatus.emit(upload);
+    this.selection.clear();
+    this.updateSelectionCount();
   }
   
   changeRole() {
-    
+    if (!this.hasSelection()) return;
+    const selectedUsers = this.selection.selected;
+    const hasUser = selectedUsers.some(user => user.role === 'USER');
+    const upload = {
+      ids: selectedUsers.map(u => u.id),
+      role: hasUser ? 'ADMIN' : 'USER'
+    }
+    this.changeUserRole.emit(upload);
+    this.selection.clear();
+    this.updateSelectionCount();
   }
   
   deleteUsers() {
-    
+    if (!this.hasSelection()) return;
+    const dialogRef = this.dialog.open(ConfirmDialog);
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      const ids = this.selection.selected.map(item => item.id);
+      this.deleteUsersById.emit(ids);
+      this.selection.clear();
+      this.updateSelectionCount();
+    });
   }
   
   getUser() {
-    
+    if (!this.isSingleSelected()) return;
+    const id = this.selection.selected[0].id;
+    this.getUserById.emit(id);
+    this.selection.clear();
+    this.updateSelectionCount();
   }
-  
+
 }

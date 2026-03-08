@@ -8,8 +8,8 @@ router.use(passport.authenticate("jwt", { session: false }), isAdmin);
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getUserById);
-router.patch("/:id", controller.changeStatus);
-router.patch("/:id", controller.changeRole);
+router.patch("/status", controller.changeStatus);
+router.patch("/role", controller.changeRole);
 router.post("/delete", controller.delete);
 
 module.exports = router;

@@ -9,12 +9,10 @@
 
   <button mat-flat-button color="primary" (click)="edit()" [disabled]="!isSingleSelected()">
     <mat-icon>edit</mat-icon>
-    {{'buttons.edit'| translate}}
   </button>
 
   <button mat-flat-button color="warn" (click)="delete()" [disabled]="!hasSelection()">
     <mat-icon>delete</mat-icon>
-    {{'buttons.delete'| translate}}
   </button>
 </mat-toolbar>
 }
