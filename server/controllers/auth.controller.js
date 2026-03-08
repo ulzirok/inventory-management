@@ -7,23 +7,23 @@ const prisma = require("../prisma");
 
 module.exports.register = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
     
     const salt = await bycript.genSalt(10);
     const hashPassword = await bycript.hash(password, salt);
 
     const user = await prisma.user.create({
       data: {
+        name,
         email,
         password: hashPassword,
-        // role: 'USER'; isBlocked: false
       },
     });
 
     res.status(201).json({ message: "User created succesfully" });
   } catch (error) {
     if (error.code === "P2002") {
-      res.status(409).json({
+      return res.status(409).json({
         message: "This email is already registered. Try a different email."
       });
     }

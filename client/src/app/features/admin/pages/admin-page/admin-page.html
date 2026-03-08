@@ -1,1 +1,28 @@
-<p>admin-page works!</p>
+@if (isLoading()) {
+  <app-loader></app-loader>
+} @else {
+  <div class="admin-container">
+    <div class="tables">
+      
+      <h2 class="subtitle">{{ 'admin.usersTitle' | translate }}</h2>
+      <app-users-list
+        [users]="users()"
+        (changeUserStatus)="onChangeStatus($event)" 
+        (changeUserRole)="onChangeRole($event)"
+        (deleteUsersById)="onDeleteUsers($event)"
+        (getUserById)="onGetUser($event)"
+        >
+      </app-users-list>
+      
+      <h2 class="subtitle">{{ 'admin.inventoryTitle' | translate }}</h2>
+      <app-inventory-list 
+        [inventories]="inventories()" 
+        [isEditable]="true" 
+        [showViewItems]="false"
+        (createInventory)="onCreateInventory()" 
+        (settingsInventory)="onSettingsInventory($event)"
+        (deleteInventory)="onDeleteInventory($event)">
+      </app-inventory-list>
+    </div>
+  </div>
+}

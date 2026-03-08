@@ -51,7 +51,11 @@
     "settings": "Settings",
     "save": "Save",
     "cancel": "Cancel",
-    "details": "Details"
+    "details": "Details",
+    "block": "Block",
+    "unBlock": "Unblock",
+    "role": "Role",
+    "user": "User details"
   },
   "createInventory": {
     "creating": "Creating a new inventory",
@@ -140,5 +144,13 @@
     "hintDate": "Product creation date (year or full date)",
     "hintSequence": "Sequence number: increases by 1 for each new item (format: 0001, 0002, ... 00010)",
     "hintGuid": "Maximum Uniqueness: Long Code (UUID)"
+  },
+  "admin": {
+    "inventoryTitle": "Inventories List",
+    "usersTitle": "Users List",
+    "name": "Name",
+    "email": "Email",
+    "status": "Status",
+    "role": "Role"
   }
 }
