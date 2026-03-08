@@ -4,6 +4,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-inventory-settings',
@@ -11,7 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
     TranslateModule,
     CommonModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MarkdownComponent
   ],
   templateUrl: './inventory-settings.html',
   styleUrl: './inventory-settings.scss',

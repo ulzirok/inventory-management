@@ -1,1 +1,24 @@
-<p>inventory-chat works!</p>
+<div class="chat-container">
+
+  <div class="messages-list">
+    <div class="message">
+      <!-- <p>Alex:</p> -->
+      <span class="md-wrapper">
+        <markdown>*Soon...*</markdown>
+      </span>
+    </div>
+  </div>
+
+  <div class="send-message">
+    <form class="chat-form">
+      <mat-form-field appearance="outline">
+        <mat-label>Message</mat-label>
+        <textarea matInput placeholder="Message..."></textarea>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">
+        Send
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </div>
+</div>

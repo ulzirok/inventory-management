@@ -1,0 +1,33 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px 30px;
+}
+
+.message {
+  display: flex;
+  gap: 5px;
+}
+
+.md-wrapper {
+  // border: 1px solid rgba(157, 157, 157, 0.12);
+}
+
+.send-message {
+  width: 350px;
+}
+
+.chat-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.subtitle {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .chat-container {
+    flex-wrap: wrap;
+  }
+}

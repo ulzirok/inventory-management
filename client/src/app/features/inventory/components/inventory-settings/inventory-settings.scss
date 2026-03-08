@@ -9,6 +9,12 @@
   gap: 7px;
 }
 
+.description-wrapper {
+  border: 1px solid rgba(157, 157, 157, 0.12);
+  border-radius: 6px;
+  padding: 10px;
+}
+
 @media (max-width: 1024px) {
   .details-wrapper {
     flex-wrap: wrap;

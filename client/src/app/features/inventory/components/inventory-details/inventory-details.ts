@@ -16,6 +16,7 @@ import { InventorySettings } from '../inventory-settings/inventory-settings';
 import { InventoryFields } from '../inventory-fields/inventory-fields';
 import { InventoryAccess } from '../inventory-access/inventory-access';
 import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
+import { InventoryChat } from '../inventory-chat/inventory-chat';
 
 @Component({
   selector: 'app-inventory-details',
@@ -30,7 +31,8 @@ import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
     InventorySettings,
     InventoryFields,
     InventoryAccess,
-    InventoryCustomId
+    InventoryCustomId,
+    InventoryChat
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
