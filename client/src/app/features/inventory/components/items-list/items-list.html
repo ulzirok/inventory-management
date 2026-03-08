@@ -43,6 +43,13 @@
       </td>
     </ng-container>
   
+    <ng-container matColumnDef="customId">
+      <th mat-header-cell *matHeaderCellDef> Custom ID </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.customId }}
+      </td>
+    </ng-container>
+    
     <!-- dinamic fields -->
     @for (field of activeFields(); track field.columnDef) {
     <ng-container [matColumnDef]="field.columnDef">

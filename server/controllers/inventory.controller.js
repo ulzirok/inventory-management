@@ -128,7 +128,7 @@ module.exports.create = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    let { version, categoryId, tags, title, description, isPublic, ...customLabels } = req.body;
+    let { version, categoryId, tags, title, description, isPublic, idFormat, ...customLabels } = req.body;
     let imageUrl = req.body.imageUrl; 
     
     const updatePayload = {
@@ -140,6 +140,10 @@ module.exports.update = async (req, res) => {
     
     if (isPublic !== undefined) {
       updatePayload.isPublic = isPublic === 'true' || isPublic === true;
+    }
+    
+    if (idFormat) {
+      updatePayload.idFormat = idFormat;
     }
     
     if (req.file) {

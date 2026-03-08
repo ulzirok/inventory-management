@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { InventorySettings } from '../inventory-settings/inventory-settings';
 import { InventoryFields } from '../inventory-fields/inventory-fields';
 import { InventoryAccess } from '../inventory-access/inventory-access';
+import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
 
 @Component({
   selector: 'app-inventory-details',
@@ -28,7 +29,8 @@ import { InventoryAccess } from '../inventory-access/inventory-access';
     MatListModule,
     InventorySettings,
     InventoryFields,
-    InventoryAccess
+    InventoryAccess,
+    InventoryCustomId
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
@@ -146,6 +148,19 @@ export class InventoryDetails implements OnInit {
       next: () => {
         this.loadInventory();
         this.notificationService.success('Inventory access changed.');
+      },
+      error: (err) => { }
+    });
+  }
+  
+  onSaveCustomId(payload: FormData) {
+    const id = Number(this.inventory()!.id);
+    this.inventoryService.update(id, payload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.loadInventory();
+        this.notificationService.success('Inventory customID changed.');
       },
       error: (err) => { }
     });

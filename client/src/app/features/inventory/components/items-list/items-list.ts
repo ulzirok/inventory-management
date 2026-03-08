@@ -60,7 +60,7 @@ export class ItemsList {
 
   displayedColumns = computed(() => {
     const fields = this.activeFields().map(field => field.columnDef);
-    return this.canManage() ? ['select', ...fields] : fields;
+    return this.canManage() ? ['select', 'customId', ...fields] : ['customId', ...fields];
   });
   dataSource = computed(() => this.items());
 

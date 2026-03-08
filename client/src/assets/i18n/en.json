@@ -103,7 +103,8 @@
     "updateTitle": "Update Item",
     "errorNumber": "Minimum 2 characters",
     "noItemsFound": "There are no items yet",
-    "infoMessage": "Please create the items if the fields are already configured in the Fields tab."
+    "infoMessage": "Please create the items if the fields are already configured in the Fields tab.",
+    "customId": "Custom ID"
     
   },
   "confirmDialog": {
@@ -112,5 +113,32 @@
   },
   "access": {
     "title": "Change access"
+  },
+  "customId": {
+    "result": "Result",
+    "prefix": "Prefix",
+    "fixedText": "Fixed text",
+    "prefixYour": "Your prefix",
+    "numberPreview": "Number preview",
+    "datePreview": "Date preview",
+    "sequencePreview": "Sequence format",
+    "guidPreview": "GUID preview",
+    "typeRandom": "Random number type",
+    "20bit": "20-bit random",
+    "32bit": "32-bit random",
+    "6digit": "6-digit random",
+    "9digit": "9-digit random",
+    "dateFormat": "Date Format",
+    "sequence": "Sequence",
+    "uniqueGuid": "Unique GUID",
+    "year": "Current year",
+    "fullDate": "Full date",
+    "notSelected": "Not selected",
+    "selected": "Selected",
+    "hintFixed": "Static text that is the same for all products (e.g. brand code)",
+    "hintRandom": "Unique random number for each product",
+    "hintDate": "Product creation date (year or full date)",
+    "hintSequence": "Sequence number: increases by 1 for each new item (format: 0001, 0002, ... 00010)",
+    "hintGuid": "Maximum Uniqueness: Long Code (UUID)"
   }
 }

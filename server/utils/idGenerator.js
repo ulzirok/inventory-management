@@ -15,6 +15,8 @@ const generateCustomId = async (format, inventoryId, prisma) => {
         year: dayjs().format("YYYY"),
         date: dayjs().format("YYYY-MM-DD"),
         guid: uuidv4(),
+        rand20: crypto.randomInt(0, 1048575),
+        rand32: crypto.randomInt(0, 4294967295),
         rand6: crypto.randomInt(100000, 999999),
         rand9: crypto.randomInt(100000000, 999999999),
         seq: String(count + 1).padStart(4, "0"),

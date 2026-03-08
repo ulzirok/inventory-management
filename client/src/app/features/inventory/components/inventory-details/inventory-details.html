@@ -50,7 +50,7 @@
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.customId' | translate}}</mat-card-title>
         <mat-card-content>
-          <p>Soon...</p>
+          <app-inventory-custom-id [inventory]="inventory()" (saveCustomId)="onSaveCustomId($event)"></app-inventory-custom-id>
         </mat-card-content>
       </mat-card>
     </mat-tab>
