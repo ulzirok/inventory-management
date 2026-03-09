@@ -7,19 +7,20 @@ module.exports.getByInventoryId = async (req, res) => {
   try {
     const { inventoryId } = req.params;
     
-    let whereCondition = {
-      inventoryId: Number(inventoryId)
-    };
-    
-    if (req.user.role !== roles.ADMIN) {
-      whereCondition.authorId = req.user.id;
-    }
-    
-    const item = await prisma.item.findMany({
-      where: whereCondition,
+    const items = await prisma.item.findMany({
+      where: {
+        inventoryId: Number(inventoryId),
+        // Используем OR, чтобы админ или автор видели всё, 
+        // а обычный юзер видел только в публичных или своих
+        OR: [
+          { authorId: req.user.id },            // Я автор предмета
+          { inventory: { isPublic: true } },     // Инвентарь публичный
+          { id: req.user.role === roles.ADMIN ? { not: "" } : "none" }
+        ]
+      },
       orderBy: { updatedAt: "desc" }
     });
-    res.status(200).json(item);
+    res.status(200).json(items);
   } catch (error) {
     errorHandler(res, error);
   }
@@ -29,11 +30,11 @@ module.exports.getPublic = async (req, res) => {
   try {
     const { inventoryId } = req.params;
     
-    const item = await prisma.item.findMany({
+    const items = await prisma.item.findMany({
       where: { inventoryId: Number(inventoryId) },
       orderBy: { updatedAt: "desc" }
     });
-    res.status(200).json(item);
+    res.status(200).json(items);
   } catch (error) {
     errorHandler(res, error);
   }
@@ -50,7 +51,7 @@ module.exports.create = async (req, res) => {
         OR: [
           { authorId: Number(req.user.id) },
           { isPublic: true },
-          { author: { role: req.user.role } }
+          { id: req.user.role === roles.ADMIN ? { not: 0 } : -1 }
         ]
       },
     });
@@ -92,7 +93,7 @@ module.exports.update = async (req, res) => {
           { authorId: Number(req.user.id) },
           { inventory: { isPublic: true } },
           { inventory: { authorId: Number(req.user.id) } },
-          { author: { role: req.user.role } }
+          { id: req.user.role === roles.ADMIN ? { not: "" } : "none" }
         ]
       },
       data: { ...updatedData, version: { increment: 1 }},
@@ -118,7 +119,7 @@ module.exports.delete = async (req, res) => {
         OR: [
           { authorId: Number(req.user.id) },
           { inventory: { isPublic: true } },
-          { author: { role: req.user.role } }
+          { id: req.user.role === roles.ADMIN ? { not: "" } : "none" }
         ]
       },
     });

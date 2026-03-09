@@ -43,7 +43,7 @@ export class ItemsList {
   private authService = inject(AuthService);
 
   isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
-  canManage = computed(() => this.isAdmin() || this.isEditable());
+  canManage = computed(() => this.isEditable() && (this.isAdmin() || this.isEditable()));
 
   activeFields = computed(() => {
     const inventory = this.inventory();
