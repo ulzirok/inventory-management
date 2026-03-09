@@ -86,6 +86,7 @@ export interface ItemCreateData {
     columnDef: string;
     type: FieldType;
   }[];
+  item?: Item;
 }
 
 export type FieldType = 'string' | 'number' | 'boolean' | 'text';

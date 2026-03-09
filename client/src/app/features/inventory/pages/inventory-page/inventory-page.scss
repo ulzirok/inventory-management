@@ -2,3 +2,14 @@
   margin: 15px 0 5px 0;
   margin-left: 16px;
 }
+
+.inventories {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 20px;
+}
+
+.subtitle {
+  margin: 10px 0 0 0;
+}

@@ -1,11 +1,14 @@
-<div class="inventory-container">
-  <h2 class="title">{{'inventory.inventoriesList'| translate}}</h2>
-  <app-inventory-list 
-  [inventories]="inventories()" 
-  [isEditable]="false" 
-  (createInventory)="onCreateInventory()"
-  (settingsInventory)="onSettingsInventory($event)" 
-  (deleteInventory)="onDeleteInventory($event)"
-  (viewItems)="onviewItems($event)">
-  </app-inventory-list>
-</div>
+@if (isLoading()) {
+  <app-loader></app-loader>
+} @else {
+  <div class="inventory-container">
+    <h2 class="title">{{'inventory.inventoriesList'| translate}}</h2>
+    <app-inventory-list 
+      [inventories]="inventories()" 
+      [isEditable]="false" 
+      (createInventory)="onCreateInventory()"
+      (settingsInventory)="onSettingsInventory($event)" (deleteInventory)="onDeleteInventory($event)"
+      (viewItems)="onviewItems($event)">
+    </app-inventory-list>
+  </div>
+}

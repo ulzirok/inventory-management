@@ -1,1 +1,95 @@
-<p>inventory-custom-id works!</p>
+<div class="custom-id-container">
+
+  <form [formGroup]="form" class="customId-form" (ngSubmit)="save()">
+    
+  <div class="final-preview">
+    <strong>{{'customId.result'| translate}}: </strong>
+    <span class="result-text">
+      {{form.value.fixedText}}{{previews.date}}-{{previews.seq}}-{{previews.random}}
+      @if(form.value.useGuid) {
+        <ng-container>-{{previews.guid}}</ng-container>
+      }
+    </span>
+  </div>
+  
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.prefix'| translate}}</mat-label>
+        <input matInput value="{{'customId.fixedText'| translate}}" readonly>
+        <mat-hint>{{'customId.hintFixed' | translate}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.prefixYour'| translate}}</mat-label>
+        <input matInput formControlName="fixedText">
+      </mat-form-field>
+    </div>
+  
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.typeRandom'| translate}}</mat-label>
+        <mat-select formControlName="randomType">
+          <mat-option value="rand20">{{'customId.20bit'| translate}}</mat-option>
+          <mat-option value="rand32">{{'customId.32bit'| translate}}</mat-option>
+          <mat-option value="rand6">{{'customId.6digit'| translate}}</mat-option>
+          <mat-option value="rand9">{{'customId.9digit'| translate}}</mat-option>
+        </mat-select>
+        <mat-hint>{{'customId.hintRandom' | translate}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.numberPreview'| translate}}</mat-label>
+        <input matInput [value]="previews.random" readonly class="preview-input">
+      </mat-form-field>
+    </div>
+  
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.dateFormat'| translate}}</mat-label>
+        <mat-select formControlName="dateType">
+          <mat-option value="year">{{'customId.year'| translate}}</mat-option>
+          <mat-option value="date">{{'customId.fullDate'| translate}}</mat-option>
+        </mat-select>
+        <mat-hint>{{'customId.hintDate' | translate}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.datePreview'| translate}}</mat-label>
+        <input matInput [value]="previews.date" readonly class="preview-input">
+      </mat-form-field>
+    </div>
+  
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.sequence'| translate}}</mat-label>
+        <input matInput value="{{'customId.sequence'| translate}}" readonly>
+        <mat-hint>{{'customId.hintSequence' | translate}}</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.sequencePreview'| translate}}</mat-label>
+        <input matInput [value]="previews.seq" readonly class="preview-input">
+      </mat-form-field>
+    </div>
+    
+    <div class="form-row">
+      <mat-form-field appearance="outline">
+        <mat-label>{{'customId.uniqueGuid'| translate}}</mat-label>
+        <mat-select formControlName="useGuid">
+          <mat-option [value]="false">{{'customId.notSelected'| translate}}</mat-option>
+          <mat-option [value]="true">{{'customId.selected'| translate}}</mat-option>
+        </mat-select>
+        <mat-hint>{{'customId.hintGuid' | translate}}</mat-hint>
+      </mat-form-field>
+    
+      <mat-form-field appearance="outline" >
+        <mat-label>{{'customId.guidPreview'| translate}}</mat-label>
+        <input matInput [value]="previews.guid" readonly class="preview-input" readonly>
+      </mat-form-field>
+    </div>
+  
+    <button mat-raised-button color="primary" type="submit">
+      <mat-icon>save</mat-icon>
+      {{'buttons.save'| translate}}
+    </button>
+  </form>
+  
+</div>
+
+

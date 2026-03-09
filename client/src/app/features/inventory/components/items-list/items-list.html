@@ -1,52 +1,72 @@
 <mat-card-title class="subtitle">{{'inventory.items'| translate}}</mat-card-title>
 
+@if (canManage()) {
 <mat-toolbar class="table-toolbar">
-  @if (canManage()) {
-  <button mat-flat-button color="primary" (click)="create()">
+  <button mat-flat-button color="primary" (click)="create()" [disabled]="activeFields().length === 0">
     <mat-icon>add</mat-icon>
     {{'buttons.create'| translate}}
   </button>
 
   <button mat-flat-button color="primary" (click)="edit()" [disabled]="!isSingleSelected()">
     <mat-icon>edit</mat-icon>
-    {{'buttons.edit'| translate}}
   </button>
 
-  <button mat-flat-button color="warn" (click)="delete()" [disabled]="!isAnySelected()">
+  <button mat-flat-button color="warn" (click)="delete()" [disabled]="!hasSelection()">
     <mat-icon>delete</mat-icon>
-    {{'buttons.delete'| translate}}
   </button>
-  }
-
-  <button mat-flat-button (click)="details()" [disabled]="!isSingleSelected()">
-    <mat-icon>details</mat-icon>
-    {{'buttons.details'| translate}}
-  </button>
-
 </mat-toolbar>
+}
 
-<table mat-table [dataSource]="dataSource()" class="mat-elevation-z1">
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(row)" [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
-
-  <!-- dinamic fields -->
-  @for (field of activeFields(); track field.columnDef) {
-  <ng-container [matColumnDef]="field.columnDef">
-    <th mat-header-cell *matHeaderCellDef> {{field.label}}</th>
-    <td mat-cell *matCellDef="let element"> {{ element[field.columnDef] }} </td>
-  </ng-container>
+@if (dataSource().length > 0) {
+  <table mat-table [dataSource]="dataSource()">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        @if (canManage()) {
+          <mat-checkbox 
+            (change)="toggleAllRows()" 
+            [checked]="isAllSelected()"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        }
+        
+      </th>
+      <td mat-cell *matCellDef="let row">
+        @if (canManage()) {
+          <mat-checkbox 
+            (click)="$event.stopPropagation()" 
+            (change)="toggleRow(row)" 
+            [checked]="selection.isSelected(row)">
+          </mat-checkbox>
+        }
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="customId">
+      <th mat-header-cell *matHeaderCellDef> Custom ID </th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.customId }}
+      </td>
+    </ng-container>
+    
+    <!-- dinamic fields -->
+    @for (field of activeFields(); track field.columnDef) {
+    <ng-container [matColumnDef]="field.columnDef">
+      <th mat-header-cell *matHeaderCellDef> {{field.label}}</th>
+      <td mat-cell *matCellDef="let element"> {{ element[field.columnDef] }} </td>
+    </ng-container>
+    }
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns();" (click)="toggleRow(row)"></tr>
+  
+  </table>
+  
+} @else {
+<div class="empty">
+  <mat-icon>inventory_2</mat-icon>
+  <p>{{ 'items.noItemsFound' | translate }}</p>
+  @if (canManage()) {
+    <p>{{ 'items.infoMessage' | translate }}</p>
   }
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns();" (click)="toggleRow(row)"></tr>
-
-</table>
+</div>
+}

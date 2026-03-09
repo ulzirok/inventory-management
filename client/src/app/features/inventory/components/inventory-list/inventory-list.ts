@@ -11,6 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Inventory } from '../../models/inventory.interface';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../auth/models/role.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-inventory-list',
@@ -30,29 +32,31 @@ import { Role } from '../../../auth/models/role.enum';
 export class InventoryList {
   inventories = input<Inventory[]>([]);
   isEditable = input<boolean>(false);
-  settingsInventory = output<number>()
-  deleteInventory = output<number[]>()
-  viewItems = output<number>()
-  viewAllItems = output<void>()
-  createInventory = output<void>()
-  
-  private authService = inject(AuthService)
-  
-  public isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
+  showViewItems = input<boolean>(true);
+  settingsInventory = output<number>();
+  deleteInventory = output<number[]>();
+  viewItems = output<number>();
+  viewAllItems = output<void>();
+  createInventory = output<void>();
+
+  private authService = inject(AuthService);
+  private dialog = inject(MatDialog);
+
+  isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   canManage = computed(() => this.isAdmin() || this.isEditable());
-  dataSource = this.inventories;
-  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'author', 'image'];
+  dataSource = computed(() => this.inventories());
+  displayedColumns = ['select', 'inventory', 'description', 'category', 'author', 'image'];
   selection = new SelectionModel<Inventory>(true, []);
-  private selectedCountSignal = signal(0);
-  isSingleSelected = computed(() => this.selectedCountSignal() === 1);
-  isAnySelected = computed(() => this.selectedCountSignal() > 0);
-  
+  private selectedCount = signal(0);
+  isSingleSelected = computed(() => this.selectedCount() === 1);
+  hasSelection = computed(() => this.selectedCount() > 0);
+
   updateSelectionCount() {
-    this.selectedCountSignal.set(this.selection.selected.length);
+    this.selectedCount.set(this.selection.selected.length);
   }
-  
+
   isAllSelected() {
-    return this.selection.selected.length === this.dataSource().length;
+    return this.dataSource().length > 0 && this.selection.selected.length === this.dataSource().length;
   }
 
   toggleAllRows() {
@@ -63,34 +67,42 @@ export class InventoryList {
     }
     this.updateSelectionCount();
   }
-  
-  toggleRow(row: Inventory) {
-    this.selection.toggle(row);
+
+  toggleRow(inventory: Inventory) {
+    this.selection.toggle(inventory);
     this.updateSelectionCount();
   }
 
   create() {
-    this.createInventory.emit()
+    this.createInventory.emit();
   }
 
   settings() {
     if (!this.isSingleSelected()) return;
-    const id = this.selection.selected[0].id
-    this.settingsInventory.emit(id)
+    const id = this.selection.selected[0].id;
+    this.settingsInventory.emit(id);
     this.selection.clear();
+    this.updateSelectionCount();
   }
 
   delete() {
-    if (!this.isAnySelected()) return;
-    const ids = this.selection.selected.map(item => item.id);
-    this.deleteInventory.emit(ids)
-    this.selection.clear();
+    if (!this.hasSelection()) return;
+    const dialogRef = this.dialog.open(ConfirmDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      const ids = this.selection.selected.map(item => item.id);
+      this.deleteInventory.emit(ids);
+      this.selection.clear();
+      this.updateSelectionCount();
+    });
   }
-  
+
   viewItem() {
     if (!this.isSingleSelected()) return;
-    const id = this.selection.selected[0].id
-    this.viewItems.emit(id)
+    const id = this.selection.selected[0].id;
+    this.viewItems.emit(id);
     this.selection.clear();
+    this.updateSelectionCount();
   }
 }

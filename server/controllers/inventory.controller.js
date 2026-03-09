@@ -28,6 +28,7 @@ module.exports.getMy = async (req, res) => {
       include: {
         category: true,
         tags: true,
+        author: { select: { name: true, email: true } },
         _count: { select: { items: true } }
       },
       orderBy: { updatedAt: "desc" }
@@ -38,6 +39,27 @@ module.exports.getMy = async (req, res) => {
     errorHandler(res, error);
   }
 };
+
+module.exports.getShared = async (req, res) => {
+  try {
+    const inventories = await prisma.inventory.findMany({
+      where: {
+        isPublic: true,
+        authorId: {not: Number(req.user.id)}
+      },
+      include: {
+        category: true,
+        tags: true,
+        author: { select: { name: true, email: true } },
+        _count: { select: { items: true } }
+      },
+      orderBy: { updatedAt: "desc" }
+    })
+    res.status(200).json(inventories)
+  } catch (error) {
+    errorHandler(res, error);
+  }
+}
 
 module.exports.getById = async (req, res) => {
   try {
@@ -106,26 +128,30 @@ module.exports.create = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
-    let { version, categoryId, tags, title, description, ...customLabels } = req.body;
+    let { version, categoryId, tags, title, description, isPublic, idFormat, ...customLabels } = req.body;
     let imageUrl = req.body.imageUrl; 
     
-    if (req.file) {
-      const uploadResponse = await imagekit.upload({
-        file: req.file.buffer,
-        fileName: `update_${Date.now()}`,
-      });
-      imageUrl = uploadResponse.url;
-    }
-
     const updatePayload = {
       title,
       description,
       ...customLabels,
       version: { increment: 1 },
     };
-
-    if (categoryId) {
-      updatePayload.category = { connect: { id: Number(categoryId) } };
+    
+    if (isPublic !== undefined) {
+      updatePayload.isPublic = isPublic === 'true' || isPublic === true;
+    }
+    
+    if (idFormat) {
+      updatePayload.idFormat = idFormat;
+    }
+    
+    if (req.file) {
+      const uploadResponse = await imagekit.upload({
+        file: req.file.buffer,
+        fileName: `update_${Date.now()}`,
+      });
+      updatePayload.imageUrl = uploadResponse.url;
     }
     
     if (categoryId) {
@@ -168,7 +194,7 @@ module.exports.delete = async (req, res) => {
         id: { in: ids.map((id) => Number(id)) }
       },
     });
-    return res.status(200).json({ message: "Inventories successfully deleted" });
+    return res.status(200).json({ message: "Inventories deleted" });
   } catch (error) {
     if (error.code === "P2025") {
       return res.status(404).json({ message: "Inventory not found" });

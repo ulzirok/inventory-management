@@ -43,6 +43,7 @@ export class InventoryFields {
     slot: ['', Validators.required],
     label: ['', Validators.required],
   });
+  
   existingFields = computed(() => {
     const inventory = this.inventory();
     if (!inventory) return [];
@@ -53,6 +54,7 @@ export class InventoryFields {
         label: inventory[key] as string
       }));
   });
+  
   availableSlots = computed(() => {
     const inventory = this.inventory();
     if (!inventory) return [];
@@ -88,7 +90,6 @@ export class InventoryFields {
       version: this.inventory()!.version
     };
     payload[slot] = null;
-
     this.deleteField.emit(payload)
     this.form.enable();
   }

@@ -3,15 +3,21 @@ const errorHandler = require("../utils/errorHandler");
 const Roles = require("../constants/roles");
 
 module.exports.getAll = async (req, res) => {
+  
   try {
-    let isAdmin = {};
     if (req.user.role !== Roles.ADMIN) {
-      isAdmin.authorId = req.user.id;
+      return res.status(403).json({ message: "Access denied. Admins only." });
     }
     
     const users = await prisma.user.findMany({
-      where: isAdmin,
-      orderBy: { updatedAt: "desc" }
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isBlocked: true
+      },
+      orderBy: { id: "desc" }
     });
     res.status(200).json(users);
   } catch (error) {
@@ -54,7 +60,7 @@ module.exports.changeStatus = async (req, res) => {
     });
 
     res.status(200).json({
-      message: `Status successfully updated to ${isBlocked ? "block" : "unblock"}`,
+      message: `Status updated to ${isBlocked ? "block" : "active"}`,
     });
   } catch (error) {
     errorHandler(res, error);
@@ -87,7 +93,7 @@ module.exports.delete = async (req, res) => {
         id: { in: ids.map((id) => Number(id)) },
       },
     });
-    res.status(200).json({ message: "Users successfully deleted" });
+    res.status(200).json({ message: "Users deleted" });
   } catch (error) {
     errorHandler(res, error);
   }

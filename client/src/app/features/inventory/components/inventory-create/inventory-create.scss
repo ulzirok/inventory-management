@@ -7,7 +7,6 @@
 
 .create-container {
   width: 400px;
-  min-height: 100vh;
   padding: 0 20px;
 }
 
@@ -18,10 +17,8 @@
 }
 
 .inventory-btns {
-  margin-top: 20px;
-}
-
-.inventory-btns button {
-  border-radius: 0;
-  width: 100%;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }

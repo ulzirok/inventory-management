@@ -5,9 +5,12 @@
   }
   <div >
     <p><strong>{{'inventory.title'| translate}}:</strong> {{inventory()?.title}}</p>
-    <p><strong>{{'inventory.description'| translate}}:</strong> {{inventory()?.description}}</p>
     <p><strong>{{'inventory.date'| translate}}:</strong> {{inventory()?.updatedAt | date:'short'}}</p>
     <p><strong>{{'inventory.customId'| translate}}:</strong> {{inventory()?.idFormat}}</p>
+    <p><strong>{{'inventory.description'| translate}}:</strong></p>
+    <div class="description-wrapper">
+      <markdown [data]="inventory()?.description"></markdown>
+    </div>
   
     <div class="details-btns">
       <button mat-raised-button color="primary" (click)="edit()">

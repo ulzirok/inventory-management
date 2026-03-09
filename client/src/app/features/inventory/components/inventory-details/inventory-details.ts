@@ -3,24 +3,20 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { InventoryService } from '../../services/inventory.service';
 import { Inventory, InventoryFieldsDto } from '../../models/inventory.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { MatIconModule } from '@angular/material/icon';
 import { ItemsList } from '../items-list/items-list';
 import { Item, ItemDto } from '../../models/item.interface';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatChipsModule } from '@angular/material/chips';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MatListModule } from '@angular/material/list';
 import { InventorySettings } from '../inventory-settings/inventory-settings';
 import { InventoryFields } from '../inventory-fields/inventory-fields';
+import { InventoryAccess } from '../inventory-access/inventory-access';
+import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
+import { InventoryChat } from '../inventory-chat/inventory-chat';
 
 @Component({
   selector: 'app-inventory-details',
@@ -30,23 +26,20 @@ import { InventoryFields } from '../inventory-fields/inventory-fields';
     MatCardModule,
     MatButtonModule,
     TranslateModule,
-    MatIconModule,
     ItemsList,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    ReactiveFormsModule,
-    MatChipsModule,
     MatListModule,
     InventorySettings,
-    InventoryFields
+    InventoryFields,
+    InventoryAccess,
+    InventoryCustomId,
+    InventoryChat
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
 })
 export class InventoryDetails implements OnInit {
   private route = inject(ActivatedRoute)
+  private router = inject(Router)
   private inventoryService = inject(InventoryService)
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService)
@@ -89,14 +82,14 @@ export class InventoryDetails implements OnInit {
     ).subscribe({
       next: () => {
         this.loadInventory();
-        this.notificationService.success('Fields saved successfully.');
+        this.notificationService.success('Fields saved.');
       },
       error: (err) => {}
     });
   }
   
   onEditInventory() {
-
+    this.router.navigate([`/inventory/${Number(this.inventory()!.id)}/edit`])
   }
   
   onDeleteField(payload: InventoryFieldsDto) {
@@ -111,28 +104,67 @@ export class InventoryDetails implements OnInit {
     });
   }
   
-  onCreateItem(item: ItemDto): void {
-    //проверка, если нет fields - сначала заполните fields
-    
+  onCreateItem(item: ItemDto): void {    
     this.inventoryService.createItem(this.inventory()!.id, item).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
+        this.notificationService.success('Item created.');
         this.loadItems();
-        this.notificationService.success('Item created successfully.');
       },
       error: (err) => {}
     })
   }
-  onEditItem(): void {
+  
+  onEditItem(item: any): void {
+    const itemId = item.id
     
+    this.inventoryService.updateItem(itemId, item).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.notificationService.success('Item updated.');
+        this.loadItems();
+      },
+      error: (err) => { }
+    })
   }
 
-  onDeleteItem(ids: number[]) {
-    
+  onDeleteItem(ids: string[]) {
+    this.inventoryService.deleteItem(ids).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message)
+        this.loadItems()
+      },
+      error: (err)=> {}
+    })
   }
   
-  onViewDetailsItem(id: number) {
-    
+  onSaveAccess(payload: FormData) {
+    const id = Number(this.inventory()!.id)
+    this.inventoryService.update(id, payload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.loadInventory();
+        this.notificationService.success('Inventory access changed.');
+      },
+      error: (err) => { }
+    });
+  }
+  
+  onSaveCustomId(payload: FormData) {
+    const id = Number(this.inventory()!.id);
+    this.inventoryService.update(id, payload).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.loadInventory();
+        this.notificationService.success('Inventory customID changed.');
+      },
+      error: (err) => { }
+    });
   }
 }

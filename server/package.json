@@ -9,10 +9,12 @@
     "scripts": {
         "start": "nodemon index.js",
         "seed": "node prisma/seed.js",
-        "format": "prettier --write ."
+        "db:mig": "prisma migrate dev",
+        "db:gen": "prisma generate",
+        "db:reset": "prisma migrate reset"
     },
     "dependencies": {
-        "@prisma/client": "^6.19.2",
+        "@prisma/client": "^6.0.1",
         "bcryptjs": "^3.0.3",
         "cors": "^2.8.6",
         "dayjs": "^1.11.19",
@@ -31,6 +33,6 @@
     "devDependencies": {
         "nodemon": "^3.1.11",
         "prettier": "^3.8.1",
-        "prisma": "^6.19.2"
+        "prisma": "^6.0.1"
     }
 }

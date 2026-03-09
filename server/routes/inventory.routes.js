@@ -8,13 +8,12 @@ const imagekit = require('../middleware/imagekit');
 router.get("/latest", controller.getLatest);
 router.get("/top", controller.getTop);
 router.get("/", controller.getAll);
+router.get("/info/:id", controller.getById);
 
 router.get("/my", passport.authenticate("jwt", { session: false }), isAuthenticated, controller.getMy);
-router.get("/:id", controller.getById);
-
 router.use(passport.authenticate("jwt", { session: false }), isAuthenticated);
 
-
+router.get("/shared", controller.getShared);
 router.post("/", imagekit.single('image'), controller.create);
 router.patch("/:id", imagekit.single('image'), controller.update);
 router.post("/delete", controller.delete);

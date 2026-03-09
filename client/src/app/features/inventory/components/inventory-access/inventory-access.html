@@ -1,1 +1,13 @@
-<p>inventory-access works!</p>
+<form [formGroup]="form">
+  <h3>{{'access.title' | translate}}:</h3>
+  <mat-radio-group formControlName="isPublic" (change)="save()">
+    <mat-radio-button [value]="false">
+      Private
+    </mat-radio-button>
+    <mat-radio-button [value]="true">
+      Public
+    </mat-radio-button>
+  </mat-radio-group>
+
+</form>
+

@@ -34,14 +34,22 @@ export class SearchResultsPage {
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
 
-  public inventories = computed(() => this.searchService.results());
+  inventories = computed(() => this.searchService.results());
   dataSource = computed(() => this.inventories());
   displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'image'];
-  selection = new SelectionModel<Inventory>(true, []);
-  private selectedCountSignal = signal(0);
-  isSingleSelected = computed(() => this.selectedCountSignal() === 1);
-  isAnySelected = computed(() => this.selectedCountSignal() > 0);
-  
+  selection = new SelectionModel<Inventory>(false, []);
+  private selectedCount = signal(0);
+  isSingleSelected = computed(() => this.selectedCount() === 1);
+
+  updateSelectionCount() {
+    this.selectedCount.set(this.selection.selected.length);
+  }
+
+  toggleRow(row: Inventory) {
+    this.selection.toggle(row);
+    this.updateSelectionCount();
+  }
+
   ngOnInit() {
     this.route.queryParams.pipe(
       debounceTime(400),
@@ -62,37 +70,10 @@ export class SearchResultsPage {
     ).subscribe();
   }
 
-  updateSelectionCount() {
-    this.selectedCountSignal.set(this.selection.selected.length);
-  }
-
-  isAllSelected() {
-    return this.selection.selected.length === this.dataSource().length;
-  }
-
-  toggleAllRows() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else {
-      this.selection.select(...this.dataSource());
-    }
-    this.updateSelectionCount();
-  }
-
-  toggleRow(row: Inventory) {
-    this.selection.toggle(row);
-    this.updateSelectionCount();
-  }
-
   viewItem() {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id;
-    this.router.navigate([`/inventory/${id}/item`])
+    this.router.navigate([`/dashboard/${id}/items`]);
     this.selection.clear();
   }
-  
-  viewAllItems() {
-    this.router.navigate(['/inventory/items'])
-  }
-  
 }

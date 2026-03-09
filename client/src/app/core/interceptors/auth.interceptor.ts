@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const tokenService = inject(TokenService);
   const router = inject(Router);
   const notification = inject(NotificationService);
-  
+
   const token = tokenService.getToken();
 
   if (token) {
@@ -23,15 +23,27 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const errorMessage = error.error?.message || 'Unexpected server error.';
-      if (error.status === 401) {
-        notification.error(errorMessage);
-        router.navigate(['/auth/login'], { queryParams: { sessionFailed: true } });
-      }
-      else if (error.status === 400 || error.status === 409) {
-        notification.error(errorMessage);
-      }
-      else {
-        notification.error('Server error. Please try again later.');
+      switch (error.status) {
+        case 401:
+          notification.error(errorMessage || 'Account blocked or session expired ');
+          router.navigate(['/auth/login'], { queryParams: { sessionFailed: true } });
+          break;
+
+        case 403:
+          notification.error(errorMessage);
+          router.navigate(['/auth/login'], { queryParams: { sessionFailed: true } });
+          break;
+
+        case 400:
+        case 404:
+        case 409:
+        case 500:
+          notification.error(errorMessage);
+          break;
+
+        default:
+          notification.error('Server error. Please try again later.');
+          break;
       }
       return throwError(() => error);
     })

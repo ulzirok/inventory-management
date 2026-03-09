@@ -7,15 +7,16 @@ import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { startWith, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { startWith, debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import { AsyncPipe } from '@angular/common';
 import { Category, Tag } from '../../models/inventory.interface';
 import { InventoryService } from '../../services/inventory.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inventory-create',
@@ -36,19 +37,24 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
   styleUrl: './inventory-create.scss',
 })
 export class InventoryCreate {
-  private fb = inject(FormBuilder)
-  private inventoryService = inject(InventoryService)
+  private fb = inject(FormBuilder);
+  private inventoryService = inject(InventoryService);
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService);
-  
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
   categories = signal<Category[]>([]);
   selectedTags = signal<Tag[]>([]);
   form!: FormGroup;
   selectedFile: File | null = null;
   tag = new FormControl('');
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  
-  public filteredTags$ = this.tag.valueChanges.pipe(
+  isEditMode = signal(false);
+  inventoryId = signal<string | null>(null);
+  currentVersion = signal<number>(0);
+
+  filteredTags$ = this.tag.valueChanges.pipe(
     startWith(''),
     debounceTime(400),
     distinctUntilChanged(),
@@ -56,10 +62,15 @@ export class InventoryCreate {
       this.inventoryService.getTags(value || '')
     )
   );
-  
+
   ngOnInit(): void {
-    this.loadCategories()
-    
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode.set(true);
+      this.inventoryId.set(id);
+    }
+    this.loadCategories();
+
     this.form = this.fb.group({
       categoryId: ['', [Validators.required]],
       title: ['', [Validators.required]],
@@ -67,26 +78,36 @@ export class InventoryCreate {
       imageUrl: ['']
     });
 
-    this.inventoryService.getCategories().pipe(
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe(data => this.categories.set(data));
+    if (this.isEditMode()) {
+      this.inventoryService.getById(this.inventoryId()!).subscribe(data => {
+        this.currentVersion.set(data.version);
+        this.form.patchValue({
+          categoryId: data.categoryId,
+          title: data.title,
+          description: data.description
+        });
+        this.selectedTags.set(data.tags || []);
+      });
+
+      this.autoSave();
+    }
   }
-  
+
   loadCategories() {
     this.inventoryService.getCategories().pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe(
       data => this.categories.set(data)
-    )
+    );
   }
-  
+
   addTag(tag: Tag) {
     if (!this.selectedTags().some(t => t.id === tag.id)) {
       this.selectedTags.update(tags => [...tags, tag]);
     }
     this.tag.setValue('');
   }
-  
+
   addTagFromInput(event: MatChipInputEvent) {
     const value = (event.value || '').trim();
     if (!value) return;
@@ -100,11 +121,11 @@ export class InventoryCreate {
     event.chipInput!.clear();
     this.tag.setValue('');
   }
-  
+
   addTagOnBlur() {
     const value = this.tag.value?.trim();
     if (!value) return;
-    
+
     if (!this.selectedTags().some(t => t.name === value)) {
       this.selectedTags.update(tags => [
         ...tags,
@@ -119,49 +140,89 @@ export class InventoryCreate {
       tags.filter(t => t.id !== tag.id)
     );
   }
-  
-  onFileSelected(event: any) {
+
+  onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
-      this.selectedFile = file
+      this.selectedFile = file;
     }
   }
-  
+
+  cancel() {
+    const id = Number(this.inventoryId()!);
+    this.router.navigate([`/inventory/${id}/details`]);
+  }
+
   onSubmit() {
     if (this.form.invalid) return;
     this.form.disable();
+    const formData = this.prepareFormData();
+    this.isEditMode() ? this.updateInventory(formData) : this.createInventory(formData);
+    this.form.reset();
+  }
+
+  private prepareFormData(): FormData {
     const formData = new FormData();
     formData.append('categoryId', this.form.get('categoryId')?.value);
     formData.append('title', this.form.get('title')?.value);
     formData.append('description', this.form.get('description')?.value);
-    
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile, this.selectedFile.name);
-    }
-    
+    if (this.isEditMode()) formData.append('version', this.currentVersion().toString());
+    if (this.selectedFile) formData.append('image', this.selectedFile, this.selectedFile.name);
     const tagNames = this.selectedTags().map(t => t.name);
     tagNames.forEach(name => {
       formData.append('tags', name);
     });
-    
+    return formData;
+  }
+
+  private createInventory(formData: FormData) {
     this.inventoryService.create(formData).pipe(
       takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: () => {
-        this.notificationService.success('Inventory created succesfully.')
+        this.notificationService.success('Inventory created');
+        this.router.navigate(['/inventory']);
         this.form.reset();
         this.form.enable();
-        this.tag.setValue('');
-        this.selectedTags.set([]);
-        Object.keys(this.form.controls).forEach(key => {
-          this.form.get(key)?.setErrors(null);
-        });
-       },
-      error: (err) => {
-        this.form.enable();
-       }
-    })
+      },
+      error: (err) => this.form.enable()
+    });
   }
-  
+
+  private updateInventory(formData: FormData) {
+    const id = Number(this.inventoryId()!);
+
+    this.inventoryService.update(id, formData).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (updated) => {
+        this.currentVersion.set(updated.version);
+        this.form.markAsPristine();
+        this.notificationService.success('Inventory updated');
+        this.router.navigate([`/inventory/${id}/details`]);
+      },
+      error: (err) => this.form.enable()
+    });
+  }
+
+  private autoSave() {
+    const id = Number(this.inventoryId()!);
+    interval(10000).pipe(
+      filter(() => this.form.dirty && this.form.valid),
+      switchMap(() => {
+        const formData = this.prepareFormData();
+        return this.inventoryService.update(id, formData);
+      }),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (updated) => {
+        this.currentVersion.set(updated.version);
+        this.form.markAsPristine();
+      },
+      error: (err) => {
+        if (err.status === 409) this.notificationService.error('Autosave error: Data modified by another user');
+      }
+    });
+  }
 }
