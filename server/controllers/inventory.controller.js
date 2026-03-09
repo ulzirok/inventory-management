@@ -1,6 +1,7 @@
 const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
 const imagekit = require('../imageKit.config.js');
+const roles = require("../constants/roles");
 
 module.exports.getAll = async (req, res) => {
   try {
@@ -128,8 +129,17 @@ module.exports.create = async (req, res) => {
 module.exports.update = async (req, res) => {
   try {
     const { id } = req.params;
+    const invId = Number(id);
     let { version, categoryId, tags, title, description, isPublic, idFormat, ...customLabels } = req.body;
     let imageUrl = req.body.imageUrl; 
+    
+    const inventory = await prisma.inventory.findUnique({ where: { id: invId } });
+    if (!inventory) return res.status(404).json({ message: "Inventory not found" });
+
+    const isAdmin = req.user.role === roles.ADMIN;
+    if (inventory.authorId !== req.user.id && !isAdmin) {
+      return res.status(403).json({ message: "No access to update this inventory" });
+    }
     
     const updatePayload = {
       title,
@@ -186,6 +196,15 @@ module.exports.update = async (req, res) => {
 module.exports.delete = async (req, res) => {
   try {
     const { ids } = req.body;
+    
+    const idArray = ids.map(id => Number(id));
+    const where = req.user.role === roles.ADMIN
+      ? { id: { in: idArray } }
+      : { id: { in: idArray }, authorId: req.user.id };
+
+    const deleted = await prisma.inventory.deleteMany({ where });
+
+    if (deleted.count === 0) return res.status(403).json({ message: "Access denied or not found" });
     
     if (!ids || ids.length === 0) return res.status(400).json({ message: "No inventories selected" });
 
