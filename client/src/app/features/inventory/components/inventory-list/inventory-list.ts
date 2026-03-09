@@ -13,6 +13,7 @@ import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../auth/models/role.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
+import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
   selector: 'app-inventory-list',
@@ -24,7 +25,8 @@ import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/conf
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MarkdownComponent
   ],
   templateUrl: './inventory-list.html',
   styleUrl: './inventory-list.scss',

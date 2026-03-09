@@ -7,9 +7,19 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Inventory } from '../../../inventory/models/inventory.interface';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { MarkdownComponent } from 'ngx-markdown';
 @Component({
   selector: 'app-last-inventory',
-  imports: [MatCardModule, MatTableModule, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterModule],
+  imports: [
+    MatCardModule,
+    MatTableModule,
+    CommonModule,
+    MatButtonModule,
+    TranslateModule,
+    MatIconModule,
+    RouterModule,
+    MarkdownComponent
+  ],
   templateUrl: './last-inventory.html',
   styleUrl: './last-inventory.scss',
 })
