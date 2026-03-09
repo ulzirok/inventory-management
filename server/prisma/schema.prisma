@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 enum Role {
@@ -77,7 +77,7 @@ model Inventory {
 
   items       Item[]
   tags        Tag[]     @relation("InventoryTags")
-  comments     Comment[]
+  comments    Comment[]
 }
 
 model Item {
