@@ -7,7 +7,9 @@
       [inventories]="inventories()" 
       [isEditable]="false" 
       (createInventory)="onCreateInventory()"
-      (settingsInventory)="onSettingsInventory($event)" (deleteInventory)="onDeleteInventory($event)"
+      (settingsInventory)="onSettingsInventory($event)" 
+      (deleteInventory)="onDeleteInventory($event)"
+      (viewChats)="onviewChats($event)"
       (viewItems)="onviewItems($event)">
     </app-inventory-list>
   </div>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -17,6 +17,9 @@ import { InventoryFields } from '../inventory-fields/inventory-fields';
 import { InventoryAccess } from '../inventory-access/inventory-access';
 import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
 import { InventoryChat } from '../inventory-chat/inventory-chat';
+import { WsService } from '../../../../core/services/ws.service';
+import { Comment } from '../../models/comment.interface';
+import { filter, first } from 'rxjs';
 
 @Component({
   selector: 'app-inventory-details',
@@ -37,19 +40,34 @@ import { InventoryChat } from '../inventory-chat/inventory-chat';
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
 })
-export class InventoryDetails implements OnInit {
+export class InventoryDetails implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private inventoryService = inject(InventoryService)
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService)
+  private ws = inject(WsService)
 
   items = signal<Item[]>([]);
   inventory = signal<Inventory | null>(null)
+  messages = signal<Comment[]>([])
   
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    
     this.loadInventory()
     this.loadItems()
+    this.loadMessages()
+    this.initChatWs(id)
+  }
+  
+  loadMessages() {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.inventoryService.getComment(Number(id)).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(
+      data => this.messages.set(data)
+    )
   }
   
   loadInventory() {
@@ -74,6 +92,30 @@ export class InventoryDetails implements OnInit {
         data => this.items.set(data)
       );
     }
+  }
+  
+  initChatWs(roomId: string | null) {
+    if (!roomId) return;
+
+    this.ws.connect();
+
+    this.ws.isConnected$.pipe(
+      filter(connected => connected === true),
+      first(),
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(() => {
+      this.ws.send({ method: 'JOIN_ROOM', roomId });
+    });
+
+    this.ws.onMessage((data) => {
+      if (data.method === 'NEW_MESSAGE') {
+        this.messages.update(msgs => [...msgs, data.message]);
+      }
+
+      if (data.method === 'ERROR') {
+        this.notificationService.error(data.message || 'Something went wrong');
+      }
+    });
   }
   
   onSaveField(payload: InventoryFieldsDto) {
@@ -166,5 +208,16 @@ export class InventoryDetails implements OnInit {
       },
       error: (err) => { }
     });
+  }
+  
+  onSendMessage(messageText: string) {
+    this.ws.send({
+      method: 'SEND_MESSAGE',
+      text: messageText
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.ws.disconnect();
   }
 }

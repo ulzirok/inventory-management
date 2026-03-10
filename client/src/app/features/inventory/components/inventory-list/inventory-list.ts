@@ -38,6 +38,7 @@ export class InventoryList {
   settingsInventory = output<number>();
   deleteInventory = output<number[]>();
   viewItems = output<number>();
+  viewChats = output<number>();
   viewAllItems = output<void>();
   createInventory = output<void>();
 
@@ -104,6 +105,14 @@ export class InventoryList {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id;
     this.viewItems.emit(id);
+    this.selection.clear();
+    this.updateSelectionCount();
+  }
+  
+  viewChat() {
+    if (!this.isSingleSelected()) return;
+    const id = this.selection.selected[0].id;
+    this.viewChats.emit(id);
     this.selection.clear();
     this.updateSelectionCount();
   }

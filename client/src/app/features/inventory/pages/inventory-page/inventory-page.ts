@@ -71,4 +71,8 @@ export class InventoryPage implements OnInit {
   onviewItems(id: number) {
     this.router.navigate([`/inventory/${id}/items`]);
   }
+  
+  onviewChats(id: number) {
+    this.router.navigate([`/inventory/${id}/chat`]);
+  }
 }

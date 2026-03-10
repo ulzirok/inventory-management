@@ -1,5 +1,5 @@
 <div class="inventory-container">
-  <h2 class="title">{{inventory()?.title}}</h2>
+  <h2 class="title">{{inventory()?.title ?? ''}}</h2>
 
   <mat-tab-group animationDuration="300ms">
 
@@ -8,7 +8,7 @@
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.details'| translate}}</mat-card-title>
         <mat-card-content>
-          <app-inventory-settings [inventory]="inventory()!" (editInventory)="onEditInventory()"></app-inventory-settings>
+          <app-inventory-settings [inventory]="inventory()" (editInventory)="onEditInventory()"></app-inventory-settings>
         </mat-card-content>
       </mat-card>
     </mat-tab>    
@@ -19,7 +19,7 @@
         <mat-card-title class="subtitle">{{'inventory.fields'| translate}}</mat-card-title>
         <mat-card-content>
         <app-inventory-fields 
-        [inventory]="inventory()!" 
+        [inventory]="inventory()" 
         (saveField)="onSaveField($event)" 
         (deleteField)="onDeleteField($event)"
         ></app-inventory-fields>
@@ -31,16 +31,14 @@
     <mat-tab label="{{'inventory.items'| translate}}">
       <mat-card class="tab-card">
         <mat-card-content class="itemsContent">
-
           <app-items-list 
-          [inventory]="inventory()!"
+          [inventory]="inventory()"
           [items]="items()"
           [isEditable]="true"
           (createItem)="onCreateItem($event)"
           (editItem)="onEditItem($event)"
           (deleteItem)="onDeleteItem($event)"
           ></app-items-list>
-
         </mat-card-content>
       </mat-card>
     </mat-tab>
@@ -70,7 +68,7 @@
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.chat'| translate}}</mat-card-title>
         <mat-card-content>
-          <app-inventory-chat></app-inventory-chat>
+          <app-inventory-chat [messages]="messages()" (sendMessage)="onSendMessage($event)"></app-inventory-chat>
         </mat-card-content>
       </mat-card>
     </mat-tab>

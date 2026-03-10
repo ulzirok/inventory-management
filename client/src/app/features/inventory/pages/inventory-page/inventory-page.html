@@ -12,7 +12,7 @@
 
     <h3 class="subtitle">{{ 'inventory.inventoriesShared' | translate }}</h3>
     <app-inventory-list [inventories]="sharedInventories()" [isEditable]="false" [showViewItems]="true"
-      (viewItems)="onviewItems($event)" (createInventory)="onCreateInventory()"
+      (viewItems)="onviewItems($event)" (viewChats)="onviewChats($event)" (createInventory)="onCreateInventory()"
       (settingsInventory)="onSettingsInventory($event)"
       (deleteInventory)="onDeleteInventory($event)"></app-inventory-list>
   </div>

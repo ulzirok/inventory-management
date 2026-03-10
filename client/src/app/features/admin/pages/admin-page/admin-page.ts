@@ -115,6 +115,6 @@ export class AdminPage implements OnInit {
   }
 
   onGetUser(id: number) {
-    //navigate на user-details
+    this.router.navigate([`users/${id}`])
   }
 }
