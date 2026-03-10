@@ -4,26 +4,34 @@ const errorHandler = require("../utils/errorHandler");
 module.exports.search = async (req, res) => {
   try {
     const { query } = req.query;
-    if (!query || query.trim().length < 2) return res.status(200).json([]);
-    
-    const searchResult = await prisma.inventory.findMany({
-      where: {
-        OR: [
-          { title: { contains: query, mode: "insensitive" } },
-          { description: { contains: query, mode: "insensitive" } },
-          { items: { some: { string_1: { contains: query, mode: "insensitive" } } } },
-          { tags: { some: { name: { contains: query, mode: "insensitive" } } } },
-        ],
-      },
-      include: {
-        author: { select: { name: true } },
-        tags: true,
-        _count: { select: { items: true } },
-      },
-      take: 50
-    });
+
+    if (!query || query.trim().length < 2) {
+      return res.status(200).json([]);
+    }
+
+    const formattedQuery = query
+      .trim()
+      .split(/\s+/)
+      .map(word => `${word}:*`)
+      .join(' & ');
+
+    const searchResult = await prisma.$queryRaw`
+      SELECT 
+        i.*, 
+        u.name AS "authorName",
+        (SELECT count(*)::int FROM "Item" WHERE "inventoryId" = i.id) as "itemsCount",
+        ts_rank(idx.document, to_tsquery('simple', ${formattedQuery})) as rank
+      FROM "Inventory" i
+      JOIN "User" u ON u.id = i."authorId"
+      JOIN inventory_search_v idx ON idx.inventory_id = i.id
+      WHERE idx.document @@ to_tsquery('simple', ${formattedQuery})
+      ORDER BY rank DESC
+      LIMIT 50;
+    `;
+
     res.status(200).json(searchResult);
   } catch (error) {
+    console.error('FTS Search Error:', error);
     errorHandler(res, error);
   }
 };
