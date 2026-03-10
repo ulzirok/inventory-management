@@ -1,0 +1,4 @@
+<div class="chat-container">
+  <mat-card-title class="title">{{'inventory.chat'| translate}}</mat-card-title>
+  <app-inventory-chat [messages]="messages()" (sendMessage)="onSendMessage($event)"></app-inventory-chat>
+</div>

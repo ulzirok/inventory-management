@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Category, Inventory, InventoryFieldsDto, Tag } from '../models/inventory.interface';
 import { environment } from '../../../../environment/environment';
 import { Item, ItemDto } from '../models/item.interface';
+import { Comment } from '../models/comment.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -65,5 +66,9 @@ export class InventoryService {
   
   deleteItem(ids: string[]) {
     return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { ids });
+  }
+  
+  getComment(inventoryId: number): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${environment.apiUrl}/api/comment/${inventoryId}`)
   }
 }

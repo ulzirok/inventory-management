@@ -1,19 +1,9 @@
 <div class="chat-container">
-
-  <div class="messages-list">
-    <div class="message">
-      <!-- <p>Alex:</p> -->
-      <span class="md-wrapper">
-        <markdown>*Soon...*</markdown>
-      </span>
-    </div>
-  </div>
-
   <div class="send-message">
-    <form class="chat-form">
+    <form [formGroup]="form" class="chat-form" (ngSubmit)="send()">
       <mat-form-field appearance="outline">
         <mat-label>Message</mat-label>
-        <textarea matInput placeholder="Message..."></textarea>
+        <textarea matInput rows="3" formControlName="text" placeholder="Message..."></textarea>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">
         Send
@@ -21,4 +11,29 @@
       </button>
     </form>
   </div>
+  
+  @if (messages().length > 0) {
+    <div class="messages-list">
+      @for (message of messages(); track message.id) {
+      <div class="message">
+        <div class="message-header">
+          @if (message.author) {
+          <a [routerLink]="['/users', message.author.id]">
+            {{ message.author.name }}
+          </a>
+          }
+          <span class="date">{{ message.createdAt | date:'short' }}</span>
+        </div>
+        <span class="md-wrapper">
+          <markdown [data]="message.text"></markdown>
+        </span>
+      </div>
+      }
+    </div>
+  } @else {
+    <div class="text-wrapper">
+      <p class="text">No comments yet</p>
+    </div>
+  }
+
 </div>

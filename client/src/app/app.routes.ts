@@ -6,6 +6,7 @@ import { OAuthSuccessPage } from './features/oAuthSuccess/o-auth-success-page/o-
 import { authGuard } from './core/guards/auth.guard';
 import { roleGuard } from './core/guards/role.guard';
 import { Role } from './features/auth/models/role.enum';
+import { UserProfile } from './features/admin/components/user-profile/user-profile';
 
 export const routes: Routes = [
   {
@@ -48,5 +49,6 @@ export const routes: Routes = [
       }
     ]
   },
+  { path: 'users/:id', component: UserProfile },
   { path: '**', component: NotFound },
 ];

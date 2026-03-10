@@ -61,4 +61,8 @@ export class DashboardList {
   onviewItems(id: number) {
     this.router.navigate([`/dashboard/${id}/items`]);
   }
+  
+  onviewChats(id: number) {
+    this.router.navigate([`/inventory/${id}/chat`]);
+  }
 }

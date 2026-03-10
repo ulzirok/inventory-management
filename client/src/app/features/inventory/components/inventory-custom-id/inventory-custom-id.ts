@@ -99,6 +99,7 @@ export class InventoryCustomId implements OnInit, OnChanges{
     const hasRand = tags.find(t => t.includes('rand'));
     const hasGuid = tags.includes('{{guid}}');
 
+    if (!this.form) return;
     this.form.patchValue({
       fixedText: fixedPart,
       dateType: hasDate ? hasDate.replace(/[{}]/g, '') : 'year',

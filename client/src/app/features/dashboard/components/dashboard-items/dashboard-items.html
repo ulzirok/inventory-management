@@ -1,4 +1,8 @@
-<div class="items-container">
-  <app-items-list [inventory]="inventory()!" [items]="items()" [isEditable]="false">
-  </app-items-list>
-</div>
+@if (isLoading()) {
+  <app-loader></app-loader>
+} @else {
+  <div class="items-container">
+    <app-items-list [inventory]="inventory()!" [items]="items()" [isEditable]="false">
+    </app-items-list>
+  </div>
+}
