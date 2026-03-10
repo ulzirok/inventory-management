@@ -45,6 +45,7 @@ export class InventoryList {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
 
+  isAuthenticated = computed(() => this.authService.isAuthenticated());
   isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   canManage = computed(() => this.isAdmin() || this.isEditable());
   dataSource = computed(() => this.inventories());

@@ -8,7 +8,7 @@ module.exports.like = async (req, res) => {
     await prisma.like.create({
       data: { itemId, userId: req.user.id },
     });
-    res.status(201).json({ message: "Liked successfully" });
+    res.status(201).json({ message: "Liked" });
   } catch (error) {
     if (error.code === "P2002") {
       return res.status(409).json({ message: "You already liked this item." });
