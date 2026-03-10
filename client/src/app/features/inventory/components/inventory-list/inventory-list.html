@@ -14,16 +14,18 @@
     </button>
   }
   
-  @if (showViewItems()) {
+  @if (isAuthenticated()) {
     <button mat-flat-button color="primary" (click)="viewChat()" [disabled]="!isSingleSelected()">
       <mat-icon>chat</mat-icon>
     </button>
+  }
+  
+  @if (showViewItems()) {
     <button mat-flat-button color="primary" (click)="viewItem()" [disabled]="!isSingleSelected()">
       <mat-icon>visibility</mat-icon>
       {{'buttons.item'| translate}}
     </button>
   }
-  
 </mat-toolbar>
 
 @if (dataSource().length > 0) {
