@@ -7,15 +7,16 @@ Each inventory can contain items with dynamically defined fields (text, number, 
 **Deploy:** [https://spiffy-biscochitos-96b7d0.netlify.app/](https://spiffy-biscochitos-96b7d0.netlify.app/)
 
 ## Key Features
-- user authentication and authorization (including social login)
-- role-based access control (Admin / Owner / Guest)
-- creation and management of inventories
-- dynamic custom fields for inventories
-- item management based on the defined field structure
-- comments and likes
-- full-text search across inventories
-- sorting, filtering, and pagination of data
-- real-time comments using WebSocket
+- User authentication and authorization (including social login)
+- Role-based access control (Admin / Owner / Guest)
+- Creation and management of inventories
+- Dynamic custom fields for inventories
+- Item management based on the defined field structure
+- Comments and likes
+- Full-text search across inventories
+- Sorting, filtering, and pagination of data
+- Real-time comments using WebSocket
+- Responsive Angular UI with Angular Material
 
 ##  1. Purpose of the system
 Develop a web application for creating and managing user inventories with a dynamic field structure. The system should allow users to independently create:
@@ -99,5 +100,6 @@ When creating an item:
 - one user can only like one item
 
 ## Screenshots
+
 
 
