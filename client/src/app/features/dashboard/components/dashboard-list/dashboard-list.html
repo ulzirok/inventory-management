@@ -6,11 +6,15 @@
     <app-inventory-list 
       [inventories]="inventories()" 
       [isEditable]="false" 
+      [showChat]="false"
       (createInventory)="onCreateInventory()"
       (settingsInventory)="onSettingsInventory($event)" 
       (deleteInventory)="onDeleteInventory($event)"
       (viewChats)="onviewChats($event)"
-      (viewItems)="onviewItems($event)">
+      (viewItems)="onviewItems($event)"
+      [totalCount]="total()"
+      (paramsChange)="onParamsChange($event)"
+      >
     </app-inventory-list>
   </div>
 }

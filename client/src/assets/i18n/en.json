@@ -35,6 +35,7 @@
     "topInventories": "Top inventories",
     "tags": "Tags",
     "inventory": "Inventory",
+    "title": "Title",
     "items": "Items",
     "author": "Author",
     "date": "Date",
@@ -72,7 +73,7 @@
     "placeholder": "Enter tag"
   },
   "inventory": {
-    "title": "Inventory",
+    "title": "Title",
     "placeholder": "Search",
     "resultSearch": "Position not found",
     "customId": "Custom ID",
@@ -92,7 +93,9 @@
     "access": "Access",
     "stats": "Stats",
     "export": "Export",
-    "details": "Details"
+    "details": "Details",
+    "filterPlaceholder": "Filter by keywords",
+    "noInventoriesFound": "There are no inventories"
     
   },
   "fields": {
@@ -106,7 +109,7 @@
     "createTitle": "Create Item",
     "updateTitle": "Update Item",
     "errorNumber": "Minimum 2 characters",
-    "noItemsFound": "There are no items yet",
+    "noItemsFound": "There are no items",
     "infoMessage": "Please create the items if the fields are already configured in the Fields tab.",
     "customId": "Custom ID"
     
@@ -153,6 +156,7 @@
     "status": "Status",
     "role": "Role",
     "active": "active",
-    "blocked": "blocked"
+    "blocked": "blocked",
+    "noUsersFound": "There are no users"
   }
 }

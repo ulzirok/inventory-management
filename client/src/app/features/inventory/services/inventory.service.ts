@@ -1,10 +1,12 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Category, Inventory, InventoryFieldsDto, Tag } from '../models/inventory.interface';
 import { environment } from '../../../../environment/environment';
 import { Item, ItemDto } from '../models/item.interface';
 import { Comment } from '../models/comment.interface';
+import { TableParams } from '../../../core/models/tableParams.interface';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +14,52 @@ import { Comment } from '../models/comment.interface';
 export class InventoryService {
   private http = inject(HttpClient);
 
-  getAll(): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory`);
+  getAll(params: TableParams): Observable<{ data: Inventory[], total: number; }> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        page: params.page.toString(),
+        limit: params.limit.toString(),
+        sort: params.sort || '',
+        order: params.order || '',
+        search: params.search || ''
+      }
+    });
+
+    return this.http.get<{ data: Inventory[], total: number; }>(
+      `${environment.apiUrl}/api/inventory`, { params: httpParams }
+    );
   }
-  
-  getMy(): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory/my`);
+
+  getMy(params: TableParams): Observable<{ data: Inventory[], total: number; }> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        page: params.page.toString(),
+        limit: params.limit.toString(),
+        sort: params.sort || '',
+        order: params.order || '',
+        search: params.search || ''
+      }
+    });
+
+    return this.http.get<{ data: Inventory[], total: number; }>(
+      `${environment.apiUrl}/api/inventory/my`, { params: httpParams }
+    );
   }
-  
-  getShared(): Observable<Inventory[]> {
-    return this.http.get<Inventory[]>(`${environment.apiUrl}/api/inventory/shared`);
+
+  getShared(params: TableParams): Observable<{ data: Inventory[], total: number; }> {
+    const httpParams = new HttpParams({
+      fromObject: {
+        page: params.page.toString(),
+        limit: params.limit.toString(),
+        sort: params.sort || '',
+        order: params.order || '',
+        search: params.search || ''
+      }
+    });
+
+    return this.http.get<{ data: Inventory[], total: number; }>(
+      `${environment.apiUrl}/api/inventory/shared`, { params: httpParams }
+    );
   }
 
   getById(id: string): Observable<Inventory> {
@@ -59,16 +97,16 @@ export class InventoryService {
   createItem(inventoryId: number, item: ItemDto): Observable<Item[]> {
     return this.http.post<Item[]>(`${environment.apiUrl}/api/items/inventory/${inventoryId}`, item);
   }
-  
+
   updateItem(itemId: string, item: ItemDto): Observable<Item> {
     return this.http.patch<Item>(`${environment.apiUrl}/api/items/${itemId}`, item);
   }
-  
+
   deleteItem(ids: string[]) {
     return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { ids });
   }
-  
+
   getComment(inventoryId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${environment.apiUrl}/api/comment/${inventoryId}`)
+    return this.http.get<Comment[]>(`${environment.apiUrl}/api/comment/${inventoryId}`);
   }
 }

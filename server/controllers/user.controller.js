@@ -9,17 +9,33 @@ module.exports.getAll = async (req, res) => {
       return res.status(403).json({ message: "Access denied. Admins only." });
     }
     
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isBlocked: true
-      },
-      orderBy: { id: "desc" }
-    });
-    res.status(200).json(users);
+    const { search = '', sort = 'id', order = 'desc', page = 1, limit = 10 } = req.query;
+    
+    const where = search ? {
+      OR: [
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+      ],
+    } : {};
+    
+    const [data, total] = await prisma.$transaction([
+      prisma.user.findMany({
+        where,
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          isBlocked: true
+        },
+        orderBy: { [sort]: order },
+        skip: (Number(page) - 1) * Number(limit),
+        take: Number(limit)
+      }),
+      prisma.user.count({ where })
+    ]);
+
+    res.status(200).json({ data, total });
   } catch (error) {
     errorHandler(res, error);
   }

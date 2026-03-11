@@ -6,15 +6,30 @@
 
   <div class="inventories">
     <h3 class="subtitle">{{ 'inventory.inventoriesMy' | translate }}</h3>
-    <app-inventory-list [inventories]="inventories()" [isEditable]="true" [showViewItems]="false"
-      (createInventory)="onCreateInventory()" (settingsInventory)="onSettingsInventory($event)"
-      (deleteInventory)="onDeleteInventory($event)"></app-inventory-list>
+    <app-inventory-list 
+      [inventories]="inventories()" 
+      [isEditable]="true" 
+      [showViewItems]="false"
+      [showChat]="false"
+      (createInventory)="onCreateInventory()" 
+      (settingsInventory)="onSettingsInventory($event)"
+      (deleteInventory)="onDeleteInventory($event)" 
+      [totalCount]="myTotal()"
+      (paramsChange)="onMyParamsChange($event)"></app-inventory-list>
 
     <h3 class="subtitle">{{ 'inventory.inventoriesShared' | translate }}</h3>
-    <app-inventory-list [inventories]="sharedInventories()" [isEditable]="false" [showViewItems]="true"
-      (viewItems)="onviewItems($event)" (viewChats)="onviewChats($event)" (createInventory)="onCreateInventory()"
+    <app-inventory-list 
+      [inventories]="sharedInventories()" 
+      [isEditable]="false" 
+      [showViewItems]="true"
+      [showChat]="true"
+      (viewItems)="onviewItems($event)" 
+      (viewChats)="onviewChats($event)" 
+      (createInventory)="onCreateInventory()"
       (settingsInventory)="onSettingsInventory($event)"
-      (deleteInventory)="onDeleteInventory($event)"></app-inventory-list>
+      (deleteInventory)="onDeleteInventory($event)" 
+      [totalCount]="sharedTotal()"
+      (paramsChange)="onSharedParamsChange($event)"></app-inventory-list>
   </div>
 </div>
 }

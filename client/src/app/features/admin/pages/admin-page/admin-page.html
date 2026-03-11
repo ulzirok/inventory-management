@@ -11,6 +11,8 @@
         (changeUserRole)="onChangeRole($event)"
         (deleteUsersById)="onDeleteUsers($event)"
         (getUserById)="onGetUser($event)"
+        [totalCount]="usertotal()"
+        (paramsChange)="onUsersParamsChange($event)"
         >
       </app-users-list>
       
@@ -21,7 +23,10 @@
         [showViewItems]="false"
         (createInventory)="onCreateInventory()" 
         (settingsInventory)="onSettingsInventory($event)"
-        (deleteInventory)="onDeleteInventory($event)">
+        (deleteInventory)="onDeleteInventory($event)"
+        (viewChats)="onviewChats($event)" 
+        [totalCount]="inventorytotal()"
+        (paramsChange)="onInventoryParamsChange($event)">
       </app-inventory-list>
     </div>
   </div>

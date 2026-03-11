@@ -36,7 +36,7 @@ export class SearchResultsPage {
 
   inventories = computed(() => this.searchService.results());
   dataSource = computed(() => this.inventories());
-  displayedColumns = ['select', 'customId', 'inventory', 'description', 'category', 'image'];
+  displayedColumns = ['select', 'customId', 'title', 'description', 'categoryId', 'imageUrl'];
   selection = new SelectionModel<Inventory>(false, []);
   private selectedCount = signal(0);
   isSingleSelected = computed(() => this.selectedCount() === 1);
