@@ -8,6 +8,7 @@ import { InventoryList } from '../../../inventory/components/inventory-list/inve
 import { NotificationService } from '../../../../core/services/notification.service';
 import { finalize } from 'rxjs';
 import { Loader } from '../../../../shared/components/loader/loader';
+import { TableParams } from '../../../../core/models/tableParams.interface';
 
 @Component({
   selector: 'app-dashboard-list',
@@ -23,6 +24,7 @@ export class DashboardList {
 
   isLoading = signal(false);
   inventories = signal<Inventory[]>([]);
+  total = signal(0);
 
   ngOnInit() {
     this.isLoading.set(true);
@@ -30,12 +32,18 @@ export class DashboardList {
   }
 
   loadInventories() {
-    this.inventoryService.getAll().pipe(
+    const params: TableParams = { page: 1, limit: 10, sort: 'updatedAt', order: 'desc', search: '' };
+
+    this.inventoryService.getAll(params).pipe(
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.isLoading.set(false))
-    ).subscribe(
-      data => this.inventories.set(data)
-    );
+    ).subscribe({
+      next: (data) => {
+        this.inventories.set(data.data);
+        this.total.set(data.total);
+      },
+      error: (err) => { }
+    });
   }
 
   onCreateInventory(): void {
@@ -61,8 +69,15 @@ export class DashboardList {
   onviewItems(id: number) {
     this.router.navigate([`/dashboard/${id}/items`]);
   }
-  
+
   onviewChats(id: number) {
     this.router.navigate([`/inventory/${id}/chat`]);
+  }
+
+  onParamsChange(params: TableParams) {
+    this.inventoryService.getAll(params).subscribe(res => {
+      this.inventories.set(res.data);
+      this.total.set(res.total);
+    });
   }
 }

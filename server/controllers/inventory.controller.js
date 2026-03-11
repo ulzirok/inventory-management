@@ -5,16 +5,33 @@ const roles = require("../constants/roles");
 
 module.exports.getAll = async (req, res) => {
   try {
-    const inventories = await prisma.inventory.findMany({
-      include: {
-        category: true,
-        tags: true,
-        author: { select: { name: true, email: true } },
-        _count: { select: { items: true } }
-      },
-      orderBy: { updatedAt: "desc" }
-    });
-    res.status(200).json(inventories);
+    const { search = '', sort = 'updatedAt', order = 'desc', page = 1, limit = 10 } = req.query;
+
+    const where = search ? {
+      OR: [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { category: { name: { contains: search, mode: 'insensitive' } } },
+      ],
+    } : {};
+
+    const [data, total] = await prisma.$transaction([
+      prisma.inventory.findMany({
+        where,
+        include: {
+          category: true,
+          tags: true,
+          author: { select: { name: true, email: true } },
+          _count: { select: { items: true } }
+        },
+        orderBy: { [sort]: order },
+        skip: (Number(page) - 1) * Number(limit),
+        take: Number(limit)
+      }),
+      prisma.inventory.count({ where })
+    ]);
+
+    res.status(200).json({ data, total });
   } catch (error) {
     errorHandler(res, error);
   }
@@ -22,20 +39,41 @@ module.exports.getAll = async (req, res) => {
 
 module.exports.getMy = async (req, res) => {
   try {
-    const inventories = await prisma.inventory.findMany({
-      where: {
-        authorId: Number(req.user.id)
-      },
-      include: {
-        category: true,
-        tags: true,
-        author: { select: { name: true, email: true } },
-        _count: { select: { items: true } }
-      },
-      orderBy: { updatedAt: "desc" }
-    });
+    const { search = '', sort = 'updatedAt', order = 'desc', page = 1, limit = 10 } = req.query;
+    
+    const where = {
+      authorId: Number(req.user.id),
+    };
 
-    res.status(200).json(inventories);
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        {
+          category: {
+            name: { contains: search, mode: 'insensitive' }
+          }
+        },
+      ];
+    }
+    
+    const [inventories, total] = await prisma.$transaction([
+      prisma.inventory.findMany({
+        where,
+        include: {
+          category: true,
+          tags: true,
+          author: { select: { name: true, email: true } },
+          _count: { select: { items: true } }
+        },
+        orderBy: { [sort]: order },
+        skip: (Number(page) - 1) * Number(limit),
+        take: Number(limit)
+      }),
+      prisma.inventory.count({ where })
+    ]);
+
+    res.status(200).json({ data: inventories, total });
   } catch (error) {
     errorHandler(res, error);
   }
@@ -43,20 +81,42 @@ module.exports.getMy = async (req, res) => {
 
 module.exports.getShared = async (req, res) => {
   try {
-    const inventories = await prisma.inventory.findMany({
-      where: {
-        isPublic: true,
-        authorId: {not: Number(req.user.id)}
-      },
-      include: {
-        category: true,
-        tags: true,
-        author: { select: { name: true, email: true } },
-        _count: { select: { items: true } }
-      },
-      orderBy: { updatedAt: "desc" }
-    })
-    res.status(200).json(inventories)
+    const { search = '', sort = 'updatedAt', order = 'desc', page = 1, limit = 10 } = req.query;
+    
+    const where = {
+      isPublic: true,
+      authorId: { not: Number(req.user.id) }
+    };
+
+    if (search) {
+      where.AND = [
+        {
+          OR: [
+            { title: { contains: search, mode: 'insensitive' } },
+            { description: { contains: search, mode: 'insensitive' } },
+            { category: { name: { contains: search, mode: 'insensitive' } } },
+          ]
+        }
+      ];
+    }
+
+    const [data, total] = await prisma.$transaction([
+      prisma.inventory.findMany({
+        where,
+        include: {
+          category: true,
+          tags: true,
+          author: { select: { name: true, email: true } },
+          _count: { select: { items: true } }
+        },
+        orderBy: { [sort]: order },
+        skip: (Number(page) - 1) * Number(limit),
+        take: Number(limit)
+      }),
+      prisma.inventory.count({ where })
+    ]);
+
+    res.status(200).json({ data, total });
   } catch (error) {
     errorHandler(res, error);
   }

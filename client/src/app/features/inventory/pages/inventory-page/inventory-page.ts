@@ -9,6 +9,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 import { Item } from '../../models/item.interface';
 import { finalize, forkJoin } from 'rxjs';
 import { Loader } from '../../../../shared/components/loader/loader';
+import { TableParams } from '../../../../core/models/tableParams.interface';
 
 @Component({
   selector: 'app-inventory-page',
@@ -26,6 +27,8 @@ export class InventoryPage implements OnInit {
   inventories = signal<Inventory[]>([]);
   items = signal<Item[]>([]);
   sharedInventories = signal<Inventory[]>([]);
+  myTotal = signal(0);
+  sharedTotal = signal(0);
 
   ngOnInit(): void {
     this.loadData();
@@ -33,16 +36,20 @@ export class InventoryPage implements OnInit {
 
   loadData() {
     this.isLoading.set(true);
+    const params: TableParams = { page: 1, limit: 10, sort: 'updatedAt', order: 'desc', search: '' };
+
     forkJoin({
-      my: this.inventoryService.getMy(),
-      shared: this.inventoryService.getShared()
+      my: this.inventoryService.getMy(params),
+      shared: this.inventoryService.getShared(params)
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.isLoading.set(false))
     ).subscribe({
-      next: (data) => {
-        this.inventories.set(data.my),
-          this.sharedInventories.set(data.shared);
+      next: (res) => {
+        this.inventories.set(res.my.data);
+        this.myTotal.set(res.my.total);
+        this.sharedInventories.set(res.shared.data);
+        this.sharedTotal.set(res.shared.total);
       },
       error: (err) => { }
     });
@@ -71,8 +78,22 @@ export class InventoryPage implements OnInit {
   onviewItems(id: number) {
     this.router.navigate([`/inventory/${id}/items`]);
   }
-  
+
   onviewChats(id: number) {
     this.router.navigate([`/inventory/${id}/chat`]);
+  }
+
+  onMyParamsChange(params: TableParams) {
+    this.inventoryService.getMy(params).subscribe(res => {
+      this.inventories.set(res.data);
+      this.myTotal.set(res.total);
+    });
+  }
+
+  onSharedParamsChange(params: TableParams) {
+    this.inventoryService.getShared(params).subscribe(res => {
+      this.sharedInventories.set(res.data);
+      this.sharedTotal.set(res.total);
+    });
   }
 }

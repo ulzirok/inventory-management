@@ -33,6 +33,7 @@
     "topInventories": "Топ инвентари",
     "tags": "Теги",
     "inventory": "Инвентарь",
+    "title": "Заголовок",
     "items": "Предметы",
     "author": "Автор",
     "date": "Дата",
@@ -70,7 +71,7 @@
     "placeholder": "Ввести тег"
   },
   "inventory": {
-    "title": "Инвентарь",
+    "title": "Заголовок",
     "placeholder": "Искать",
     "resultSearch": "Позиция не найдена",
     "customId": "Пользовательский ID",
@@ -90,7 +91,9 @@
     "access": "Доступ",
     "stats": "Статистика",
     "export": "Экспорт",
-    "details": "Детали"
+    "details": "Детали",
+    "filterPlaceholder": "Фильтр по ключевым словам",
+    "noInventoriesFound": "Инвентарей нет"
   },
   "fields": {
     "title": "Настроенные поля",
@@ -102,7 +105,7 @@
   "items": {
     "createTitle": "Создать предмет",
     "errorNumber": "Минимум 2 символа",
-    "noItemsFound": "Предметов пока нет",
+    "noItemsFound": "Предметов нет",
     "infoMessage": "Пожалуйста, создайте предметы, если поля уже настроены во вкладке Поля.",
     "customId": "Пользовательский ID"
   },
@@ -148,7 +151,8 @@
     "status": "Статус",
     "role": "Роль",
     "active": "Активен",
-    "blocked": "Заблокирован"
+    "blocked": "Заблокирован",
+    "noUsersFound": "Пользователей нет"
   }
   
 }

@@ -12,6 +12,7 @@ import { User, UserDto } from '../../models/user.interface';
 import { Loader } from '../../../../shared/components/loader/loader';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../../core/services/auth.service';
+import { TableParams } from '../../../../core/models/tableParams.interface';
 
 @Component({
   selector: 'app-admin-page',
@@ -30,6 +31,8 @@ export class AdminPage implements OnInit {
   inventories = signal<Inventory[]>([]);
   users = signal<User[]>([]);
   isLoading = signal(false);
+  inventorytotal = signal(0);
+  usertotal = signal(0);
 
   ngOnInit(): void {
     this.loadData();
@@ -37,16 +40,20 @@ export class AdminPage implements OnInit {
 
   loadData() {
     this.isLoading.set(true);
+    const params: TableParams = { page: 1, limit: 10, sort: 'id', order: 'desc', search: '' };
+
     forkJoin({
-      users: this.userService.getAll(),
-      inventories: this.inventoryService.getAll()
+      users: this.userService.getAll(params),
+      inventories: this.inventoryService.getAll(params)
     }).pipe(
       takeUntilDestroyed(this.destroyRef),
       finalize(() => this.isLoading.set(false))
     ).subscribe({
       next: (data) => {
-        this.users.set(data.users),
-        this.inventories.set(data.inventories);
+        this.users.set(data.users.data),
+        this.usertotal.set(data.inventories.total);
+        this.inventories.set(data.inventories.data);
+        this.inventorytotal.set(data.inventories.total);
       },
       error: (err) => { }
     });
@@ -81,7 +88,7 @@ export class AdminPage implements OnInit {
         this.loadData();
       },
       error: (err) => { }
-    })
+    });
   }
 
   onChangeRole(upload: UserDto) {
@@ -90,7 +97,7 @@ export class AdminPage implements OnInit {
     ).subscribe({
       next: (response) => {
         this.notificationService.success(response.message);
-        const currentUserId = this.authService.currentUser()
+        const currentUserId = this.authService.currentUser();
         if (currentUserId && upload.ids.includes(currentUserId.id) && upload.role !== 'ADMIN') {
           this.authService.logout();
           this.router.navigate(['/auth/login']);
@@ -99,7 +106,7 @@ export class AdminPage implements OnInit {
         this.loadData();
       },
       error: (err) => { }
-    })
+    });
   }
 
   onDeleteUsers(ids: number[]) {
@@ -108,13 +115,32 @@ export class AdminPage implements OnInit {
     ).subscribe({
       next: (response) => {
         this.notificationService.success(response.message);
-        this.loadData()
-       },
-      error: (err) => {}
-    })
+        this.loadData();
+      },
+      error: (err) => { }
+    });
   }
 
   onGetUser(id: number) {
-    this.router.navigate([`users/${id}`])
+    this.router.navigate([`users/${id}`]);
+  }
+  
+  onviewChats(id: number) {
+    this.router.navigate([`/inventory/${id}/chat`]);
+  }
+
+  onInventoryParamsChange(params: TableParams) {
+    this.inventoryService.getAll(params).subscribe(res => {
+      this.inventories.set(res.data);
+      this.inventorytotal.set(res.total);
+    });
+    
+  }
+  
+  onUsersParamsChange(params: TableParams) {
+    this.userService.getAll(params).subscribe(res => {
+      this.users.set(res.data);
+      this.usertotal.set(res.total);
+    });
   }
 }

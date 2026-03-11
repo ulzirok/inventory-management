@@ -23,8 +23,8 @@
           <td mat-cell *matCellDef="let element"> {{ element.idFormat }} </td>
         </ng-container>
       
-        <ng-container matColumnDef="inventory">
-          <th mat-header-cell *matHeaderCellDef> {{'inventory.inventory' | translate}} </th>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef> {{'inventory.title' | translate}} </th>
           <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
         </ng-container>
       
@@ -33,12 +33,12 @@
           <td mat-cell *matCellDef="let element"> {{ element.description }} </td>
         </ng-container>
       
-        <ng-container matColumnDef="category">
+        <ng-container matColumnDef="categoryId">
           <th mat-header-cell *matHeaderCellDef> {{'inventory.category' | translate}} </th>
           <td mat-cell *matCellDef="let element"> {{ element.category?.name }} </td>
         </ng-container>
       
-        <ng-container matColumnDef="image">
+        <ng-container matColumnDef="imageUrl">
           <th mat-header-cell *matHeaderCellDef> {{ 'inventory.image' | translate }} </th>
           <td mat-cell *matCellDef="let element">
             @if (element.imageUrl) {
