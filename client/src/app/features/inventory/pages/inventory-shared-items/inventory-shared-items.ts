@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { ItemsList } from "../items-list/items-list";
+import { ItemsList } from "../../components/items-list/items-list";
 import { InventoryService } from '../../services/inventory.service';
 import { ActivatedRoute } from '@angular/router';
 import { Inventory } from '../../models/inventory.interface';
@@ -26,7 +26,7 @@ export class InventorySharedItems implements OnInit {
     this.loadInventory();
     this.loadItems();
   }
-  
+
   loadInventory() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -50,42 +50,42 @@ export class InventorySharedItems implements OnInit {
       );
     }
   }
-  
-  onCreateItem(item: ItemDto): void {    
-      this.inventoryService.createItem(this.inventory()!.id, item).pipe(
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe({
-        next: () => {
-          this.notificationService.success('Item created.');
-          this.loadItems();
-        },
-        error: (err) => {}
-      })
-    }
-    
-    onEditItem(item: any): void {
-      const itemId = item.id
-      
-      this.inventoryService.updateItem(itemId, item).pipe(
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe({
-        next: () => {
-          this.notificationService.success('Item updated.');
-          this.loadItems();
-        },
-        error: (err) => { }
-      })
-    }
-  
-    onDeleteItem(ids: string[]) {
-      this.inventoryService.deleteItem(ids).pipe(
-        takeUntilDestroyed(this.destroyRef)
-      ).subscribe({
-        next: (response) => {
-          this.notificationService.success(response.message)
-          this.loadItems()
-        },
-        error: (err)=> {}
-      })
-    }
+
+  onCreateItem(item: ItemDto): void {
+    this.inventoryService.createItem(this.inventory()!.id, item).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.notificationService.success('Item created.');
+        this.loadItems();
+      },
+      error: (err) => { }
+    });
+  }
+
+  onEditItem(item: any): void {
+    const itemId = item.id;
+
+    this.inventoryService.updateItem(itemId, item).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: () => {
+        this.notificationService.success('Item updated.');
+        this.loadItems();
+      },
+      error: (err) => { }
+    });
+  }
+
+  onDeleteItem(ids: string[]) {
+    this.inventoryService.deleteItem(ids).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (response) => {
+        this.notificationService.success(response.message);
+        this.loadItems();
+      },
+      error: (err) => { }
+    });
+  }
 }

@@ -1,6 +1,5 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
-import { MatCard, MatCardModule } from '@angular/material/card';
-import { InventoryChat } from '../inventory-chat/inventory-chat';
+import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import { WsService } from '../../../../core/services/ws.service';
@@ -9,6 +8,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { InventoryService } from '../../services/inventory.service';
 import { Comment } from '../../models/comment.interface';
+import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
 
 @Component({
   selector: 'app-inventory-shared-chat',
