@@ -52,10 +52,14 @@ The users can:
 The users can:
 - add custom fields to the inventory
 - delete
+
 Each field contains:
+
 - name
 - data type
+
 Supported types:
+
 - text
 - number
 - boolean
@@ -66,7 +70,9 @@ The users can:
 - create an item
 - edit
 - delete
+
 When creating an item:
+
 - the system displays a form based on the created custom fields
 - the input type depends on the custom field type
 
