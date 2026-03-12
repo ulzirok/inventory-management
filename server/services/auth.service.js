@@ -33,13 +33,6 @@ module.exports.login = async (req) => {
 
   const candidate = await prisma.user.findUnique({
     where: { email: email },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      isBlocked: true
-    }
   });
   
   if (!candidate) throw createError("Incorrect email or password", 401)
