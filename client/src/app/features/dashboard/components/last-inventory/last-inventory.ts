@@ -26,5 +26,5 @@ import { MarkdownComponent } from 'ngx-markdown';
 export class LastInventory {
   latestInventory = input<Inventory[]>([]);
   dataSource = computed(() => this.latestInventory());
-  displayedColumns = ['inventory', 'description', 'date', 'image'];
+  displayedColumns = ['title', 'description', 'date', 'image'];
 }
