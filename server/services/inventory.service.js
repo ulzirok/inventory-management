@@ -142,7 +142,7 @@ module.exports.update = async (req) => {
   }
 
   const updatedInventory = await prisma.inventory.update({
-    where: { id: Number(id), version: Number(version) },
+    where: { id: inventoryId, version: Number(version) },
     data: updatePayload,
     include: { tags: true },
   });
