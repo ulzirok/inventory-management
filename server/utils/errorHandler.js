@@ -4,9 +4,4 @@ module.exports = (res, error) => {
         success: false,
         message: error.message || "Internal server error"
     })
-    
-    // res.status(500).json({
-    //     success: false,
-    //     message: err.message ? err.message : err,
-    // });
 };
