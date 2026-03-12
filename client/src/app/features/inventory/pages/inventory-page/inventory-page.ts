@@ -84,14 +84,18 @@ export class InventoryPage implements OnInit {
   }
 
   onMyParamsChange(params: TableParams) {
-    this.inventoryService.getMy(params).subscribe(res => {
+    this.inventoryService.getMy(params).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(res => {
       this.inventories.set(res.data);
       this.myTotal.set(res.total);
     });
   }
 
   onSharedParamsChange(params: TableParams) {
-    this.inventoryService.getShared(params).subscribe(res => {
+    this.inventoryService.getShared(params).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(res => {
       this.sharedInventories.set(res.data);
       this.sharedTotal.set(res.total);
     });

@@ -15,8 +15,8 @@ const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
 const expressWs = require('express-ws')(app);
 const aWss = expressWs.getWss();
-const socketHandler = require('./WebSocket/socketHandler');
-const { handleClose } = require('./WebSocket/socketController');
+const socketHandler = require('./webSocket/socketHandler');
+const { handleClose } = require('./webSocket/socketController');
 const jwt = require('jsonwebtoken'); 
 
 app.use(

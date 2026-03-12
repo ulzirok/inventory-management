@@ -52,7 +52,6 @@ export class SearchResultsPage {
 
   ngOnInit() {
     this.route.queryParams.pipe(
-      debounceTime(400),
       distinctUntilChanged((prev, curr) =>
         prev['q'] === curr['q'] && prev['tag'] === curr['tag']
       ),

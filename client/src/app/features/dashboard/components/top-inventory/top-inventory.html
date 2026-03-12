@@ -4,7 +4,7 @@
   <div class="table-wrapper">
     <table mat-table [dataSource]="dataSource()" class="mat-elevation-z1">
 
-      <ng-container matColumnDef="inventory">
+      <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef> {{'dashboard.title' | translate}} </th>
         <td mat-cell *matCellDef="let element"> {{element.title}} </td>
       </ng-container>

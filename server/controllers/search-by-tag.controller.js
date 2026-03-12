@@ -1,18 +1,14 @@
-const prisma = require("../prisma");
 const errorHandler = require("../utils/errorHandler");
+searchByTagService = require('../services/search-by-tag.service')
 
 module.exports.searchByTag = async (req, res) => {
   try {
     const { tag } = req.query;
     if (!tag) return res.status(200).json([]);
     
-    const results = await prisma.inventory.findMany({
-      where: {
-        tags: { some: { name: tag } }
-      },
-      include: { author: true, tags: true }
-    });
-    res.status(200).json(results);
+    const result = await searchByTagService.searchByTag(tag)
+    res.status(200).json(result);
+    
   } catch (error) {
     errorHandler(res, error);
   }

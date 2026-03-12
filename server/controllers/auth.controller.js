@@ -1,26 +1,11 @@
 const errorHandler = require("../utils/errorHandler");
 const authService = require("../services/auth.service");
 
-const bycript = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const prisma = require("../prisma");
-
 module.exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const result = await authService.register(req)
+    res.status(201).json(result);
     
-    const salt = await bycript.genSalt(10);
-    const hashPassword = await bycript.hash(password, salt);
-
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashPassword,
-      },
-    });
-
-    res.status(201).json({ message: "User created succesfully" });
   } catch (error) {
     if (error.code === "P2002") {
       return res.status(409).json({
@@ -33,35 +18,9 @@ module.exports.register = async (req, res) => {
 
 module.exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const result = await authService.login(req)
+    res.status(200).json(result);
     
-    const candidate = await prisma.user.findUnique({
-      where: { email: email },
-    });
-    if (!candidate)
-      return res.status(401).json({ message: "Incorrect email or password" });
-    if (candidate.isBlocked)
-      return res.status(403).json({ message: "Your account is blocked" });
-    const isComparePassword = bycript.compareSync(
-      password,
-      candidate.password,
-    );
-    if (!isComparePassword)
-      return res.status(401).json({ message: "Incorrect email or password" });
-
-    const token = jwt.sign(
-      {userId: candidate.id, email: candidate.email},
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-    );
-
-    res.status(200).json({
-      token,
-      user: {
-        id: candidate.id,
-        email: candidate.email,
-      },
-    });
   } catch (error) {
     errorHandler(res, error);
   }
@@ -69,19 +28,9 @@ module.exports.login = async (req, res) => {
 
 module.exports.getProfile = async (req, res) => {
   try {
-    const { id } = req.user;
-    
-    const user = await prisma.user.findUnique({
-      where: { id: Number(id) },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        isBlocked: true
-      }
-    });
+    const user = await authService.getProfile(req)
     res.status(200).json(user);
+    
   } catch (error) {
     errorHandler(res, error);
   }
@@ -89,15 +38,9 @@ module.exports.getProfile = async (req, res) => {
 
 module.exports.socialCallback = async (req, res) => {
   try {
-    const user = req.user;
+    const clientUrl = await authService.socialCallback(req)
+    res.redirect(clientUrl);
     
-    const token = jwt.sign(
-      {userId: user.id, email: user.email},
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-    );
-
-    res.redirect(`${process.env.CLIENT_URL}/oauth-success?token=${token}`);
   } catch (error) {
     errorHandler(res, error);
   }

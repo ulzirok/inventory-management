@@ -12,9 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageService } from '../../../core/services/language.service';
-import { ThemeService } from '../../../core/services/theme.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { LanguageService } from '../../services/language.service';
+import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 import { Role } from '../../../features/auth/models/role.enum';
 
 
@@ -41,7 +41,7 @@ export class Navbar implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
-  
+
   public isDark = this.themeService.isDark;
   public currentLang = this.languageService.currentLang;
   public searchControl = new FormControl('');

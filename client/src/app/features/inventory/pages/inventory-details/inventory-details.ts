@@ -8,18 +8,18 @@ import { InventoryService } from '../../services/inventory.service';
 import { Inventory, InventoryFieldsDto } from '../../models/inventory.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslateModule } from '@ngx-translate/core';
-import { ItemsList } from '../items-list/items-list';
 import { Item, ItemDto } from '../../models/item.interface';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { MatListModule } from '@angular/material/list';
-import { InventorySettings } from '../inventory-settings/inventory-settings';
-import { InventoryFields } from '../inventory-fields/inventory-fields';
-import { InventoryAccess } from '../inventory-access/inventory-access';
-import { InventoryCustomId } from '../inventory-custom-id/inventory-custom-id';
-import { InventoryChat } from '../inventory-chat/inventory-chat';
 import { WsService } from '../../../../core/services/ws.service';
 import { Comment } from '../../models/comment.interface';
 import { filter, first } from 'rxjs';
+import { ItemsList } from '../../components/items-list/items-list';
+import { InventorySettings } from '../../components/inventory-settings/inventory-settings';
+import { InventoryFields } from '../../components/inventory-fields/inventory-fields';
+import { InventoryAccess } from '../../components/inventory-access/inventory-access';
+import { InventoryCustomId } from '../../components/inventory-custom-id/inventory-custom-id';
+import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
 
 @Component({
   selector: 'app-inventory-details',

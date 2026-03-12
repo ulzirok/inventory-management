@@ -130,7 +130,9 @@ export class AdminPage implements OnInit {
   }
 
   onInventoryParamsChange(params: TableParams) {
-    this.inventoryService.getAll(params).subscribe(res => {
+    this.inventoryService.getAll(params).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(res => {
       this.inventories.set(res.data);
       this.inventorytotal.set(res.total);
     });
@@ -138,7 +140,9 @@ export class AdminPage implements OnInit {
   }
   
   onUsersParamsChange(params: TableParams) {
-    this.userService.getAll(params).subscribe(res => {
+    this.userService.getAll(params).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(res => {
       this.users.set(res.data);
       this.usertotal.set(res.total);
     });

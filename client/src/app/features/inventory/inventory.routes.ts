@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { InventoryPage } from './pages/inventory-page/inventory-page';
-import { InventoryCreate } from './components/inventory-create/inventory-create';
-import { InventoryDetails } from './components/inventory-details/inventory-details';
+import { InventoryCreate } from './pages/inventory-create/inventory-create';
+import { InventoryDetails } from './pages/inventory-details/inventory-details';
 import { ItemDetails } from './components/item-details/item-details';
-import { InventorySharedItems } from './components/inventory-shared-items/inventory-shared-items';
-import { InventorySharedChat } from './components/inventory-shared-chat/inventory-shared-chat';
+import { InventorySharedItems } from './pages/inventory-shared-items/inventory-shared-items';
+import { InventorySharedChat } from './pages/inventory-shared-chat/inventory-shared-chat';
 
 export const InventoryRoutes: Routes = [
     { path: '', component: InventoryPage },

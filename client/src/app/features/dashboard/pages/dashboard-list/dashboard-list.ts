@@ -75,7 +75,9 @@ export class DashboardList {
   }
 
   onParamsChange(params: TableParams) {
-    this.inventoryService.getAll(params).subscribe(res => {
+    this.inventoryService.getAll(params).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe(res => {
       this.inventories.set(res.data);
       this.total.set(res.total);
     });
