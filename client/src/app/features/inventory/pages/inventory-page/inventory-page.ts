@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { Inventory } from '../../models/inventory.interface';
 import { InventoryService } from '../../services/inventory.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -16,6 +16,7 @@ import { TableParams } from '../../../../core/models/tableParams.interface';
   imports: [InventoryList, TranslateModule, Loader],
   templateUrl: './inventory-page.html',
   styleUrl: './inventory-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryPage implements OnInit {
   private inventoryService = inject(InventoryService);

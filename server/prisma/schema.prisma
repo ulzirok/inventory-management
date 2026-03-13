@@ -48,7 +48,7 @@ model Inventory {
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int
   
-  author      User     @relation(fields: [authorId], references: [id])
+  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId    Int
   
   isPublic    Boolean  @default(false)
@@ -87,7 +87,7 @@ model Item {
   
   customId     String
   
-  author       User      @relation(fields: [authorId], references: [id])
+  author       User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId     Int
 
   version      Int       @default(0) 
@@ -124,7 +124,7 @@ model Comment {
   text      String   @db.Text
   createdAt DateTime @default(now())
 
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
 
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
@@ -133,7 +133,7 @@ model Comment {
 
 model Like {
   id        Int    @id @default(autoincrement())
-  user      User   @relation(fields: [userId], references: [id])
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   item      Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   itemId    String

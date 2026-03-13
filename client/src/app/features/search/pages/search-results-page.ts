@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { SearchService } from '../../../core/services/search.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -27,6 +27,7 @@ import { debounceTime, distinctUntilChanged, EMPTY, switchMap } from 'rxjs';
   ],
   templateUrl: './search-results-page.html',
   styleUrl: './search-results-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchResultsPage {
   public searchService = inject(SearchService);

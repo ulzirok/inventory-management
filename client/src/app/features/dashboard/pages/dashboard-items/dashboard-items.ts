@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ItemsList } from '../../../inventory/components/items-list/items-list';
 import { InventoryService } from '../../../inventory/services/inventory.service';
 import { Item } from '../../../inventory/models/item.interface';
@@ -13,6 +13,7 @@ import { Loader } from '../../../../shared/components/loader/loader';
   imports: [ItemsList, Loader],
   templateUrl: './dashboard-items.html',
   styleUrl: './dashboard-items.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardItems implements OnInit{
   private inventoryService = inject(InventoryService);

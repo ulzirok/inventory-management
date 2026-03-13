@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, input, output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, input, output, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -42,6 +42,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
   templateUrl: './inventory-list.html',
   styleUrl: './inventory-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryList {
   inventories = input<Inventory[]>([]);

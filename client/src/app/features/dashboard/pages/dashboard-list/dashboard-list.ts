@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { InventoryService } from '../../../inventory/services/inventory.service';
 import { Inventory } from '../../../inventory/models/inventory.interface';
@@ -15,6 +15,7 @@ import { TableParams } from '../../../../core/models/tableParams.interface';
   imports: [InventoryList, TranslateModule, Loader],
   templateUrl: './dashboard-list.html',
   styleUrl: './dashboard-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardList {
   private router = inject(Router);
