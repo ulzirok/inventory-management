@@ -1,15 +1,11 @@
 const bycript = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const prisma = require("../prisma");
 const createError = require("../utils/createError");
-
-function generateToken(user) {
-  return jwt.sign(
-    { userId: user.id, email: user.email },
-    process.env.JWT_SECRET,
-    { expiresIn: "1d" },
-  );
-}
+const {
+  generateToken,
+  checkIsBlocked,
+  checkPassword
+} = require('../helpers/auth.helpers')
 
 module.exports.register = async (req) => {
   const { name, email, password } = req.body;
@@ -36,16 +32,11 @@ module.exports.login = async (req) => {
   });
   
   if (!candidate) throw createError("Incorrect email or password", 401)
-  if (candidate.isBlocked) throw createError("Your account is blocked", 403)
-    
-  const isComparePassword = bycript.compareSync(
-    password,
-    candidate.password,
-  );
   
-  if (!isComparePassword) throw createError("Incorrect email or password", 401)
-
+  await checkPassword(password, candidate.password)
+  checkIsBlocked(candidate)
   const token = generateToken(candidate);
+  
   return {
     token,
     user: { id: candidate.id, email: candidate.email },

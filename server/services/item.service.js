@@ -2,6 +2,10 @@ const roles = require("../constants/roles");
 const prisma = require("../prisma");
 const generateCustomId = require("../utils/idGenerator");
 const createError = require("../utils/createError");
+const {
+  checkPermission,
+  findInventoryOrThrow
+} = require('../helpers/items.helpers')
 
 module.exports.getItems = async (req) => {
   const inventoryId = Number(req.params.inventoryId);
@@ -36,17 +40,7 @@ module.exports.create = async (req) => {
   const inventoryId = Number(req.params.inventoryId);
   const { ...data } = req.body;
 
-  const inventory = await prisma.inventory.findFirst({
-    where: req.user.role === roles.ADMIN ? { id: inventoryId } : {
-      id: inventoryId,
-      OR: [
-        { authorId: req.user.id },
-        { isPublic: true }
-      ]
-    },
-  });
-  if (!inventory) throw createError("Inventory not found or private", 403);
-
+  const inventory = await findInventoryOrThrow(inventoryId, req.user)
   const customId = await generateCustomId(inventory.idFormat, inventoryId, prisma);
 
   const item = await prisma.item.create({
@@ -71,17 +65,10 @@ module.exports.update = async (req) => {
 
   if (!item) throw createError("Item not found", 404);
 
-  const isAdmin = req.user.role === roles.ADMIN;
-  const isAuthor = item.authorId === req.user.id;
-  const isInvOwner = item.inventory.authorId === req.user.id;
-
-  if (!isAdmin && !isAuthor && !isInvOwner) throw createError("No access to update this item", 403);
+  checkPermission(item, req.user);
 
   const updated = await prisma.item.update({
-    where: {
-      id,
-      version: Number(version)
-    },
+    where: { id, version: Number(version) },
     data: {
       ...updatedData,
       version: { increment: 1 }

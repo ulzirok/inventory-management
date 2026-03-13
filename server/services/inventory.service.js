@@ -1,59 +1,20 @@
 const prisma = require("../prisma");
-const imagekit = require('../imageKit.config.js');
 const roles = require("../constants/roles");
 const createError = require("../utils/createError");
-
-const inventoryInclude = {
-  category: true,
-  tags: true,
-  author: { select: { name: true, email: true } },
-  _count: { select: { items: true } }
-};
-
-function getSearchWhere(query) {
-  const { search = '' } = query;
-  if (!search) return {};
-  return {
-    OR: [
-      { title: { contains: search, mode: 'insensitive' } },
-      { description: { contains: search, mode: 'insensitive' } },
-      { category: { name: { contains: search, mode: 'insensitive' } } },
-    ],
-  };
-}
-
-async function findInventories(where, query) {
-  const { sort = 'updatedAt', order = 'desc', page = 1, limit = 10 } = query;
-  const [data, total] = await prisma.$transaction([
-    prisma.inventory.findMany({
-      where,
-      include: inventoryInclude,
-      orderBy: { [sort]: order },
-      skip: (Number(page) - 1) * Number(limit),
-      take: Number(limit)
-    }),
-    prisma.inventory.count({ where })
-  ]);
-  return { data, total };
-}
-
-async function uploadFile(file) {
-  if (!file) return;
-  const uploadResponse = await imagekit.upload({
-    file: file.buffer,
-    fileName: `inventory_${Date.now()}`,
-  });
-  return uploadResponse.url;
-}
-
-function formatTags(tags) {
-  if (!tags) return [];
-  const tagsArray = Array.isArray(tags) ? tags : [tags];
-  return tagsArray.map(tagName => ({
-    where: { name: tagName },
-    create: { name: tagName }
-  }));
-}
+const {
+  inventoryInclude,
+  getSearchWhere,
+  findInventories,
+  formatTags,
+  findOrThrow,
+  checkPermission,
+  uploadFile,
+  addImage,
+  addIdFormat,
+  addCategory,
+  addTags,
+  addAccess
+} = require('../helpers/inventory.helpers');
 
 module.exports.getAll = async (query) => {
   const where = getSearchWhere(query);
@@ -111,42 +72,28 @@ module.exports.update = async (req) => {
   const inventoryId = Number(req.params.id);
   let { version, categoryId, tags, title, description, isPublic, idFormat, ...customLabels } = req.body;
 
-  const inventory = await prisma.inventory.findUnique({
-    where: { id: inventoryId }
-  });
-  if (!inventory) throw createError("Inventory not found", 404);
+  const inventory = await findOrThrow(inventoryId)
+  checkPermission(inventory, req.user)
 
-  const isAdmin = req.user.role === roles.ADMIN;
-  if (inventory.authorId !== req.user.id && !isAdmin) throw createError("No access to update this inventory", 403);
-
-  const updatePayload = {
+  const payload = {
     title,
     description,
     ...customLabels,
     version: { increment: 1 },
   };
 
-  if (idFormat) updatePayload.idFormat = idFormat;
-  if (req.file) updatePayload.imageUrl = await uploadFile(req.file);
-  if (categoryId) updatePayload.category = { connect: { id: Number(categoryId) } };
+  addIdFormat(payload, idFormat)
+  await addImage(payload, req.file)
+  addCategory(payload, categoryId)
+  addTags(payload, tags)
+  addAccess(payload, isPublic)
 
-  if (tags) {
-    updatePayload.tags = {
-      set: [],
-      connectOrCreate: formatTags(tags),
-    };
-  }
-
-  if (isPublic !== undefined) {
-    updatePayload.isPublic = isPublic === 'true' || isPublic === true;
-  }
-
-  const updatedInventory = await prisma.inventory.update({
+  const updated = await prisma.inventory.update({
     where: { id: inventoryId, version: Number(version) },
-    data: updatePayload,
+    data: payload,
     include: { tags: true },
   });
-  return updatedInventory;
+  return updated;
 };
 
 module.exports.delete = async (req) => {
