@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -39,6 +39,7 @@ import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryDetails implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute)

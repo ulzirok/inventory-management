@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterOutlet } from '@angular/router';
@@ -12,6 +12,7 @@ import { LanguageService } from '../../services/language.service';
   imports: [RouterOutlet, MatIconModule, MatButtonModule, MatSelectModule],
   templateUrl: './auth-layout.html',
   styleUrl: './auth-layout.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthLayout {
   private themeService = inject(ThemeService);

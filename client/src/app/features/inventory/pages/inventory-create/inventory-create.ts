@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -35,6 +35,7 @@ import { interval, Subscription } from 'rxjs';
   ],
   templateUrl: './inventory-create.html',
   styleUrl: './inventory-create.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryCreate {
   private fb = inject(FormBuilder);

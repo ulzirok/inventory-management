@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -22,6 +22,7 @@ import { MarkdownComponent } from 'ngx-markdown';
   ],
   templateUrl: './last-inventory.html',
   styleUrl: './last-inventory.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LastInventory {
   latestInventory = input<Inventory[]>([]);

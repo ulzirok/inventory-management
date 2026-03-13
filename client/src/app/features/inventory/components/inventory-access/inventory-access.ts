@@ -1,4 +1,4 @@
-import { Component, inject, input, OnChanges, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnChanges, OnInit, output, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
@@ -10,6 +10,7 @@ import { Inventory } from '../../models/inventory.interface';
   imports: [MatRadioModule, ReactiveFormsModule, TranslateModule, MatButtonModule],
   templateUrl: './inventory-access.html',
   styleUrl: './inventory-access.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryAccess implements OnChanges {
   inventory = input<Inventory | null>(null);

@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -30,6 +30,7 @@ import { Role } from '../../../auth/models/role.enum';
   ],
   templateUrl: './items-list.html',
   styleUrl: './items-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemsList {
   inventory = input<Inventory | null>(null);

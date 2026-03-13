@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { InventoryList } from '../../../inventory/components/inventory-list/inventory-list';
 import { UsersList } from '../../components/users-list/users-list';
 import { Inventory } from '../../../inventory/models/inventory.interface';
@@ -19,6 +19,7 @@ import { TableParams } from '../../../../core/models/tableParams.interface';
   imports: [InventoryList, UsersList, Loader, TranslateModule],
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdminPage implements OnInit {
   private inventoryService = inject(InventoryService);

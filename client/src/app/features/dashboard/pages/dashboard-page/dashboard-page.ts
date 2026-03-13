@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Tag } from '../../../search/models/search.interface';
 import { DashboardService } from '../../services/dashboard.service';
@@ -20,6 +20,7 @@ import { finalize, forkJoin } from 'rxjs';
   imports: [LastInventory, TopInventory, Tags, CommonModule, MatButtonModule, TranslateModule, MatIconModule, RouterLink, Loader],
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardPage {
   private dashboardService = inject(DashboardService)

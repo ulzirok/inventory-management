@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, output, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, input, Input, output, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Tag } from '../../../search/models/search.interface';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [MatButtonModule, MatCardModule, CommonModule, TranslateModule],
   templateUrl: './tags.html',
   styleUrl: './tags.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Tags {
   tags = input<Tag[]>([])

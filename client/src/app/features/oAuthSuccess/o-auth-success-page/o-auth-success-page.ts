@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -12,6 +12,7 @@ import { filter, map, switchMap, tap } from 'rxjs';
   imports: [TranslateModule],
   templateUrl: './o-auth-success-page.html',
   styleUrl: './o-auth-success-page.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OAuthSuccessPage implements OnInit {
   private route = inject(ActivatedRoute)

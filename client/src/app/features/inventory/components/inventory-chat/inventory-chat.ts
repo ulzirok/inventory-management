@@ -1,4 +1,4 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,6 +23,7 @@ import { CommonModule } from '@angular/common';
   ],
   templateUrl: './inventory-chat.html',
   styleUrl: './inventory-chat.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryChat implements OnInit {
   messages = input<Comment[]>([])

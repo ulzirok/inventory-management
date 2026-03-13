@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +30,7 @@ import { MatChipsModule } from '@angular/material/chips';
   ],
   templateUrl: './inventory-fields.html',
   styleUrl: './inventory-fields.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryFields {
   inventory = input<Inventory | null>(null)

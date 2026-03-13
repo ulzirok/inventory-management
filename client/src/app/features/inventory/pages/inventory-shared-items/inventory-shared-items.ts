@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ItemsList } from "../../components/items-list/items-list";
 import { InventoryService } from '../../services/inventory.service';
 import { ActivatedRoute } from '@angular/router';
@@ -12,6 +12,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
   imports: [ItemsList],
   templateUrl: './inventory-shared-items.html',
   styleUrl: './inventory-shared-items.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventorySharedItems implements OnInit {
   private inventoryService = inject(InventoryService);

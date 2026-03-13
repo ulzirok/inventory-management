@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, effect, inject, input, output, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, DestroyRef, effect, inject, input, output, signal, ViewChild } from '@angular/core';
 import { User, UserDto } from '../../models/user.interface';
 import { SelectionModel } from '@angular/cdk/collections';
 import { TranslateModule } from '@ngx-translate/core';
@@ -35,6 +35,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   ],
   templateUrl: './users-list.html',
   styleUrl: './users-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersList {
   users = input<User[]>([]);

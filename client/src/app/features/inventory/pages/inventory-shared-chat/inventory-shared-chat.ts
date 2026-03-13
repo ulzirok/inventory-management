@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,6 +15,7 @@ import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
   imports: [MatCardModule, InventoryChat, TranslateModule ],
   templateUrl: './inventory-shared-chat.html',
   styleUrl: './inventory-shared-chat.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventorySharedChat implements OnInit {
   messages = signal<Comment[]>([]);

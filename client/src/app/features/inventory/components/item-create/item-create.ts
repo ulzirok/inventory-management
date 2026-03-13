@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -24,6 +24,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ],
   templateUrl: './item-create.html',
   styleUrl: './item-create.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemCreate implements OnInit {
   private fb = inject(FormBuilder)

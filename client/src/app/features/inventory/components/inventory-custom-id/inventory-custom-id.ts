@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnChanges, OnInit, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input, OnChanges, OnInit, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Inventory } from '../../models/inventory.interface';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -42,6 +42,7 @@ export const generateGuid = (): string => {
   ],
   templateUrl: './inventory-custom-id.html',
   styleUrl: './inventory-custom-id.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventoryCustomId implements OnInit, OnChanges{
   inventory = input<Inventory | null>(null)

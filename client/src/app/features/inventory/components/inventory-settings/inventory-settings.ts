@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { Inventory } from '../../models/inventory.interface';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ import { MarkdownComponent } from 'ngx-markdown';
   ],
   templateUrl: './inventory-settings.html',
   styleUrl: './inventory-settings.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InventorySettings {
   inventory = input<Inventory | null>(null)
