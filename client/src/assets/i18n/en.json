@@ -53,6 +53,7 @@
     "save": "Save",
     "cancel": "Cancel",
     "details": "Details",
+    "itemDetails": "Item details",
     "block": "Block",
     "unBlock": "Unblock",
     "role": "Role",
@@ -157,6 +158,7 @@
     "role": "Role",
     "active": "active",
     "blocked": "blocked",
-    "noUsersFound": "There are no users"
+    "noUsersFound": "There are no users",
+    "userDetails": "User details"
   }
 }

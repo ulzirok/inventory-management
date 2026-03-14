@@ -3,6 +3,7 @@ import { Inventory, InventoryFieldKey } from "./inventory.interface";
 export interface Item {
   id: string;
   inventoryId: number;
+  inventory: Inventory
   customId: string;
   authorId: number;
   version: number;
@@ -24,6 +25,7 @@ export interface Item {
   url_2: string;
   url_3: string;
   _count: Count;
+  isLiked: boolean;
 }
 
 export interface Count {

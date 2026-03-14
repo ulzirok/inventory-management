@@ -10,6 +10,7 @@ router.use(passport.authenticate("jwt", { session: false }), isAuthenticated);
 
 router.get("/:inventoryId", controller.getItems);
 router.post("/inventory/:inventoryId", controller.create);
+router.get("/item/:id", controller.getItem);
 router.patch("/:id", controller.update);
 router.post("/delete", controller.delete);
 

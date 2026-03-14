@@ -1,1 +1,26 @@
-<p>user-profile works!</p>
+@if (user(); as user) {
+<mat-card>
+  <mat-card-actions align="end">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-actions>
+  <mat-card-header>
+    <mat-card-title class="title">{{ 'admin.userDetails' | translate}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="detail-row">
+      <span class="label"><strong>{{ 'admin.name' | translate}}:</strong></span>
+      <span class="value">{{ user.name }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label"><strong>{{ 'admin.email' | translate}}:</strong></span>
+      <span class="value">{{ user.email }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label"><strong>{{ 'admin.role' | translate}}:</strong></span>
+      <span class="value">{{ user.role }}</span>
+    </div>
+  </mat-card-content>
+</mat-card>
+}

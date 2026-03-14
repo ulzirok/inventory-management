@@ -21,6 +21,16 @@ module.exports.getItemsPublic = async (req, res) => {
   }
 };
 
+module.exports.getItem = async (req, res) => {
+  try {
+    const item = await itemService.getItem(req);
+    res.status(200).json(item);
+
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};
+
 module.exports.create = async (req, res) => {
   try {
     const item = await itemService.create(req);

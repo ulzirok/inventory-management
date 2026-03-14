@@ -38,6 +38,7 @@
           (createItem)="onCreateItem($event)"
           (editItem)="onEditItem($event)"
           (deleteItem)="onDeleteItem($event)"
+          (viewItemDetails)="onViewItemDetails($event)"
           ></app-items-list>
         </mat-card-content>
       </mat-card>
@@ -74,24 +75,24 @@
     </mat-tab>
 
     <!-- stats -->
-    <mat-tab label="{{'inventory.stats'| translate}}">
+    <!-- <mat-tab label="{{'inventory.stats'| translate}}">
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.stats'| translate}}</mat-card-title>
         <mat-card-content>
           <p>Soon...</p>
         </mat-card-content>
       </mat-card>
-    </mat-tab>
+    </mat-tab> -->
 
     <!-- export -->
-    <mat-tab label="{{'inventory.export'| translate}}">
+    <!-- <mat-tab label="{{'inventory.export'| translate}}">
       <mat-card class="tab-card">
         <mat-card-title class="subtitle">{{'inventory.export'| translate}}</mat-card-title>
         <mat-card-content>
           <p>Soon...</p>
         </mat-card-content>
       </mat-card>
-    </mat-tab>
+    </mat-tab> -->
 
   </mat-tab-group>
 </div>
