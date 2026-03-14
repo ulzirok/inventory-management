@@ -3,38 +3,74 @@
     <mat-icon>warehouse</mat-icon>
   </a>
   <span class="spacer"></span>
-  
+
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic" floatLabel="always">
     <mat-icon matPrefix>search</mat-icon>
     <input matInput [formControl]="searchControl" placeholder="{{'search.placeholder' | translate}}..." />
   </mat-form-field>
 
+  @if (!isMobile()) {
   <a mat-button routerLink="/dashboard">{{ 'header.home' | translate }}</a>
   @if (isAuthenticated()) {
-    <a mat-button routerLink="/inventory">{{ 'header.inventories' | translate }}</a>
+  <a mat-button routerLink="/inventory">{{ 'header.inventories' | translate }}</a>
   }
   @if (isAdmin()) {
-    <a mat-button routerLink="/admin">{{ 'header.admin' | translate }}</a>
+  <a mat-button routerLink="/admin">{{ 'header.admin' | translate }}</a>
   }
   @if (!isAuthenticated()) {
-    <a mat-button routerLink="/auth/login">{{ 'header.login' | translate }}</a>
+  <a mat-button routerLink="/auth/login">{{ 'header.login' | translate }}</a>
   }
   @else {
-    <button mat-button (click)="logout()">{{ 'header.logout' | translate }}</button>
+  <button mat-button (click)="logout()">{{ 'header.logout' | translate }}</button>
   }
 
   <mat-select class="lang-switcher" [value]="currentLang()" (selectionChange)="changeLang($event.value)" disableRipple>
     <mat-option value="en">English</mat-option>
     <mat-option value="ru">Русский</mat-option>
   </mat-select>
+  }
 
   <button mat-icon-button (click)="toggleTheme()">
     @if (isDark()) {
-      <mat-icon>light_mode</mat-icon>
+    <mat-icon>light_mode</mat-icon>
     }
     @else {
-      <mat-icon>dark_mode</mat-icon>
+    <mat-icon>dark_mode</mat-icon>
     }
   </button>
+
+  @if (isMobile()) {
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  }
+
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item routerLink="/dashboard">{{ 'header.home' | translate }}</a>
+    @if (isAuthenticated()) {
+    <a mat-menu-item routerLink="/inventory">{{ 'header.inventories' | translate }}</a>
+    }
+    @if (isAdmin()) {
+    <a mat-menu-item routerLink="/admin">{{ 'header.admin' | translate }}</a>
+    }
+
+    <mat-divider></mat-divider>
+    <button mat-menu-item [matMenuTriggerFor]="langMenu">
+      <mat-icon>language</mat-icon>
+      <span>{{ currentLang() | uppercase }}</span>
+    </button>
+    <mat-divider></mat-divider>
+
+    @if (!isAuthenticated()) {
+    <a mat-menu-item routerLink="/auth/login">{{ 'header.login' | translate }}</a>
+    }
+    @else {
+    <button mat-menu-item (click)="logout()">{{ 'header.logout' | translate }}</button>
+    }
+  </mat-menu>
+  <mat-menu #langMenu="matMenu">
+    <button mat-menu-item (click)="changeLang('en')">English</button>
+    <button mat-menu-item (click)="changeLang('ru')">Русский</button>
+  </mat-menu>
 
 </mat-toolbar>

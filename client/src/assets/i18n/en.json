@@ -57,7 +57,8 @@
     "block": "Block",
     "unBlock": "Unblock",
     "role": "Role",
-    "user": "User details"
+    "user": "User details",
+    "chat": "Discussion"
   },
   "createInventory": {
     "creating": "Creating a new inventory",
@@ -159,6 +160,7 @@
     "active": "active",
     "blocked": "blocked",
     "noUsersFound": "There are no users",
-    "userDetails": "User details"
+    "userDetails": "User details",
+    "actions": "Actions"
   }
 }

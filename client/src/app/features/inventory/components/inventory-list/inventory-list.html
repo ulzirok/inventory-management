@@ -1,4 +1,5 @@
 <mat-toolbar class="table-toolbar">
+  @if (!isMobile()) {
   @if (canManage()) {
   <button mat-flat-button color="primary" (click)="create()">
     <mat-icon>add</mat-icon>
@@ -26,6 +27,41 @@
     {{'buttons.item'| translate}}
   </button>
   }
+  } @else {
+  <button mat-flat-button color="primary" [matMenuTriggerFor]="tableActions" [disabled]="!hasSelection()">
+    <mat-icon>more_vert</mat-icon>
+    {{ 'admin.actions' | translate }}
+  </button>
+
+  <mat-menu #tableActions="matMenu">
+
+    @if (canManage()) {
+    <button mat-menu-item (click)="create()">
+      <mat-icon>add</mat-icon> <span>{{'buttons.create'| translate}}</span>
+    </button>
+
+    <button mat-menu-item (click)="settings()" [disabled]="!isSingleSelected()">
+      <mat-icon>settings</mat-icon> <span>{{'buttons.settings'| translate}}</span>
+    </button>
+
+    <button mat-menu-item (click)="delete()" [disabled]="!hasSelection()">
+      <mat-icon>delete</mat-icon> <span>{{'buttons.delete'| translate}}</span>
+    </button>
+    }
+
+    @if (showChat()) {
+    <button mat-menu-item (click)="viewChat()" [disabled]="!isSingleSelected()">
+      <mat-icon>chat</mat-icon> <span>{{'buttons.chat'| translate}}</span>
+    </button>
+    }
+
+    @if (showViewItems()) {
+    <button mat-menu-item (click)="viewItem()" [disabled]="!isSingleSelected()">
+      <mat-icon>visibility</mat-icon> <span>{{'buttons.item'| translate}}</span>
+    </button>
+    }
+  </mat-menu>
+  }
 
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic" floatLabel="always">
     <input matInput (keyup)="filter($event)" placeholder="{{'inventory.filterPlaceholder' | translate}}..." />
@@ -35,63 +71,65 @@
 
 
 @if (dataSource.data.length > 0) {
-<table mat-table [dataSource]="dataSource" matSort matSortActive="title" matSortDirection="desc" matSortDisableClear
-  (matSortChange)="onSortChange($event)">
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" matSort matSortActive="title" matSortDirection="desc" matSortDisableClear
+    (matSortChange)="onSortChange($event)">
 
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(row)" [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(row)"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'inventory.title' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
-  </ng-container>
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'inventory.title' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> {{'inventory.description' | translate}} </th>
-    <td mat-cell *matCellDef="let element">
-      <markdown [data]="element.description"></markdown>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> {{'inventory.description' | translate}} </th>
+      <td mat-cell *matCellDef="let element">
+        <markdown [data]="element.description"></markdown>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="categoryId">
-    <th mat-header-cell *matHeaderCellDef> {{'inventory.category' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.category?.name }} </td>
-  </ng-container>
+    <ng-container matColumnDef="categoryId">
+      <th mat-header-cell *matHeaderCellDef> {{'inventory.category' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.category?.name }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="authorId">
-    <th mat-header-cell *matHeaderCellDef> {{'inventory.author' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.author?.email }} </td>
-  </ng-container>
+    <ng-container matColumnDef="authorId">
+      <th mat-header-cell *matHeaderCellDef> {{'inventory.author' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.author?.email }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="imageUrl">
-    <th mat-header-cell *matHeaderCellDef> {{ 'inventory.image' | translate }} </th>
-    <td mat-cell *matCellDef="let element">
-      @if (element.imageUrl) {
-      <img [src]="element.imageUrl" alt="{{element.title}}" width="50" height="50"
-        style="object-fit: cover; border-radius: 4px;">
-      }
+    <ng-container matColumnDef="imageUrl">
+      <th mat-header-cell *matHeaderCellDef> {{ 'inventory.image' | translate }} </th>
+      <td mat-cell *matCellDef="let element">
+        @if (element.imageUrl) {
+        <img [src]="element.imageUrl" alt="{{element.title}}" width="50" height="50"
+          style="object-fit: cover; border-radius: 4px;">
+        }
 
-    </td>
-  </ng-container>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(row)"></tr>
-
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(row)"></tr>
+  </table>
+</div>
 
 <mat-paginator [length]="totalCount()" [pageSize]="10" (page)="onPageChange($event)" class="paginator"></mat-paginator>
 } @else {
-  <div class="empty">
-    <mat-icon>inventory_2</mat-icon>
-    <p>{{ 'inventory.noInventoriesFound' | translate }}</p>
-  </div>
+<div class="empty">
+  <mat-icon>inventory_2</mat-icon>
+  <p>{{ 'inventory.noInventoriesFound' | translate }}</p>
+</div>
 }

@@ -14,6 +14,11 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ItemCreate } from '../item-create/item-create';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Role } from '../../../auth/models/role.enum';
+import { MatMenuModule } from '@angular/material/menu';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
+import { ConfirmDialog } from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-items-list',
@@ -26,7 +31,8 @@ import { Role } from '../../../auth/models/role.enum';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule,
+    MatMenuModule
   ],
   templateUrl: './items-list.html',
   styleUrl: './items-list.scss',
@@ -43,6 +49,7 @@ export class ItemsList {
 
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
+  private breakpointObserver = inject(BreakpointObserver);
 
   isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
   canManage = computed(() => this.isEditable() && (this.isAdmin() || this.isEditable()));
@@ -70,6 +77,12 @@ export class ItemsList {
   private selectedCount = signal(0);
   isSingleSelected = computed(() => this.selectedCount() === 1);
   hasSelection = computed(() => this.selectedCount() > 0);
+
+  isMobile = toSignal(
+    this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]).pipe(
+      map(result => result.matches)
+    )
+  );
 
   updateSelectionCount() {
     this.selectedCount.set(this.selection.selected.length);
@@ -136,11 +149,16 @@ export class ItemsList {
   delete() {
     if (!this.hasSelection()) return;
     const ids = this.selection.selected.map(item => item.id);
-    this.deleteItem.emit(ids);
-    this.selection.clear();
-    this.updateSelectionCount();
+    const dialogRef = this.dialog.open(ConfirmDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      this.deleteItem.emit(ids);
+      this.selection.clear();
+      this.updateSelectionCount();
+    });
   }
-  
+
   viewItem() {
     if (!this.isSingleSelected()) return;
     const id = this.selection.selected[0].id;
@@ -148,5 +166,5 @@ export class ItemsList {
     this.selection.clear();
     this.updateSelectionCount();
   }
-  
+
 }

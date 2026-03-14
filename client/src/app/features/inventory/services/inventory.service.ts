@@ -90,8 +90,8 @@ export class InventoryService {
     return this.http.get<Item[]>(`${environment.apiUrl}/api/items/${inventoryId}`);
   }
   
-  getItem(itemId: string): Observable<Item> {
-    return this.http.get<Item>(`${environment.apiUrl}/api/items/item/${itemId}`);
+  getItem(id: string): Observable<Item> {
+    return this.http.get<Item>(`${environment.apiUrl}/api/items/item/${id}`);
   }
 
   getPublicItems(inventoryId: string): Observable<Item[]> {
@@ -102,12 +102,12 @@ export class InventoryService {
     return this.http.post<Item[]>(`${environment.apiUrl}/api/items/inventory/${inventoryId}`, item);
   }
 
-  updateItem(itemId: string, item: ItemDto): Observable<Item> {
-    return this.http.patch<Item>(`${environment.apiUrl}/api/items/${itemId}`, item);
+  updateItem(id: string, item: ItemDto): Observable<Item> {
+    return this.http.patch<Item>(`${environment.apiUrl}/api/items/${id}`, item);
   }
 
-  deleteItem(itemIds: string[]) {
-    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { itemIds });
+  deleteItem(ids: string[]) {
+    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { ids });
   }
 
   getComment(inventoryId: number): Observable<Comment[]> {
