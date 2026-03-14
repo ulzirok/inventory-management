@@ -1,13 +1,17 @@
 .inventory-form {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 380px;
   gap: 5px;
 }
 
 .create-container {
-  width: 400px;
+  width: 380px;
   padding: 0 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+  }
 }
 
 .image-upload {

@@ -15,8 +15,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-users-list',
@@ -31,7 +33,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatMenuModule
   ],
   templateUrl: './users-list.html',
   styleUrl: './users-list.scss',
@@ -48,6 +51,7 @@ export class UsersList {
 
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
+  private breakpointObserver = inject(BreakpointObserver);
 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -64,6 +68,12 @@ export class UsersList {
   syncDataEffect = effect(() => {
     this.dataSource.data = this.users();
   });
+  
+  isMobile = toSignal(
+    this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]).pipe(
+      map(result => result.matches)
+    )
+  );
 
   ngOnInit() {
     this.search$.pipe(

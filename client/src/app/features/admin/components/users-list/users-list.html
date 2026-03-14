@@ -1,4 +1,5 @@
 <mat-toolbar class="table-toolbar">
+  @if (!isMobile()) {
   <button mat-flat-button color="primary" (click)="changeStatus()" [disabled]="!hasSelection()">
     <mat-icon>lock</mat-icon>
     {{'buttons.block'| translate}}
@@ -6,67 +7,95 @@
 
   <button mat-flat-button (click)="changeStatus()" [disabled]="!hasSelection()" title="Unblock">
     <mat-icon>lock_open</mat-icon>
-</button>
+  </button>
 
   <button mat-flat-button color="warn" (click)="deleteUsers()" [disabled]="!hasSelection()" title="Delete">
     <mat-icon>delete</mat-icon>
   </button>
-  
+
   <button mat-flat-button color="primary" (click)="changeRole()" [disabled]="!hasSelection()" title="Change role">
     <mat-icon>admin_panel_settings</mat-icon>
   </button>
-  
+
   <button mat-flat-button color="primary" (click)="getUser()" [disabled]="!isSingleSelected()">
     <mat-icon>visibility</mat-icon>
     {{'buttons.user'| translate}}
   </button>
-  
+  } @else {
+  <button mat-flat-button color="primary" [matMenuTriggerFor]="tableActions" [disabled]="!hasSelection()">
+    <mat-icon>more_vert</mat-icon>
+    {{ 'admin.actions' | translate }}
+  </button>
+
+  <mat-menu #tableActions="matMenu" xPosition="before">
+    <button mat-menu-item (click)="changeStatus()">
+      <mat-icon>lock</mat-icon> <span>{{'buttons.block'| translate}}</span>
+    </button>
+    <button mat-menu-item (click)="changeStatus()">
+      <mat-icon>lock_open</mat-icon> <span>{{'buttons.unBlock'| translate}}</span>
+    </button>
+    <button mat-menu-item (click)="changeRole()">
+      <mat-icon>admin_panel_settings</mat-icon> <span>Change Role</span>
+    </button>
+    <button mat-menu-item (click)="getUser()" [disabled]="!isSingleSelected()">
+      <mat-icon>visibility</mat-icon> <span>{{'buttons.user'| translate}}</span>
+    </button>
+    <button mat-menu-item color="warn" (click)="deleteUsers()">
+      <mat-icon color="warn">delete</mat-icon> <span>Delete</span>
+    </button>
+  </mat-menu>
+  }
+
   <mat-form-field appearance="outline" class="search-field" subscriptSizing="dynamic" floatLabel="always">
     <input matInput (keyup)="filter($event)" placeholder="{{'inventory.filterPlaceholder' | translate}}..." />
   </mat-form-field>
-  
+
 </mat-toolbar>
 
 @if (dataSource.data.length > 0) {
-<table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="desc" matSortDisableClear
-  (matSortChange)="onSortChange($event)">
-  
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef>
-      <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
-        [indeterminate]="selection.hasValue() && !isAllSelected()">
-      </mat-checkbox>
-    </th>
-    <td mat-cell *matCellDef="let row">
-      <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(row)" [checked]="selection.isSelected(row)">
-      </mat-checkbox>
-    </td>
-  </ng-container>
+<div class="table-container">
+  <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="desc" matSortDisableClear
+    (matSortChange)="onSortChange($event)">
 
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'admin.name' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
-  </ng-container>
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="toggleAllRows()" [checked]="isAllSelected()"
+          [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="toggleRow(row)"
+          [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'admin.email' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
-  </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'admin.name' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef> {{'admin.status' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ (element.isBlocked ? 'admin.blocked' : 'admin.active') | translate }} </td>
-  </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'admin.email' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="role">
-    <th mat-header-cell *matHeaderCellDef> {{'admin.role' | translate}} </th>
-    <td mat-cell *matCellDef="let element"> {{ element.role }} </td>
-  </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> {{'admin.status' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ (element.isBlocked ? 'admin.blocked' : 'admin.active') | translate }}
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(row)"></tr>
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> {{'admin.role' | translate}} </th>
+      <td mat-cell *matCellDef="let element"> {{ element.role }} </td>
+    </ng-container>
 
-</table>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="toggleRow(row)"></tr>
+
+  </table>
+</div>
 <mat-paginator [length]="totalCount()" [pageSize]="10" (page)="onPageChange($event)" class="paginator"></mat-paginator>
 } @else {
 <div class="empty">

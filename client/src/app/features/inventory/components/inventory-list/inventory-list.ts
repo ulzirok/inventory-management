@@ -20,8 +20,10 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { TableParams } from '../../../../core/models/tableParams.interface';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime, distinctUntilChanged, map, Subject } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-inventory-list',
@@ -38,7 +40,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     MatFormFieldModule,
     MatInputModule,
     MatPaginatorModule,
-    MatSortModule
+    MatSortModule,
+    MatMenuModule
   ],
   templateUrl: './inventory-list.html',
   styleUrl: './inventory-list.scss',
@@ -61,6 +64,7 @@ export class InventoryList {
   private authService = inject(AuthService);
   private dialog = inject(MatDialog);
   private destroyRef = inject(DestroyRef);
+  private breakpointObserver = inject(BreakpointObserver);
 
   isAuthenticated = computed(() => this.authService.isAuthenticated());
   isAdmin = computed(() => this.authService.hasRole(Role.ADMIN));
@@ -81,6 +85,12 @@ export class InventoryList {
   syncDataEffect = effect(() => {
     this.dataSource.data = this.inventories();
   });
+  
+  isMobile = toSignal(
+    this.breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet]).pipe(
+      map(result => result.matches)
+    )
+  );
 
   ngOnInit() {
     this.search$.pipe(
@@ -166,11 +176,11 @@ export class InventoryList {
 
   delete() {
     if (!this.hasSelection()) return;
+    const ids = this.selection.selected.map(item => item.id);
     const dialogRef = this.dialog.open(ConfirmDialog);
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-      const ids = this.selection.selected.map(item => item.id);
       this.deleteInventory.emit(ids);
       this.selection.clear();
       this.updateSelectionCount();
