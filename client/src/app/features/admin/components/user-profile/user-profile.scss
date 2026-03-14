@@ -1,0 +1,40 @@
+.title {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+mat-card-header {
+  padding: 0;
+  padding-left: 16px;
+}
+
+mat-card {
+  margin: 20px;
+  padding: 0;
+}
+
+mat-card-title {
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.detail-row {
+  display: flex;
+  padding: 12px 0;
+  align-items: flex-start;
+}
+
+.label {
+  margin-right: 10px;
+  text-transform: capitalize;
+}
+
+.long-text {
+  white-space: pre-wrap;
+}
+
+mat-card-actions {
+  padding: 0;
+  padding-right: 5px;
+}

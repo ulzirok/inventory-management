@@ -1,11 +1,21 @@
 const prisma = require("../prisma.js");
 
 module.exports.like = async (req) => {
-  const { itemId } = req.params;
+  const { id } = req.params;
+  const userId = Number(req.user.id);
+
+  const existingLike = await prisma.like.findUnique({
+    where: { userId_itemId: { userId, itemId: id } }
+  });
+
+  if (existingLike) {
+    await prisma.like.delete({ where: { userId_itemId: { userId, itemId: id } } });
+    return { liked: false };
+  }
 
   await prisma.like.create({
-    data: { itemId, userId: req.user.id },
+    data: { userId, itemId: id }
   });
-  
-  return { message: "Liked" };
+
+  return { liked: true };
 };

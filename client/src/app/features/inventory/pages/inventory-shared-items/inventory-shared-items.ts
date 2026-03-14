@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ItemsList } from "../../components/items-list/items-list";
 import { InventoryService } from '../../services/inventory.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Inventory } from '../../models/inventory.interface';
 import { Item, ItemDto } from '../../models/item.interface';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -19,6 +19,7 @@ export class InventorySharedItems implements OnInit {
   private route = inject(ActivatedRoute);
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService);
+  private router = inject(Router);
 
   inventory = signal<Inventory | null>(null);
   items = signal<Item[]>([]);
@@ -88,5 +89,9 @@ export class InventorySharedItems implements OnInit {
       },
       error: (err) => { }
     });
+  }
+  
+  onViewItemDetails(id: string) {
+    this.router.navigate([`inventory/${id}/item`]);
   }
 }

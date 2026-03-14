@@ -89,6 +89,10 @@ export class InventoryService {
   getItems(inventoryId: string): Observable<Item[]> {
     return this.http.get<Item[]>(`${environment.apiUrl}/api/items/${inventoryId}`);
   }
+  
+  getItem(itemId: string): Observable<Item> {
+    return this.http.get<Item>(`${environment.apiUrl}/api/items/item/${itemId}`);
+  }
 
   getPublicItems(inventoryId: string): Observable<Item[]> {
     return this.http.get<Item[]>(`${environment.apiUrl}/api/items/public/${inventoryId}`);
@@ -102,11 +106,15 @@ export class InventoryService {
     return this.http.patch<Item>(`${environment.apiUrl}/api/items/${itemId}`, item);
   }
 
-  deleteItem(ids: string[]) {
-    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { ids });
+  deleteItem(itemIds: string[]) {
+    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/items/delete`, { itemIds });
   }
 
   getComment(inventoryId: number): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${environment.apiUrl}/api/comment/${inventoryId}`);
+  }
+  
+  likeItem(itemId: string): Observable<{ liked: boolean; }> {
+    return this.http.post<{ liked: boolean; }>(`${environment.apiUrl}/api/likes/items/${itemId}`, {});
   }
 }

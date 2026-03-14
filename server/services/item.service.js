@@ -9,6 +9,10 @@ const {
 
 module.exports.getItems = async (req) => {
   const inventoryId = Number(req.params.inventoryId);
+  
+  if (!inventoryId) {
+    throw createError("Invalid inventory id", 400);
+  }
 
   const where = req.user.role === roles.ADMIN ? { inventoryId } : {
     inventoryId,
@@ -28,12 +32,43 @@ module.exports.getItems = async (req) => {
 
 module.exports.getItemsPublic = async (req) => {
   const inventoryId = Number(req.params.inventoryId);
+  
+  if (!inventoryId) {
+    throw createError("Invalid inventory id", 400);
+  }
 
   const items = await prisma.item.findMany({
     where: { inventoryId },
     orderBy: { updatedAt: "desc" }
   });
   return items;
+};
+
+module.exports.getItem = async (req) => {
+  const { id } = req.params; //string
+  const  userId  = req.user?.id;
+
+  const item = await prisma.item.findUnique({
+    where: { id },
+    include: {
+      inventory: true,
+      _count: { select: { likes: true } }
+    }
+  });
+  
+  if (!item) throw createError("Item not found", 404);
+  let like = null;
+  
+  if (userId) {
+    like = await prisma.like.findUnique({
+      where: { userId_itemId: { userId: Number(userId), itemId: id } }
+    });
+  }
+  
+  return {
+    ...item,
+    isLiked: !!like
+  };
 };
 
 module.exports.create = async (req) => {

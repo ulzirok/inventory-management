@@ -39,6 +39,7 @@ export class ItemsList {
   createItem = output<ItemDto>();
   editItem = output<void>();
   deleteItem = output<string[]>();
+  viewItemDetails = output<string>();
 
   private dialog = inject(MatDialog);
   private authService = inject(AuthService);
@@ -52,10 +53,10 @@ export class ItemsList {
 
     return Object.entries(FIELD_MAPPING)
       .filter(([inventoryKey]) => inventory[inventoryKey as InventoryFieldKey])
-      .map(([inventoryKey, elKey]) => ({
+      .map(([inventoryKey, itemKey]) => ({
         label: inventory[inventoryKey as InventoryFieldKey] as string,
-        columnDef: elKey,
-        type: this.detectFieldType(elKey)
+        columnDef: itemKey,
+        type: this.detectFieldType(itemKey)
       }));
   });
 
@@ -139,5 +140,13 @@ export class ItemsList {
     this.selection.clear();
     this.updateSelectionCount();
   }
-
+  
+  viewItem() {
+    if (!this.isSingleSelected()) return;
+    const id = this.selection.selected[0].id;
+    this.viewItemDetails.emit(id);
+    this.selection.clear();
+    this.updateSelectionCount();
+  }
+  
 }

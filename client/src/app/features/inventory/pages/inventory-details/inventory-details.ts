@@ -185,6 +185,10 @@ export class InventoryDetails implements OnInit, OnDestroy {
     })
   }
   
+  onViewItemDetails(id: string) {
+    this.router.navigate([`inventory/${id}/item`]);
+  }
+  
   onSaveAccess(payload: FormData) {
     const id = Number(this.inventory()!.id)
     this.inventoryService.update(id, payload).pipe(

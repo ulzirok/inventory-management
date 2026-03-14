@@ -123,7 +123,7 @@ export class AdminPage implements OnInit {
   }
 
   onGetUser(id: number) {
-    this.router.navigate([`users/${id}`]);
+    this.router.navigate([`/admin/${id}/user`]);
   }
   
   onviewChats(id: number) {

@@ -1,1 +1,39 @@
-<p>item-details works!</p>
+@if (item(); as item) {
+<mat-card>
+  <mat-card-actions class="close" align="end">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-card-actions>
+  <mat-card-header>
+    <mat-card-title class="title">{{ item.customId }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for (field of activeFields(); track field.label) {
+    <div class="detail-row">
+      <span class="label"><strong>{{ field.label }}:</strong></span>
+      <span class="value">
+        @switch (field.type) {
+        @case ('boolean') {
+        <mat-icon>{{ field.value ? 'done' : 'close' }}</mat-icon>
+        }
+        @case ('text') {
+        <p class="long-text">{{ field.value }}</p>
+        }
+        @default {
+        {{ field.value }}
+        }
+        }
+      </span>
+    </div>
+    }
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button [color]="item.isLiked ? 'accent' : 'primary'" (click)="like(item.id)">
+      <mat-icon>{{ item.isLiked ? 'thumb_up' : 'thumb_up_off_alt' }}</mat-icon>
+      {{ item.isLiked ? 'Liked' : 'Like' }}
+      <span class="like-count">({{ item._count.likes }})</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+}
