@@ -64,6 +64,7 @@ Supported types:
 - number
 - boolean
 - date
+
 The field structure is defined by the user.
 ### Item management
 The users can:
