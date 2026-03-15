@@ -52,7 +52,7 @@ export class AdminPage implements OnInit {
     ).subscribe({
       next: (data) => {
         this.users.set(data.users.data),
-        this.usertotal.set(data.inventories.total);
+        this.usertotal.set(data.users.total);
         this.inventories.set(data.inventories.data);
         this.inventorytotal.set(data.inventories.total);
       },
