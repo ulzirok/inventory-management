@@ -42,19 +42,23 @@ Web Application (Client-Server Architecture):
 - Owner (authorized users) - access only to own inventory/items and inventories/items they have write access to
 - Non-auth users - read-only
 ### Inventory management
+
 The users can:
 - create an inventory
-- view a list of their inventories and inventories they have write access to
+- view a list of their inventories and inventories they have write access to 
 - edit
 - delete
 - configure
 ### Field Management (Dynamic Structure)
+
 The users can:
 - add custom fields to the inventory
 - delete
+
 Each field contains:
 - name
 - data type
+
 Supported types:
 - text
 - number
@@ -63,10 +67,12 @@ Supported types:
 
 The field structure is defined by the user.
 ### Item management
+
 The users can:
 - create an item
 - edit
 - delete
+
 When creating an item:
 - the system displays a form based on the created custom fields
 - the input type depends on the custom field type
