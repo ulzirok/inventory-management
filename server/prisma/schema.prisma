@@ -44,6 +44,7 @@ model Inventory {
   description String   @db.Text
   imageUrl    String?
   idFormat    String   @default("ITEM-{{year}}-{{seq}}-{{rand6}}")
+  nextSeq     Int      @default(0) 
   
   category    Category @relation(fields: [categoryId], references: [id])
   categoryId  Int

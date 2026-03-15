@@ -76,17 +76,27 @@ module.exports.create = async (req) => {
   const { ...data } = req.body;
 
   const inventory = await findInventoryOrThrow(inventoryId, req.user)
-  const customId = await generateCustomId(inventory.idFormat, inventoryId, prisma);
+  
+  return prisma.$transaction(async (tx) => {
+    const updatedInventory = await tx.inventory.update({
+      where: { id: inventoryId },
+      data: {
+        nextSeq: { increment: 1 }
+      }
+    });
+    const seq = updatedInventory.nextSeq;
+    
+    const customId = await generateCustomId(inventory.idFormat, seq);
 
-  const item = await prisma.item.create({
-    data: {
-      ...data,
-      customId,
-      inventoryId,
-      authorId: req.user.id,
-    },
+    return tx.item.create({
+      data: {
+        ...data,
+        customId,
+        inventoryId,
+        authorId: req.user.id,
+      },
+    });
   });
-  return item;
 };
 
 module.exports.update = async (req) => {
