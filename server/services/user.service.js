@@ -1,7 +1,6 @@
 const prisma = require("../prisma");
-const Roles = require("../constants/roles");
-const createError = require("../utils/createError");
-const { findUsers } = require('../helpers/users.helpers')
+const { findUsers, getSFIds } = require('../helpers/users.helpers')
+const { deleteContactsFromSF } = require('../helpers/salesforce.helpers');
 
 module.exports.getAll = async (req) => {
   const { search = '' } = req.query;
@@ -25,7 +24,8 @@ module.exports.getUserById = async (req) => {
       name: true,
       email: true,
       role: true,
-      isBlocked: true
+      isBlocked: true,
+      salesforceId: true
     }
   });
   
@@ -56,10 +56,20 @@ module.exports.changeRole = async (req) => {
 
 module.exports.delete = async (req) => {
   const { ids } = req.body;
+  const userIds = ids.map((id) => Number(id));
+
+  const sfIds = await getSFIds(userIds);
+  try {
+    if (sfIds.length > 0) {
+      await deleteContactsFromSF(sfIds);
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
 
   await prisma.user.deleteMany({
-    where: { id: { in: ids.map((id) => Number(id)) } },
+    where: { id: { in: userIds } },
   });
-  
+
   return { message: "Users deleted" };
 };

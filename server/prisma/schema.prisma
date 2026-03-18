@@ -21,6 +21,7 @@ model User {
   facebookId String?  @unique
   role       Role     @default(USER) 
   isBlocked  Boolean  @default(false)
+  salesforceId String? @unique 
   
   inventories Inventory[]
   items       Item[]

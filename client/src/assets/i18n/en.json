@@ -58,7 +58,10 @@
     "unBlock": "Unblock",
     "role": "Role",
     "user": "User details",
-    "chat": "Discussion"
+    "chat": "Discussion",
+    "synchronized": "Synchronized",
+    "sync": "Sync with Salesforce",
+    "send": "Send"
   },
   "createInventory": {
     "creating": "Creating a new inventory",
@@ -162,5 +165,11 @@
     "noUsersFound": "There are no users",
     "userDetails": "User details",
     "actions": "Actions"
+  },
+  "salesforce": {
+    "fill": "Fill out the form",
+    "name": "Name",
+    "email": "Email",
+    "company": "Company Name"
   }
 }

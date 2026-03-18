@@ -5,7 +5,7 @@ const {
   generateToken,
   checkIsBlocked,
   checkPassword
-} = require('../helpers/auth.helpers')
+} = require('../helpers/auth.helpers');
 
 module.exports.register = async (req) => {
   const { name, email, password } = req.body;
@@ -30,13 +30,13 @@ module.exports.login = async (req) => {
   const candidate = await prisma.user.findUnique({
     where: { email: email },
   });
-  
-  if (!candidate) throw createError("Incorrect email or password", 401)
-  
-  await checkPassword(password, candidate.password)
-  checkIsBlocked(candidate)
+
+  if (!candidate) throw createError("Incorrect email or password", 401);
+
+  await checkPassword(password, candidate.password);
+  checkIsBlocked(candidate);
   const token = generateToken(candidate);
-  
+
   return {
     token,
     user: { id: candidate.id, email: candidate.email },
@@ -53,7 +53,8 @@ module.exports.getProfile = async (req) => {
       name: true,
       email: true,
       role: true,
-      isBlocked: true
+      isBlocked: true,
+      salesforceId: true
     }
   });
   return user;
