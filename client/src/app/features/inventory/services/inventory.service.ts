@@ -6,6 +6,7 @@ import { environment } from '../../../../environment/environment';
 import { Item, ItemDto } from '../models/item.interface';
 import { Comment } from '../models/comment.interface';
 import { TableParams } from '../../../core/models/tableParams.interface';
+import { SalesforceDto } from '../../auth/models/user.interface';
 
 
 @Injectable({
@@ -116,5 +117,9 @@ export class InventoryService {
   
   likeItem(itemId: string): Observable<{ liked: boolean; }> {
     return this.http.post<{ liked: boolean; }>(`${environment.apiUrl}/api/likes/items/${itemId}`, {});
+  }
+  
+  syncSalesforce(user: SalesforceDto): Observable<{ message: string; }> {
+    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/salesforce`, user);
   }
 }

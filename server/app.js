@@ -13,6 +13,7 @@ const searchByTagRoutes = require("./routes/search-by-tag.routes");
 const tagsRoutes = require("./routes/tags.routes");
 const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
+const salesforceRoutes = require("./routes/salesforce.routes");
 const expressWs = require('express-ws')(app);
 const aWss = expressWs.getWss();
 const socketHandler = require('./webSocket/socketHandler');
@@ -45,6 +46,7 @@ app.use("/api/search-by-tag", searchByTagRoutes);
 app.use("/api/tags", tagsRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/likes", likesRoutes);
+app.use("/api/salesforce", salesforceRoutes);
 
 app.ws('/api/chat', (ws, req) => {
   const token = req.query.token;

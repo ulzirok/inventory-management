@@ -8,4 +8,11 @@ export interface User {
   facebookId: any;
   role: Role;
   isBlocked: boolean;
+  salesforceId: string;
+}
+
+export interface SalesforceDto {
+  companyName: string;
+  name: string;
+  email: string;
 }
