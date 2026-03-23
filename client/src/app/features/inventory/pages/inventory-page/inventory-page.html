@@ -9,7 +9,7 @@
       <h3 class="subtitle">{{ 'inventory.inventoriesMy' | translate }}</h3>
       @if (canManage()) {
       <div class="sync">
-        <button mat-raised-button color="primary" [disabled]="currentUser()?.salesforceId"
+        <button mat-raised-button class="sync-button" color="primary" [disabled]="currentUser()?.salesforceId"
           (click)="syncToSalesforce()">
           {{ (currentUser()?.salesforceId ? 'buttons.synchronized' : 'buttons.sync')|translate}}
         </button>

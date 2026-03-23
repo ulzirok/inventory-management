@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User, UserDto } from '../models/user.interface';
 import { environment } from '../../../../environment/environment';
 import { TableParams } from '../../../core/models/tableParams.interface';
+import { SalesforceDto } from '../../auth/models/user.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,9 @@ export class UserService {
 
   delete(ids: number[]): Observable<{ message: string; }> {
     return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/users/delete`, { ids });
+  }
+  
+  syncSalesforce(user: SalesforceDto): Observable<{ message: string; }> {
+    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/salesforce`, user);
   }
 }

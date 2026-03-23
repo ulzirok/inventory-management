@@ -78,6 +78,10 @@ export class InventoryService {
   delete(ids: number[]): Observable<{ message: string; }> {
     return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/inventory/delete`, { ids });
   }
+  
+  generateApiToken(id: number): Observable<{ message: string; token: string}> {
+    return this.http.post<{ message: string; token: string}>(`${environment.apiUrl}/api/inventory/${id}/generate-token`, { });
+  }
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${environment.apiUrl}/api/categories`);
@@ -117,9 +121,5 @@ export class InventoryService {
   
   likeItem(itemId: string): Observable<{ liked: boolean; }> {
     return this.http.post<{ liked: boolean; }>(`${environment.apiUrl}/api/likes/items/${itemId}`, {});
-  }
-  
-  syncSalesforce(user: SalesforceDto): Observable<{ message: string; }> {
-    return this.http.post<{ message: string; }>(`${environment.apiUrl}/api/salesforce`, user);
   }
 }

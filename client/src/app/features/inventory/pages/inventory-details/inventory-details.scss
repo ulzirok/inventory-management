@@ -24,3 +24,57 @@
 mat-form-field {
   width: 100%;
 }
+
+.inventory-top {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+}
+
+.generate {
+  margin-right: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+.generate-button {
+  border-radius: 0;
+  height: 100%;
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
+}
+
+.generate-field {
+  margin: 0 10px;
+  width: 250px;
+  --mat-form-field-container-height: 100%;
+
+  @media (max-width: 768px) {
+    width: auto;
+  }
+}
+
+::ng-deep .generate-field .mat-mdc-text-field-wrapper {
+  border-radius: 8px !important;
+  padding-top: 0 !important;
+  height: 100%;
+}
+
+::ng-deep .generate-field .mdc-notched-outline__leading,
+::ng-deep .generate-field .mdc-notched-outline__notch,
+::ng-deep .generate-field .mdc-notched-outline__trailing {
+  border-color: rgba(196, 195, 195, 0.346) !important;
+  border-width: 1px !important;
+}

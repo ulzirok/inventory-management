@@ -57,9 +57,10 @@
     "role": "Роль",
     "user": "О пользователе",
     "chat": "Обсуждения",
-    "synchronized": "Синхронизировано",
+    "synchronized": "Синхронизировано с Salesforce",
     "sync": "Синхронизация с Salesforce",
-    "send": "Отправить"
+    "send": "Отправить",
+    "generateAPI": "Генерировать API-токен"
   },
   "createInventory": {
     "creating": "Создание нового инвентаря",

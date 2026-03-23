@@ -15,6 +15,7 @@ import { Role } from '../../../auth/models/role.enum';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { Salesforce } from '../../components/salesforce/salesforce';
+import { UserService } from '../../../admin/services/user.service';
 
 @Component({
   selector: 'app-inventory-page',
@@ -25,6 +26,7 @@ import { Salesforce } from '../../components/salesforce/salesforce';
 })
 export class InventoryPage implements OnInit {
   private inventoryService = inject(InventoryService);
+  private userService = inject(UserService);
   private authService = inject(AuthService);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
@@ -119,7 +121,7 @@ export class InventoryPage implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-      this.inventoryService.syncSalesforce(result).pipe(
+      this.userService.syncSalesforce(result).pipe(
         takeUntilDestroyed(this.destroyRef)
       ).subscribe({
         next: () => {

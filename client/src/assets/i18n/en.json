@@ -59,9 +59,10 @@
     "role": "Role",
     "user": "User details",
     "chat": "Discussion",
-    "synchronized": "Synchronized",
+    "synchronized": "Synchronized with Salesforce",
     "sync": "Sync with Salesforce",
-    "send": "Send"
+    "send": "Send",
+    "generateAPI": "Generate API Token"
   },
   "createInventory": {
     "creating": "Creating a new inventory",
