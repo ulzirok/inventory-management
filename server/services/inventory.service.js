@@ -1,6 +1,7 @@
 const prisma = require("../prisma");
 const roles = require("../constants/roles");
 const createError = require("../utils/createError");
+const crypto = require("crypto");
 const {
   inventoryInclude,
   getSearchWhere,
@@ -72,8 +73,8 @@ module.exports.update = async (req) => {
   const inventoryId = Number(req.params.id);
   let { version, categoryId, tags, title, description, isPublic, idFormat, ...customLabels } = req.body;
 
-  const inventory = await findOrThrow(inventoryId)
-  checkPermission(inventory, req.user)
+  const inventory = await findOrThrow(inventoryId);
+  checkPermission(inventory, req.user);
 
   const payload = {
     title,
@@ -82,11 +83,11 @@ module.exports.update = async (req) => {
     version: { increment: 1 },
   };
 
-  addIdFormat(payload, idFormat)
-  await addImage(payload, req.file)
-  addCategory(payload, categoryId)
-  addTags(payload, tags)
-  addAccess(payload, isPublic)
+  addIdFormat(payload, idFormat);
+  await addImage(payload, req.file);
+  addCategory(payload, categoryId);
+  addTags(payload, tags);
+  addAccess(payload, isPublic);
 
   const updated = await prisma.inventory.update({
     where: { id: inventoryId, version: Number(version) },
@@ -123,4 +124,23 @@ module.exports.getTop = async () => {
     include: inventoryInclude,
   });
   return top;
+};
+
+module.exports.generateApiToken = async (req) => { //for odoo
+  const inventoryId = Number(req.params.id);
+
+  const inventory = await findOrThrow(inventoryId);
+  if (inventory.apiToken) {
+    return { token: inventory.apiToken, message: 'API token already generated.' };
+  }
+
+  checkPermission(inventory, req.user);
+  const token = crypto.randomBytes(32).toString('hex');
+
+  await prisma.inventory.update({
+    where: { id: inventoryId },
+    data: { apiToken: token }
+  });
+
+  return { token, message: 'API token generated successfully.' };
 };

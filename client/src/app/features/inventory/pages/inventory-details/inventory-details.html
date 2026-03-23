@@ -1,5 +1,15 @@
 <div class="inventory-container">
-  <h2 class="title">{{inventory()?.title ?? ''}}</h2>
+  <div class="inventory-top">
+    <h2 class="title">{{inventory()?.title ?? ''}}</h2>
+    <div class="generate">
+      <mat-form-field appearance="outline" class="generate-field" subscriptSizing="dynamic">
+        <input matInput readonly class="preview-input" [value]="apiToken()">
+      </mat-form-field>
+      <button class="generate-button" mat-raised-button color="primary" (click)="generateApiToken()">
+        {{'buttons.generateAPI'|translate}}
+      </button>
+    </div>
+  </div>
 
   <mat-tab-group animationDuration="300ms">
 

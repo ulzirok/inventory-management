@@ -14,6 +14,7 @@ const tagsRoutes = require("./routes/tags.routes");
 const commentRoutes = require("./routes/comment.routes");
 const likesRoutes = require("./routes/likes.routes");
 const salesforceRoutes = require("./routes/salesforce.routes");
+const odooRoutes = require("./routes/odoo.routes");
 const expressWs = require('express-ws')(app);
 const aWss = expressWs.getWss();
 const socketHandler = require('./webSocket/socketHandler');
@@ -47,6 +48,7 @@ app.use("/api/tags", tagsRoutes);
 app.use("/api/comment", commentRoutes);
 app.use("/api/likes", likesRoutes);
 app.use("/api/salesforce", salesforceRoutes);
+app.use("/api/odoo", odooRoutes);
 
 app.ws('/api/chat', (ws, req) => {
   const token = req.query.token;

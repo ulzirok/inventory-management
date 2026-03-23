@@ -18,4 +18,6 @@ router.post("/", imagekit.single('image'), controller.create);
 router.patch("/:id", imagekit.single('image'), controller.update);
 router.post("/delete", controller.delete);
 
+router.post("/:id/generate-token", controller.generateApiToken);
+
 module.exports = router;

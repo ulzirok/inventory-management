@@ -97,3 +97,12 @@ module.exports.getTop = async (req, res) => {
   }
 };
 
+module.exports.generateApiToken = async (req, res) => { //for odoo
+  try {
+    const result = await inventoryService.generateApiToken(req);
+    res.status(200).json(result);
+
+  } catch (error) {
+    errorHandler(res, error);
+  }
+};

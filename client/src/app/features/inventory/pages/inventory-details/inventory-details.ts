@@ -20,6 +20,9 @@ import { InventoryFields } from '../../components/inventory-fields/inventory-fie
 import { InventoryAccess } from '../../components/inventory-access/inventory-access';
 import { InventoryCustomId } from '../../components/inventory-custom-id/inventory-custom-id';
 import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-inventory-details',
@@ -35,7 +38,9 @@ import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
     InventoryFields,
     InventoryAccess,
     InventoryCustomId,
-    InventoryChat
+    InventoryChat,
+    MatInputModule,
+    ReactiveFormsModule
   ],
   templateUrl: './inventory-details.html',
   styleUrl: './inventory-details.scss',
@@ -52,6 +57,7 @@ export class InventoryDetails implements OnInit, OnDestroy {
   items = signal<Item[]>([]);
   inventory = signal<Inventory | null>(null)
   messages = signal<Comment[]>([])
+  apiToken = signal<string | null>(null)
   
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -224,5 +230,17 @@ export class InventoryDetails implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.ws.disconnect();
+  }
+  
+  generateApiToken() {
+    this.inventoryService.generateApiToken(this.inventory()!.id).pipe(
+      takeUntilDestroyed(this.destroyRef)
+    ).subscribe({
+      next: (data) => {
+        this.notificationService.success(data.message);
+        this.apiToken.set(data.token)
+      },
+      error: (err) => { }
+    })
   }
 }
