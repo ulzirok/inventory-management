@@ -17,8 +17,7 @@ Each inventory can contain items with dynamically defined fields (text, number, 
 - Autosave when editing inventory
 - Full-text search across inventories
 - Sorting, filtering, and pagination of data
-- Real-time comments using WebSocket
-- Likes
+- Real-time comments using WebSocket, Likes
 - User management (admin panel)
 - Two user interface languages
 - Two themes: light and dark
