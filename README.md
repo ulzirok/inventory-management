@@ -12,11 +12,18 @@ Each inventory can contain items with dynamically defined fields (text, number, 
 - Creation and management of inventories
 - Dynamic custom fields for inventories
 - Item management based on the defined field structure
-- Comments and likes
+- Autosave when editing inventory
 - Full-text search across inventories
 - Sorting, filtering, and pagination of data
 - Real-time comments using WebSocket
+- Likes
+- User management (admin panel)
+- Two user interface languages
+- Two themes: light and dark
 - Responsive Angular UI with Angular Material
+- Integration with Salesforce CRM
+- External API with token-based access
+- Integration with Odoo for analytics
 
 ##  1. Purpose of the system
 Develop a web application for creating and managing user inventories with a dynamic field structure. The system should allow users to independently create:
@@ -33,6 +40,31 @@ Web Application (Client-Server Architecture):
 - Database: PostgreSQL (relational database)
 - Realtime: WebSocket (ws)
 - Deployment: Netlify (frontend) + Render (server)
+
+## Integrations
+
+### Salesforce Integration
+The system includes integration with Salesforce CRM to manage user data.
+A separate action is available on the inventory page (for the user and admins).
+The user can submit additional information via a form.
+After submission, an Account and a linked Contact are created in Salesforce using REST API.
+
+### Odoo Integration
+The system provides an external API and integration with Odoo as a read-only analytics viewer.
+
+In the application:
+- Implemented API with access via a unique API token per inventory.
+- The API returns aggregated inventory data.
+
+In Odoo application:
+Stores imported inventory data. Inventory title, fields aggregated results:
+- average / min / max (for number fields)
+- most popular values (for text fields)
+Provides UI to:
+- view list of imported inventories
+- view detailed analytics.
+
+Import is triggered manually using API token.
 
 ## 3. Functional requirements
 ### Authentication
