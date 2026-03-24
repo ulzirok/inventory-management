@@ -1,0 +1,24 @@
+.help-content {
+  padding: 0;
+}
+
+.help-form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  padding: 30px;
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .help-form {
+    padding: 10px;
+  }
+}

@@ -19,6 +19,11 @@ import { Role } from '../../../features/auth/models/role.enum';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDivider } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
+import { HelpForm } from '../help-form/help-form';
+import { MatDialog } from '@angular/material/dialog';
+import { PowerAutomateService } from '../../services/powerAuromate.service';
+import { NotificationService } from '../../services/notification.service';
+import { CurrentPageService } from '../../services/currentPage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -46,8 +51,12 @@ export class Navbar implements OnInit {
   private themeService = inject(ThemeService);
   private router = inject(Router);
   private authService = inject(AuthService);
+  private currentPageService = inject(CurrentPageService);
+  private powerAutomateService = inject(PowerAutomateService);
+  private notificationService = inject(NotificationService);
   private destroyRef = inject(DestroyRef);
   private breakpointObserver = inject(BreakpointObserver);
+  private dialog = inject(MatDialog);
 
   public isDark = this.themeService.isDark;
   public currentLang = this.languageService.currentLang;
@@ -88,5 +97,25 @@ export class Navbar implements OnInit {
   logout() {
     this.authService.logout();
     this.router.navigate(['/auth/login']);
+  }
+
+  help() {
+    const dialogRef = this.dialog.open(HelpForm, {
+      data: {
+        inventoryId: this.currentPageService.getInventoryId()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      this.powerAutomateService.createTicket(result).pipe(
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe({
+        next: (data) => {
+          this.notificationService.success(data.message);
+        },
+        error: (err) => { }
+      });
+    });
   }
 }
