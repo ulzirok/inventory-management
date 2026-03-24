@@ -5,6 +5,7 @@ Inventory Management System is a web application that allows users to create and
 Each inventory can contain items with dynamically defined fields (text, number, boolean, date). Users can fully configure the structure of their inventories and manage items inside them.
 
 **Deploy:** [https://spiffy-biscochitos-96b7d0.netlify.app/](https://spiffy-biscochitos-96b7d0.netlify.app/)
+
 **Demo Video:** [Open demo video](https://drive.google.com/file/d/1j8iJyF351Np43rANyOnncSIc524ioh_d/view?usp=sharing)
 
 ## Key Features
