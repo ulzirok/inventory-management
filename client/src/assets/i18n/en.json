@@ -172,5 +172,13 @@
     "name": "Name",
     "email": "Email",
     "company": "Company Name"
+  },
+  "help": {
+    "fill": "Create a ticket",
+    "priority": "Priority",
+    "summary": "Summary",
+    "high": "High",
+    "average": "Average",
+    "low": "Low"
   }
 }

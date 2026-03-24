@@ -38,6 +38,10 @@
     <mat-icon>dark_mode</mat-icon>
     }
   </button>
+  
+  @if (isAuthenticated()) {
+  <button mat-button (click)="help()"><mat-icon class="help">help</mat-icon></button>
+  }
 
   @if (isMobile()) {
   <button mat-icon-button [matMenuTriggerFor]="menu">

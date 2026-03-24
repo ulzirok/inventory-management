@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="title">{{'help.fill' | translate}}</h2>
+
+<mat-dialog-content class="help-content">
+  <form [formGroup]="form" class="help-form" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>{{'help.summary' | translate}}</mat-label>
+      <textarea matInput rows="3" formControlName="summary"></textarea>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>{{'help.priority' | translate}}</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option value="High">{{'help.high' | translate}}</mat-option>
+        <mat-option value="Average">{{'help.average' | translate}}</mat-option>
+        <mat-option value="Low">{{'help.low' | translate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+    <mat-dialog-actions>
+      <button mat-button (click)="close()" type="button">{{'buttons.cancel' | translate}}</button>
+      <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">{{'buttons.send' |
+        translate}}</button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

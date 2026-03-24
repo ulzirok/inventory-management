@@ -23,6 +23,7 @@ import { InventoryChat } from '../../components/inventory-chat/inventory-chat';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CurrentPageService } from '../../../../core/services/currentPage.service';
 
 @Component({
   selector: 'app-inventory-details',
@@ -50,6 +51,7 @@ export class InventoryDetails implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute)
   private router = inject(Router)
   private inventoryService = inject(InventoryService)
+  private currentPageService = inject(CurrentPageService)
   private destroyRef = inject(DestroyRef);
   private notificationService = inject(NotificationService)
   private ws = inject(WsService)
@@ -61,6 +63,9 @@ export class InventoryDetails implements OnInit, OnDestroy {
   
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.currentPageService.setInventoryId(Number(id));
+    }
     
     this.loadInventory()
     this.loadItems()
@@ -230,6 +235,7 @@ export class InventoryDetails implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.ws.disconnect();
+    this.currentPageService.clear();
   }
   
   generateApiToken() {
