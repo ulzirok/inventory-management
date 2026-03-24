@@ -142,37 +142,37 @@ When creating an item:
 
 ## Screenshots
 
-![Login](./screenshots/1.jpg)
+![Login](./Screenshots/1.jpg)
 
-![Dashboard](./screenshots/2.jpg)
+![Dashboard](./Screenshots/2.jpg)
 
-![My inventories](./screenshots/3.jpg)
+![My inventories](./Screenshots/3.jpg)
 
-![Creating inventory](./screenshots/4.jpg)
+![Creating inventory](./Screenshots/4.jpg)
 
-![Inventory details](./screenshots/5.jpg)
+![Inventory details](./Screenshots/5.jpg)
 
-![API token](./screenshots/6.jpg)
+![API token](./Screenshots/6.jpg)
 
-![Inventory fields](./screenshots/7.jpg)
+![Inventory fields](./Screenshots/7.jpg)
 
-![Inventory items](./screenshots/8.jpg)
+![Inventory items](./Screenshots/8.jpg)
 
-![Creating items](./screenshots/9.jpg)
+![Creating items](./Screenshots/9.jpg)
 
-![Item details](./screenshots/10.jpg)
+![Item details](./Screenshots/10.jpg)
 
-![Inventory custom ID](./screenshots/11.jpg)
+![Inventory custom ID](./Screenshots/11.jpg)
 
-![Inventory access](./screenshots/12.jpg)
+![Inventory access](./Screenshots/12.jpg)
 
-![Inventory comments](./screenshots/13.jpg)
+![Inventory comments](./Screenshots/13.jpg)
 
-![Users](./screenshots/14.jpg)
+![Users](./Screenshots/14.jpg)
 
-![User details](./screenshots/15.jpg)
+![User details](./Screenshots/15.jpg)
 
-![Search page](./screenshots/16.jpg)
+![Search page](./Screenshots/16.jpg)
 
-![All inventoris](./screenshots/17.jpg)
+![All inventoris](./Screenshots/17.jpg)
 
