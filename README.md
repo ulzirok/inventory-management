@@ -5,6 +5,7 @@ Inventory Management System is a web application that allows users to create and
 Each inventory can contain items with dynamically defined fields (text, number, boolean, date). Users can fully configure the structure of their inventories and manage items inside them.
 
 **Deploy:** [https://spiffy-biscochitos-96b7d0.netlify.app/](https://spiffy-biscochitos-96b7d0.netlify.app/)
+**Demo Video:** [Open demo video](https://drive.google.com/file/d/1j8iJyF351Np43rANyOnncSIc524ioh_d/view?usp=sharing)
 
 ## Key Features
 - User authentication and authorization (including social login)
@@ -57,6 +58,7 @@ In the application:
 - The API returns aggregated inventory data.
 
 In Odoo application:
+
 Stores imported inventory data. Inventory title, fields aggregated results:
 - average / min / max (for number fields)
 - most popular values (for text fields)
@@ -138,11 +140,39 @@ When creating an item:
 - items are deleted automatically if inventory is deleted (onDelete: Cascade)
 - one user can only like one item
 
-## Demo Video
-
-[Open demo video](https://drive.google.com/file/d/1j8iJyF351Np43rANyOnncSIc524ioh_d/view?usp=sharing)
-
 ## Screenshots
 
+![Главная страница](./screenshots/1.jpg)
 
+![Страница с настройками](./screenshots/2.jpg)
+
+![Страница с настройками](./screenshots/3.jpg)
+
+![Страница с настройками](./screenshots/4.jpg)
+
+![Страница с настройками](./screenshots/5.jpg)
+
+![Страница с настройками](./screenshots/6.jpg)
+
+![Страница с настройками](./screenshots/7.jpg)
+
+![Страница с настройками](./screenshots/8.jpg)
+
+![Страница с настройками](./screenshots/9.jpg)
+
+![Страница с настройками](./screenshots/10.jpg)
+
+![Страница с настройками](./screenshots/11.jpg)
+
+![Страница с настройками](./screenshots/12.jpg)
+
+![Страница с настройками](./screenshots/13.jpg)
+
+![Страница с настройками](./screenshots/14.jpg)
+
+![Страница с настройками](./screenshots/15.jpg)
+
+![Страница с настройками](./screenshots/16.jpg)
+
+![Страница с настройками](./screenshots/17.jpg)
 
