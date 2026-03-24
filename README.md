@@ -138,6 +138,10 @@ When creating an item:
 - items are deleted automatically if inventory is deleted (onDelete: Cascade)
 - one user can only like one item
 
+## Demo Video
+
+[Open demo video](https://drive.google.com/file/d/1j8iJyF351Np43rANyOnncSIc524ioh_d/view?usp=sharing)
+
 ## Screenshots
 
 
