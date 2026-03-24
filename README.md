@@ -142,37 +142,37 @@ When creating an item:
 
 ## Screenshots
 
-![Главная страница](./screenshots/1.jpg)
+![Login](./screenshots/1.jpg)
 
-![Страница с настройками](./screenshots/2.jpg)
+![Dashboard](./screenshots/2.jpg)
 
-![Страница с настройками](./screenshots/3.jpg)
+![My inventories](./screenshots/3.jpg)
 
-![Страница с настройками](./screenshots/4.jpg)
+![Creating inventory](./screenshots/4.jpg)
 
-![Страница с настройками](./screenshots/5.jpg)
+![Inventory details](./screenshots/5.jpg)
 
-![Страница с настройками](./screenshots/6.jpg)
+![API token](./screenshots/6.jpg)
 
-![Страница с настройками](./screenshots/7.jpg)
+![Inventory fields](./screenshots/7.jpg)
 
-![Страница с настройками](./screenshots/8.jpg)
+![Inventory items](./screenshots/8.jpg)
 
-![Страница с настройками](./screenshots/9.jpg)
+![Creating items](./screenshots/9.jpg)
 
-![Страница с настройками](./screenshots/10.jpg)
+![Item details](./screenshots/10.jpg)
 
-![Страница с настройками](./screenshots/11.jpg)
+![Inventory custom ID](./screenshots/11.jpg)
 
-![Страница с настройками](./screenshots/12.jpg)
+![Inventory access](./screenshots/12.jpg)
 
-![Страница с настройками](./screenshots/13.jpg)
+![Inventory comments](./screenshots/13.jpg)
 
-![Страница с настройками](./screenshots/14.jpg)
+![Users](./screenshots/14.jpg)
 
-![Страница с настройками](./screenshots/15.jpg)
+![User details](./screenshots/15.jpg)
 
-![Страница с настройками](./screenshots/16.jpg)
+![Search page](./screenshots/16.jpg)
 
-![Страница с настройками](./screenshots/17.jpg)
+![All inventoris](./screenshots/17.jpg)
 
